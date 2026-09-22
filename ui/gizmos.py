@@ -28,9 +28,7 @@ class J3DComm_GGT_gem_controls(GizmoGroup):
 
     def setup(self, context: Context) -> None:
         """Inicializa tiradores interactivos (Gizmos) en pantalla."""
-        # Standard dial / arrow gizmo handle hook
         gz = self.gizmos.new("GIZMO_GT_arrow_3d")
-        gz.target_set_prop("matrix", context.active_object, "matrix_world")
         gz.draw_style = 'BOX'
         gz.color = (0.2, 0.8, 1.0)
         gz.alpha = 0.5
@@ -68,19 +66,4 @@ def unregister():
             bpy.utils.unregister_class(cls)
         except Exception:
             pass
-        except Exception:
-            pass
 
-
-def unregister():
-    for cls in reversed(classes):
-        if hasattr(bpy.types, cls.__name__):
-            try:
-                bpy.utils.unregister_class(getattr(bpy.types, cls.__name__))
-            except Exception:
-                pass
-        else:
-            try:
-                bpy.utils.unregister_class(cls)
-            except Exception:
-                pass

@@ -1,6 +1,6 @@
 # 💎 Módulo: Gems — Motor de Gemas Paramétricas
 
-> **Archivos:** [`core/gems.py`](file:///c:/Users/termo/Documents/GitHub/jeweler3dstudio/core/gems.py) (746L) + [`core/gem_data.py`](file:///c:/Users/termo/Documents/GitHub/jeweler3dstudio/core/gem_data.py) (2589L)
+> **Archivos:** [`core/gems.py`](file:///home/xolotl/dev/jeweler3dstudio/core/gems.py) (746L) + [`core/gem_data/`](file:///home/xolotl/dev/jeweler3dstudio/core/gem_data/) (subpaquete 5 módulos, ~2600L)
 > **Rol:** Generador procedural de gemas 3D, materiales BSDF, estimador de quilates, mapa de inventario e intercambiador.
 
 ---
@@ -23,8 +23,8 @@ graph LR
         CreateMesh --> Carats
     end
 
-    subgraph Data["core/gem_data.py"]
-        RawData["GEM_MESH_DATA\nDict[cut_key → verts + faces]\n17 cortes normalizados\n(coordenadas 0–0.5, z=0 girdle)"]
+    subgraph Data["core/gem_data/"]
+        RawData["GEM_MESH_DATA\nDict[cut_key → verts + faces]\n17 cortes normalizados\nDividido en _stepped, _fancy, _octagon, _round, _trillion"]
     end
 
     subgraph Assets["assets/gems/styles/"]
@@ -90,6 +90,5 @@ graph LR
 
 ## Deuda Técnica
 
-- **`gem_data.py` 2589 líneas** — Dividir en archivos por familia: `gem_data_round.py`, `gem_data_rect.py`, etc., importados en un `gem_data/__init__.py`.
 - **Calibres elongados** (Oval, Pear, Marquise) usan solo un eje — falta campo `size_w_mm` para L×W (p10).
 - **Preset EnumProperty** no se resetea al cambiar de corte — bug de contexto dinámico en Blender (p11).

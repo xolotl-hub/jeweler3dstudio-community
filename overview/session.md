@@ -1,11 +1,15 @@
 # Sesión actual
 
-- Fecha: 2026-09-21
+- Fecha: 2026-09-22
 - Agente: Gemini 3.7 Flash (Medium)
-- Nodo activo: Ninguno — `w58` cerrado
-- Estado validación: `verificado` (UI base normalizada a inglés, i18n actualizado, tiers empaquetados, community publicado en GitHub)
+- Nodo activo: Ninguno — `d2` cerrado
+- Estado validación: `verificado` (Subpaquete ui/panels/ modularizado con 5 submódulos + __init__.py, todos < 250L, py_compile exitoso en todos los tiers y 3 zips regenerados)
 
 ## Cambios
+- `d2` ✅ **Modularización de `ui/panels.py` (753L) en subpaquete `ui/panels/`**: Monolito de UI dividido en submódulos temáticos (`ring.py` 219L, `gems.py` 131L, `gem_map.py` 179L, `cutters.py` 141L, `stubs.py` 163L y `__init__.py` 89L). Todos respetan estrictamente la regla de legibilidad < 250L. Simplificado el pipeline de `tools/pack_zip/pack_community.py` para exclusión limpia por archivo. Verificados y regenerados los 3 paquetes ZIP multi-tier.
+- `d13` ✅ **Modularización de `core/gem_data.py` (2589L) en subpaquete `core/gem_data/`**: Monolito dividido en subpaquete con 5 familias de corte (`_stepped.py`, `_fancy.py`, `_octagon.py`, `_round.py`, `_trillion.py`) y unificación en `__init__.py` exportando `GEM_MESH_DATA`. Se eliminó el archivo flat original, manteniendo compatibilidad de import en `core/gems.py` y tools. Verificada integridad topológica de los 17 cortes y regenerados los 3 paquetes ZIP (`jeweler3dstudio_community-0.1.0.zip`, `jeweler3dstudio_standard-0.1.0.zip`, `jeweler3dstudio-0.1.0.zip`).
+- `d11` ✅ **Fix Gizmos target_set_prop & Unregister Duplicado (`ui/gizmos.py`)**: Eliminada llamada obsoleta `gz.target_set_prop("matrix", ...)` y unificada función `unregister()`. Resueltos `flag-w22` y `d12` (limpieza de `core/prongs.py`). Regenerados todos los paquetes multi-tier en `dist/`.
+- `w59` ✅ **Auditoría Integral de Deuda Técnica**: Escaneo exhaustivo del proyecto; identificados bugs latentes de ciclo de vida (`ui/gizmos.py`, `core/prongs.py`), módulos monolíticos > 250L (`gem_data.py`, `cutters.py`, `gems.py`, `ring.py`, `panels.py`) y stubs desconectados. Actualizados `deuda_tecnica.md` y `tasks.md`.
 - `w58` ✅ **Normalización UI Base Inglés & Catálogo i18n (Requisito Blender Extensions)**: Refactorizados todos los labels, descripciones de operadores, items de menús Shift+A, nombres de propiedades de escena y paneles N-Panel a inglés canónico (`ui/panels.py`, `ui/menus.py`, `core/ring.py`, `core/gems.py`, `core/cutters.py`). Sincronizado `ui/i18n.py` con catálogo de 80+ términos en inglés mapeados a `es_ES` y `fr_FR` vía `bpy.app.translations`. Reconstruido pipeline multi-tier (`pack_all.py`) y publicado Community ZIP (771.0 KB) en GitHub.
 - `w57` ✅ **Fix Gemas Community — todos los 17 cortes habilitados**: Eliminados filtros erróneos de `GEM_MESH_DATA` y `CUT_DEFS` en `pack_community.py`. La edición Community ahora tiene los 17 cortes completos igual que PRO. Eliminado `distribution_tiers_plan.md`. Community zip 770.1 KB publicado.
 - `w54` ✅ **Modularización de tools/pack_zip/ por Tiers & PRO como Default**: Dividido el sistema de empaquetado en scripts independientes por tier:

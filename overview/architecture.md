@@ -1,98 +1,135 @@
 # 🏗️ Arquitectura Viva — Jeweler 3D Studio v0.1.0
 
-> **Índice Raíz Hub & Spoke** — Actualizado 2026-09-21.
+> **Índice Raíz Hub & Spoke** — Cobertura 100% exhaustiva del sistema.
 > Extensión Blender 4.2+ / 5.x — Joyería CAD paramétrica procedural multi-tier.
 
 ---
 
-## 📊 Diagrama de Alto Nivel de Capas
+## 📊 Diagrama de Flujo Maestro y Dependencias
 
 ```mermaid
 graph TD
-    M["📦 blender_manifest.toml\nv0.1.0 · Blender ≥ 4.2"] --> Init
+    Manifest["📦 blender_manifest.toml\nv0.1.0 · Blender ≥ 4.2"] --> Init["🚀 __init__.py\nDynamic reload + dispatch"]
 
-    subgraph Lifecycle["🚀 Lifecycle"]
-        Init["__init__.py\nDynamic reload + dispatch"]
+    subgraph Core["⚙️ core/ — Motor Geométrico CAD"]
+        Units["units.py\nmm↔BU (1 BU = 1 mm)"]
+        Ring["ring.py\nArcos US 3-13.5\n8 Perfiles + Crease"]
+        Gems["gems.py\n17 cortes · BSDF · ct\nLive Map & Select"]
+        GemData["gem_data/\n5 familias modularizadas\nTopología normalizada pura"]
+        Cutters["cutters.py\n5-Zonas calibradas\nLive Edit (6 Perímetros)"]
+        Prongs["prongs.py (stub p14)"]
+        Pave["pave.py (stub p17)"]
+        Metrics["metrics.py\nDensidad metales preciosos"]
+        
+        Gems --> GemData
+        Gems <--> Cutters
+    end
+
+    subgraph UI["🖥️ ui/ — Interfaz N-Panel, Menús e i18n"]
+        Panels["panels/\nModularizado en 5 submódulos\n6 Paneles / 13 Subpaneles"]
+        Menus["menus.py\nShift+A Add Menu\nCurve / Mesh / Jeweler 3D"]
+        I18n["i18n.py\nCanonical EN Base\nCatalogos ES/FR (bpy.app.translations)"]
+        Dialogs["dialogs.py\nExportador Ficha Técnica"]
+        Gizmos["gizmos.py\nHandles 3D Viewport"]
+    end
+
+    subgraph Pipeline["📦 tools/pack_zip/ — Pipeline Multi-Tier"]
+        PackPro["pack_pro.py (DEFAULT)\nStudio PRO (17 cortes, 8 perfiles, full)"]
+        PackComm["pack_community.py\nCommunity Edition + Auto GitHub Sync"]
+        PackStd["pack_standard.py\nStandard Edition"]
+        PackAll["pack_all.py\nMaster Orchestrator"]
+        PackCommon["pack_common.py\nShared Manifest & Zip Helpers"]
+    end
+
+    subgraph Blender["🔷 Blender Runtime Context"]
+        B_Scene["bpy.types.Scene properties"]
+        B_Obj["bpy.types.Object custom props"]
+        B_Mesh["bpy.data.meshes / bmesh"]
+        B_Trans["bpy.app.translations"]
     end
 
     Init --> Core
     Init --> UI
-    Init --> Assets
-
-    subgraph Core["⚙️ core/ — Motor CAD"]
-        Units["units.py\nmm↔BU · scene scale"]
-        Ring["ring.py\nArcos US/EU · 8 perfiles"]
-        Gems["gems.py\n17 cortes · BSDF · ct"]
-        GemData["gem_data.py\nMallas normalizadas puras"]
-        Cutters["cutters.py\n5-zona · live edit · 17 siluetas"]
-        Prongs["prongs.py\nGarras (stub)"]
-        Pave["pave.py\nPavé (stub)"]
-        Metrics["metrics.py\nVolumen · Peso densidad"]
-        Gems --> GemData
-        Gems -.-> Cutters
-    end
-
-    subgraph UI["🖥️ ui/ — Interfaz N-Panel & Menús"]
-        Panels["panels.py\n6 paneles · 13 sub-paneles\nRedo F9 · Live sliders"]
-        Menus["menus.py\nShift+A Add Menu\nCurve / Mesh / Jeweler 3D"]
-        I18n["i18n.py\nbpy.app.translations\nCatálogos ES, FR, IT"]
-        Dialogs["dialogs.py\nExportador fichas técnicas"]
-        Gizmos["gizmos.py\nHandles 3D viewport"]
-    end
-
-    subgraph Assets["🎨 assets/"]
-        GemIcons["gems/styles/\nmarquise · round · asscher\n17 iconos SVG+PNG"]
-        NodeGroups["node_groups/\nGeometry Nodes templates"]
-    end
-
-    subgraph MultiTier["📦 tools/pack_zip/ — Pipeline Multi-Tier"]
-        PackPro["pack_pro.py (DEFAULT)\nStudio PRO (17 cortes, 8 perfiles, full)"]
-        PackComm["pack_community.py\nCommunity GPL + Git Push (+.agents, .skill, overview)"]
-        PackStd["pack_standard.py\nStandard Edition"]
-        PackAll["pack_all.py\nMaster Builder 3 Tiers"]
-        PackCommon["pack_common.py\nCore zip & manifest logic"]
-    end
-
-    subgraph BPY["🔷 bpy — Blender Runtime"]
-        BPY_Mesh[bpy.data.meshes / objects]
-        BPY_Scene[bpy.types.Scene properties]
-        BPY_Obj[bpy.types.Object properties]
-        BPY_Trans[bpy.app.translations]
-    end
-
-    Panels -->|"Dispara operadores"| Core
-    Panels --> BPY_Scene
-    I18n --> BPY_Trans
-    Cutters --> BPY_Obj
-    Core --> BPY_Mesh
-    Metrics --> BPY_Mesh
-    MultiTier -->|"Genera ZIPs"| Dist["dist/*.zip"]
+    Panels --> Core
+    Menus --> Core
+    Panels --> B_Scene
+    Cutters --> B_Obj
+    I18n --> B_Trans
+    Core --> B_Mesh
+    Pipeline -->|"Compila"| Dist["dist/*.zip"]
 ```
 
 ---
 
-## 🏛️ Tabla de Capas del Sistema
+## 🏛️ Desglose Arquitectónico Modular (100% Cobertura)
 
-| Capa | Archivo / Módulo | Operadores / API Pública | Responsabilidad |
-|---|---|---|---|
-| **Manifest** | `blender_manifest.toml` | — | Metadatos extensión, versión mínima Blender 4.2.0 |
-| **Lifecycle** | `__init__.py` | `register()`, `unregister()` | Recarga dinámica `importlib.reload()` + despacho de submódulos |
-| **Units** | `core/units.py` | `mm_to_bu()`, `J3D_OT_set_scene_units` | Conversión universal mm↔BU; estándar 1 BU = 1 mm |
-| **Ring** | `core/ring.py` | `J3D_OT_create_ring_size`, `J3D_OT_create_ring_profile` | Generador de aros: tallas US 3–13.5, 8 perfiles de metal, Subsurf + Edge Crease, orientación Top/Front/Side |
-| **Gems** | `core/gems.py` | `J3D_OT_add_gem`, `J3D_OT_swap_gems`, `create_gem_mesh()`, `calculate_carats()` | Motor geométrico 17 cortes, materiales BSDF, estimador ct, mapa de inventario de escena, intercambiador |
-| **Gem Data** | `core/gem_data.py` | `GEM_MESH_DATA` | Topología normalizada pura (vértices + caras) para los 17 cortes — sin dependencias de bpy |
-| **Cutters** | `core/cutters.py` | `J3D_OT_add_cutter_to_gem`, `J3D_OT_reset_cutter_defaults`, `create_cutter_mesh()`, `rebuild_cutter_for_gem()`, `find_cutter_for_gem()` | Cortadores booleanos 5-zona con perfil calibrado (STL de joyería GIA); 17 siluetas; edición en vivo de 6 perímetros vía Object props + Redo F9 |
-| **Prongs** | `core/prongs.py` | `J3D_OT_add_prongs` (stub) | Garras paramétricas — pendiente implementación completa (`p14`) |
-| **Pavé** | `core/pave.py` | `J3D_OT_create_pave` (stub) | Distribución pavé sobre curva/superficie — pendiente (`p17`) |
-| **Metrics** | `core/metrics.py` | `calculate_mesh_volume_cm3()` | Volumen bmesh y peso estimado en metales preciosos (Oro 24/18/14K, Pt, Ag, Ti) |
-| **UI Panels** | `ui/panels.py` | 6 paneles raíz + 13 sub-paneles | N-Panel "Jeweler 3D": Anillo/Talla, Gemas, Cortadores, Engastes, Canastas, Métricas; Redo F9 en todos los operadores de creación |
-| **UI Menus** | `ui/menus.py` | `VIEW3D_MT_j3d_add_menu` | Integración `Shift+A` (Add Menu) para Curve, Mesh y categoría Jeweler 3D |
-| **UI i18n** | `ui/i18n.py` | `translate()`, `register()`, `unregister()` | Conexión con `bpy.app.translations` para catálogos multi-idioma (ES, FR, IT) |
-| **UI Dialogs** | `ui/dialogs.py` | `J3D_OT_export_report` | Exportador modal de ficha técnica (peso, volumen, inventario) |
-| **UI Gizmos** | `ui/gizmos.py` | `J3D_GGT_gem_controls` | Handles interactivos 3D en viewport para gemas/cortadores |
-| **Packaging Multi-Tier** | `tools/pack_zip/` | `pack_pro.py`, `pack_community.py`, `pack_standard.py`, `pack_all.py` | Empaquetado aislado por edición (Studio PRO default, Standard, Community con auto-push GitHub) |
-| **Assets — Icons** | `assets/gems/styles/` | `get_cut_preview_collection()` | 17 iconos SVG+PNG por estilo (marquise/round/asscher) conectados a `bpy.utils.previews` |
-| **Assets — Nodes** | `assets/node_groups/` | Geometry Nodes | Plantillas de nodos no destructivos |
+```mermaid
+graph LR
+    subgraph UI_Interaction["Entradas de Usuario"]
+        ShiftA["Shift+A Menu"]
+        NPanel["N-Panel Viewport"]
+        RedoF9["Redo Panel (F9)"]
+        LiveTable["Inventario Interactivo"]
+    end
+
+    subgraph Processing_Layer["Capa de Procesamiento"]
+        RingGen["Ring Shank Generator"]
+        GemGen["17-Cut Procedural Mesh"]
+        CutterGen["5-Zone Calibrated Cutter"]
+        LiveMap["Live Scene Inventory Scanner"]
+    end
+
+    subgraph Output_Layer["Objetos y Materiales"]
+        MeshRing["Curve / Mesh Ring Objs"]
+        MeshGems["Faceted Gem + Glass BSDF"]
+        MeshCutters["Boolean Cutter (Wire)"]
+        SceneMetrics["Total ct & Dimension Records"]
+    end
+
+    ShiftA --> RingGen & GemGen
+    NPanel --> RingGen & GemGen & CutterGen & LiveMap
+    RedoF9 --> RingGen & GemGen & CutterGen
+    LiveTable --> LiveMap
+
+    RingGen --> MeshRing
+    GemGen --> MeshGems
+    CutterGen --> MeshCutters
+    LiveMap --> SceneMetrics
+```
+
+---
+
+## 🌐 Arquitectura de Internacionalización (i18n)
+
+```mermaid
+graph LR
+    CodeBase["UI Base (Canonical English)\npanels.py · menus.py · core/"] --> I18nEngine["ui/i18n.py\nTRANSLATIONS_DICT"]
+    
+    I18nEngine -->|"En Locale es/es_ES"| DictES["Catálogo Español (80+ llaves)\nAnillos, Cortes, Cotas"]
+    I18nEngine -->|"En Locale fr_FR"| DictFR["Catálogo Francés\nBagues, Pierres, Découpeurs"]
+    I18nEngine -->|"Default / Other"| FallbackEN["Fallback Directo EN (Zero-Overhead)"]
+
+    DictES & DictFR & FallbackEN --> AppTrans["bpy.app.translations.register()"]
+```
+
+---
+
+## 📦 Matriz de Tiers y Aislamiento de Espacios de Nombres
+
+```mermaid
+graph TD
+    RepoRoot["Source Code (PRO Default)"] --> PackOrchestrator["pack_all.py"]
+
+    PackOrchestrator --> PackComm["pack_community.py"]
+    PackOrchestrator --> PackStd["pack_standard.py"]
+    PackOrchestrator --> PackPro["pack_pro.py"]
+
+    PackComm -->|"Filtra Stubs + Subpaneles + Prefijo j3d_community"| CommZip["jeweler3dstudio_community-0.1.0.zip\n(GPL-3.0 · Libre)"]
+    PackStd -->|"Prefijo j3d_standard"| StdZip["jeweler3dstudio_standard-0.1.0.zip\n(Comercial)"]
+    PackPro -->|"Full Features · Prefijo j3d"| ProZip["jeweler3dstudio-0.1.0.zip\n(Comercial PRO)"]
+
+    CommZip -->|"Auto Sync & Push"| GitComm["GitHub: jeweler3dstudio-community\n(Con .agents, .skill/, overview/)"]
+```
 
 ---
 
@@ -101,17 +138,6 @@ graph TD
 → [modules/cutters.md](file:///home/xolotl/dev/jeweler3dstudio/overview/architecture/modules/cutters.md) — Detalle del motor de cortadores (5 zonas, live edit, Object props)
 → [modules/gems.md](file:///home/xolotl/dev/jeweler3dstudio/overview/architecture/modules/gems.md) — Motor de gemas (17 cortes, GEM_MESH_DATA, BSDF, mapa de inventario)
 → [modules/ring.md](file:///home/xolotl/dev/jeweler3dstudio/overview/architecture/modules/ring.md) — Motor de aros y tallas
-
----
-
-## ⚠️ Deuda Técnica Relevante
-
-| Módulo | Deuda | Ref |
-|---|---|---|
-| `gem_data.py` | 2588 líneas de datos puros — candidato a split en subarchivos por familia de corte | — |
-| `cutters.py` | 821 líneas — creció con live-edit; candidato a separar `cutters_ui.py` de `cutters_core.py` | `d8` |
-| `gems.py` | 806 líneas — `J3D_OT_swap_gems`, mapa de inventario y motor geométrico en un solo archivo | `d5` |
-| `ui/panels.py` | 748 líneas — candidato a modularizar subpaneles temáticos | `d2` |
-| `prongs.py`, `pave.py` | Stubs sin implementación real; exponen operadores no funcionales | `p14`, `p17` (`d9`, `d10`) |
-| Booleanos | Sin integración de auto-boolean (1-click Modifier apply) | `p18` |
+→ [modules/ui.md](file:///home/xolotl/dev/jeweler3dstudio/overview/architecture/modules/ui.md) — Interfaz N-Panel, menús Shift+A y motor i18n
+→ [modules/pipeline.md](file:///home/xolotl/dev/jeweler3dstudio/overview/architecture/modules/pipeline.md) — Empaquetado multi-tier y orquestación Git
 

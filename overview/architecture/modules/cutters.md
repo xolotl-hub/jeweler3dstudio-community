@@ -1,6 +1,6 @@
 # ⚙️ Módulo: Cutters — Motor de Cortadores Booleanos
 
-> **Archivo:** [`core/cutters.py`](file:///c:/Users/termo/Documents/GitHub/jeweler3dstudio/core/cutters.py) — 822 líneas
+> **Archivo:** [`core/cutters.py`](file:///home/xolotl/dev/jeweler3dstudio/core/cutters.py) — 822 líneas
 > **Rol:** Generador de cortadores booleanos para asientos de gema — 5 zonas, 17 siluetas, edición en vivo.
 
 ---

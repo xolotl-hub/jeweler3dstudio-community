@@ -1,6 +1,6 @@
 # 💍 Módulo: Ring — Motor de Aros y Tallas
 
-> **Archivo:** [`core/ring.py`](file:///c:/Users/termo/Documents/GitHub/jeweler3dstudio/core/ring.py) — 588 líneas
+> **Archivo:** [`core/ring.py`](file:///home/xolotl/dev/jeweler3dstudio/core/ring.py) — 588 líneas
 > **Rol:** Generador paramétrico de aros de joyería: tallas US, 8 perfiles de metal, Subdivision Surface y orientación.
 
 ---

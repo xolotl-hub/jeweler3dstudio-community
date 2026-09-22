@@ -5,7 +5,7 @@
 ## 🎯 Tarea Activa: Ninguna
 
 - **ID:** —
-- **Descripción:** Sin tarea activa. Esperando instrucciones.
+- **Descripción:** Sin tarea activa. Backlog listo para nuevo comando `$work`.
 - **Hipótesis:** —
 
 ## 🏷️ Clasificación
@@ -17,6 +17,9 @@
 ## 🛣️ Rutas de Trabajo y Posibles Soluciones
 
 —
+
+
+
 
 
 

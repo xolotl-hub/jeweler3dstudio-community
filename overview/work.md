@@ -4,7 +4,7 @@
 
 | ID | Tipo | Estado | Resumen | Archivo de Detalle |
 |---|---|---|---|---|
-| [flag-w22] | bug | no verificado | Historial declara eliminada `target_set_prop("matrix", ...)`, pero aún existe en `ui/gizmos.py:33`. Verificar en Blender y corregir el historial o el código. | `ui/gizmos.py` |
+| — | — | — | Backlog limpio sin tareas bloqueantes activas | — |
 
 
 Tipos: `tarea`, `bug`, `deuda`. Estados: `pendiente`, `en progreso`, `bloqueado`, `hecho`, `no verificado`.
@@ -17,6 +17,10 @@ Tipos: `tarea`, `bug`, `deuda`. Estados: `pendiente`, `en progreso`, `bloqueado`
 
 | ID | Tipo | Resuelto por (Agente) | Causa Raíz / Resumen Solución | Fecha |
 |---|---|---|---|---|
+| d2 | deuda / refactor | Gemini 3.7 Flash (Medium) | Modularizado `ui/panels.py` (753L) en subpaquete `ui/panels/` (`ring.py`, `gems.py`, `gem_map.py`, `cutters.py`, `stubs.py`, `__init__.py`), todos estrictamente < 250L. Simplificado pipeline de Community en `tools/pack_zip/pack_community.py`. Regenerados y validados los 3 tiers ZIP. | 2026-09-22 |
+| d13 | deuda / refactor | Gemini 3.7 Flash (Medium) | Modularizado `core/gem_data.py` (2589L) en subpaquete `core/gem_data/` con 5 módulos organizados por familias de corte (`_stepped.py`, `_fancy.py`, `_octagon.py`, `_round.py`, `_trillion.py`) y `__init__.py` con reexport de `GEM_MESH_DATA`. Validación de 17 mallas de corte intactas y regeneración de los 3 tiers ZIP. | 2026-09-22 |
+| d11 | bug / deuda | Gemini 3.7 Flash (Medium) | Eliminada llamada no soportada `target_set_prop("matrix", ...)` en `ui/gizmos.py` y unificado `unregister()` redundante. Resuelto `flag-w22` y `d12` (limpieza de `core/prongs.py`). | 2026-09-21 |
+| w59 | tarea | Gemini 3.7 Flash (Medium) | Auditoría integral de deuda técnica: escaneo completo de 100% de archivos del proyecto, clasificación priorizada Alta/Media/Baja en `overview/work/deuda_tecnica.md`. | 2026-09-21 |
 | w58 | mejora | Gemini 3.7 Flash (Medium) | Normalización UI Base a Inglés Canónico (`ui/panels.py`, `ui/menus.py`, `core/ring.py`, `core/gems.py`, `core/cutters.py`) para cumplimiento de Blender Extensions. Actualizado catálogo de traducciones i18n (`ui/i18n.py`) con llaves en inglés y soporte `es_ES`/`fr_FR`. Reconstruido y publicado Community ZIP (771.0 KB). | 2026-09-21 |
 | w57 | bug | Gemini 3.7 Flash (Medium) | Fix: Gemas en Community caían a ROUND porque GEM_MESH_DATA estaba filtrado a 3 cortes. Eliminados filtros en `pack_community.py`; Community ahora tiene los 17 cortes completos igual que PRO. | 2026-09-21 |
 | w56 | mejora | Gemini 3.7 Flash (Medium) | Añadido campo `website` oficial en `blender_manifest.toml` y en la generación paramétrica de manifiestos en `tools/pack_zip/pack_common.py`. Sincronizado y publicado en GitHub Community. | 2026-09-21 |
