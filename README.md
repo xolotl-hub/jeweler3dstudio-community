@@ -3,7 +3,7 @@
 **Free Blender add-on for professional jewelry design.**
 
 [![Blender](https://img.shields.io/badge/Blender-4.2%2B-orange?logo=blender)](https://www.blender.org)
-[![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 [![extensions.blender.org](https://img.shields.io/badge/Blender-Extensions-brightgreen)](https://extensions.blender.org)
 
 > **Jeweler 3D Community** is the free tier of the Jeweler 3D Studio suite — a modular toolkit for jewelry design and production inside Blender 4.2+.
