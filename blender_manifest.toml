@@ -1,0 +1,15 @@
+schema_version = "1.0.0"
+id = "jeweler3dstudio_community"
+version = "0.1.0"
+name = "Jeweler 3D Community"
+tagline = "Free community jewelry design tools for Blender 4.2+"
+maintainer = "Jeweler 3D Studio Team"
+type = "add-on"
+blender_version_min = "4.2.0"
+license = [
+    "SPDX:GPL-3.0-or-later"
+]
+tags = [
+    "3D View",
+    "Mesh"
+]

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 333 333">
+<rect width="333" height="333" rx="28" fill="#0A0A0A"/>
+<polygon points="58.50,58.50 58.50,274.50 274.50,274.50 274.50,58.50" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linejoin="round"/>
+<polygon points="61.33,61.33 61.33,271.67 271.67,271.67 271.67,61.33" fill="none" stroke="#806722" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="101.76,101.76 101.76,231.24 231.24,231.24 231.24,101.76" fill="none" stroke="#C9A84C" stroke-width="1.35" stroke-linejoin="round"/>
+<polygon points="58.50,58.50 58.50,274.50 101.76,231.24 101.76,101.76" fill="none" stroke="#C9A84C" stroke-width="0.82" stroke-linejoin="round"/>
+<polygon points="101.76,101.76 231.24,101.76 274.50,58.50 58.50,58.50" fill="none" stroke="#C9A84C" stroke-width="0.82" stroke-linejoin="round"/>
+<polygon points="231.24,231.24 101.76,231.24 58.50,274.50 274.50,274.50" fill="none" stroke="#C9A84C" stroke-width="0.82" stroke-linejoin="round"/>
+<polygon points="274.50,58.50 231.24,101.76 231.24,231.24 274.50,274.50" fill="none" stroke="#C9A84C" stroke-width="0.82" stroke-linejoin="round"/>
+</svg>
