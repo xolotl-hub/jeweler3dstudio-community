@@ -5,6 +5,7 @@ name = "Jeweler 3D Community"
 tagline = "Free community jewelry design tools for Blender 4.2+"
 maintainer = "Jeweler 3D Studio Team"
 type = "add-on"
+website = "https://github.com/xolotl-hub/jeweler3dstudio-community"
 blender_version_min = "4.2.0"
 license = [
     "SPDX:GPL-3.0-or-later"
