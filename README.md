@@ -43,7 +43,7 @@ Want more features? Check out the paid tiers on Blender Market:
 
 ## 📄 License
 
-GNU GPL v2 or later — see [LICENSE](LICENSE).
+GNU GPL v3  — see [LICENSE](LICENSE).
 
 ---
 

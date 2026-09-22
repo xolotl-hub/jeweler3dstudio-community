@@ -22,11 +22,11 @@ from ..core.gems import (
 
 
 # ===================================================================
-# 1. PANEL 1: Anillo y Talla
+# 1. PANEL 1: Ring & Size
 # ===================================================================
 
 class VIEW3D_PT_j3d_community_ring_size(Panel):
-    bl_label = "Anillo y Talla"
+    bl_label = "Ring & Size"
     bl_idname = "VIEW3D_PT_j3d_community_ring_size"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
@@ -37,7 +37,7 @@ class VIEW3D_PT_j3d_community_ring_size(Panel):
 
 
 class VIEW3D_PT_j3d_community_sub_size(Panel):
-    bl_label = "Talla"
+    bl_label = "Size Reference"
     bl_idname = "VIEW3D_PT_j3d_community_sub_size"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
@@ -50,22 +50,22 @@ class VIEW3D_PT_j3d_community_sub_size(Panel):
         scene = context.scene
         col = layout.column(align=True)
 
-        col.prop(scene, "j3d_community_us_size", text="Talla US")
+        col.prop(scene, "j3d_community_us_size", text="US Size")
 
         row = col.row(align=True)
         row.prop(scene, "j3d_community_geometry_type", expand=True)
 
-        col.prop(scene, "j3d_community_ring_orientation", text="Orientación")
+        col.prop(scene, "j3d_community_ring_orientation", text="Orientation")
 
         col.separator()
-        op = col.operator("j3d_community.create_ring_size", icon='CURVE_NCIRCLE', text="Crear Talla")
+        op = col.operator("j3d_community.create_ring_size", icon='CURVE_NCIRCLE', text="Create Ring Size")
         op.us_size = scene.j3d_community_us_size
         op.geometry_type = scene.j3d_community_geometry_type
         op.orientation = scene.j3d_community_ring_orientation
 
 
 class VIEW3D_PT_j3d_community_sub_profile(Panel):
-    bl_label = "Perfil del Metal"
+    bl_label = "Metal Profile / Shank"
     bl_idname = "VIEW3D_PT_j3d_community_sub_profile"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
@@ -78,15 +78,15 @@ class VIEW3D_PT_j3d_community_sub_profile(Panel):
         scene = context.scene
         col = layout.column(align=True)
 
-        col.prop(scene, "j3d_community_ring_profile", text="Perfil")
-        col.prop(scene, "j3d_community_ring_orientation", text="Orientación")
-        col.prop(scene, "j3d_community_ring_width", text="Ancho (mm)")
-        col.prop(scene, "j3d_community_ring_height", text="Grosor (mm)")
+        col.prop(scene, "j3d_community_ring_profile", text="Profile")
+        col.prop(scene, "j3d_community_ring_orientation", text="Orientation")
+        col.prop(scene, "j3d_community_ring_width", text="Width (mm)")
+        col.prop(scene, "j3d_community_ring_height", text="Thickness (mm)")
 
         col.separator()
         row_res = col.row(align=True)
-        row_res.prop(scene, "j3d_community_ring_radial_segments", text="Radiales")
-        row_res.prop(scene, "j3d_community_ring_profile_segments", text="Perfil")
+        row_res.prop(scene, "j3d_community_ring_radial_segments", text="Radial Segments")
+        row_res.prop(scene, "j3d_community_ring_profile_segments", text="Profile Resolution")
 
         col.separator()
         box_sub = col.box()
@@ -94,11 +94,11 @@ class VIEW3D_PT_j3d_community_sub_profile(Panel):
         box_col.prop(scene, "j3d_community_ring_use_subsurf", text="Subdivision Surface")
         if scene.j3d_community_ring_use_subsurf:
             row_sub = box_col.row(align=True)
-            row_sub.prop(scene, "j3d_community_ring_subsurf_levels", text="Nivel")
+            row_sub.prop(scene, "j3d_community_ring_subsurf_levels", text="Levels")
             row_sub.prop(scene, "j3d_community_ring_crease", text="Crease")
 
         col.separator()
-        op = col.operator("j3d_community.create_ring_profile", icon='MESH_CYLINDER', text="Crear Aro con Perfil")
+        op = col.operator("j3d_community.create_ring_profile", icon='MESH_CYLINDER', text="Create Ring Shank")
         op.us_size = scene.j3d_community_us_size
         op.profile_type = scene.j3d_community_ring_profile
         op.orientation = scene.j3d_community_ring_orientation
@@ -112,11 +112,11 @@ class VIEW3D_PT_j3d_community_sub_profile(Panel):
 
 
 # ===================================================================
-# 2. PANEL 2: Gemas
+# 2. PANEL 2: Gems
 # ===================================================================
 
 class VIEW3D_PT_j3d_community_gems(Panel):
-    bl_label = "Gemas"
+    bl_label = "Gems"
     bl_idname = "VIEW3D_PT_j3d_community_gems"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
@@ -127,7 +127,7 @@ class VIEW3D_PT_j3d_community_gems(Panel):
 
 
 class VIEW3D_PT_j3d_community_sub_gem_visor(Panel):
-    bl_label = "Añadir Gema"
+    bl_label = "Add Gem"
     bl_idname = "VIEW3D_PT_j3d_community_sub_gem_visor"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
@@ -139,7 +139,7 @@ class VIEW3D_PT_j3d_community_sub_gem_visor(Panel):
         scene = context.scene
         col = layout.column(align=True)
 
-        col.prop(scene, "j3d_community_gem_cut", text="Corte")
+        col.prop(scene, "j3d_community_gem_cut", text="Cut")
 
         pcoll = get_cut_preview_collection()
         if pcoll and scene.j3d_community_gem_cut in pcoll:
@@ -150,24 +150,37 @@ class VIEW3D_PT_j3d_community_sub_gem_visor(Panel):
             row.template_icon(icon_value=pcoll[scene.j3d_community_gem_cut].icon_id, scale=10)
 
         col.separator()
-        col.prop(scene, "j3d_community_gem_stone", text="Piedra")
-        col.prop(scene, "j3d_community_gem_size_preset", text="Calibre / ct")
+        col.prop(scene, "j3d_community_gem_stone", text="Stone")
+        col.prop(scene, "j3d_community_gem_size_preset", text="Size / ct")
 
         if scene.j3d_community_gem_size_preset == "CUSTOM":
-            col.prop(scene, "j3d_community_gem_size", text="Tamano (mm)")
+            col.prop(scene, "j3d_community_gem_size", text="Size (mm)")
             effective_size = scene.j3d_community_gem_size
         else:
             effective_size = get_effective_gem_size(scene)
 
-        # Estimador de quilates dinámico
+        # Dynamic carat estimator
         carats = calculate_carats(scene.j3d_community_gem_stone, scene.j3d_community_gem_cut, effective_size)
         box = col.box()
         row = box.row(align=True)
         row.alignment = 'CENTER'
-        row.label(text=f"Calibre: {effective_size:.2f} mm  |  Peso: {carats:.3f} ct", icon='INFO')
+        row.label(text=f"Size: {effective_size:.2f} mm  |  Weight: {carats:.3f} ct", icon='INFO')
 
         col.separator()
-        op = col.operator("j3d_community.add_gem", icon='MESH_ICOSPHERE', text="Anadir Gema 3D")
+        op = col.operator("j3d_community.add_gem", icon='MESH_ICOSPHERE', text="Add 3D Gem")
+
+        # --- Studio PRO Promo Box (Community Edition) ---
+        box = layout.box()
+        col = box.column(align=True)
+        col.label(text="💎 Unlock Jeweler 3D Studio PRO", icon="SOLO_ON")
+        col.label(text="• 17 Luxury Faceted Cuts (GIA/ISO)", icon="DOT")
+        col.label(text="• 8 Metal Shank Profiles + Edge Crease", icon="DOT")
+        col.label(text="• 5-Zone Calibrated Boolean Cutters", icon="DOT")
+        col.label(text="• Live Gem Map & Interactive Inventory", icon="DOT")
+        col.label(text="• Shift+A Add Menu & Redo Panel (F9)", icon="DOT")
+        col.separator()
+        col.operator("wm.url_open", text="Get Studio PRO on Blender Market", icon="URL").url = "https://blendermarket.com"
+
         op.cut = scene.j3d_community_gem_cut
         op.stone = scene.j3d_community_gem_stone
         op.size = effective_size
@@ -190,36 +203,36 @@ classes = (
 
 def register():
     bpy.types.Scene.j3d_community_us_size = EnumProperty(
-        name="Talla US",
-        description="Selección de talla estándar US (incluye medias tallas)",
+        name="US Ring Size",
+        description="Standard US ring size selection (includes half sizes)",
         items=US_SIZE_ITEMS,
         default="7.0"
     ) # type: ignore
 
     bpy.types.Scene.j3d_community_geometry_type = EnumProperty(
-        name="Tipo de Geometría",
-        description="Formato de salida de la talla",
+        name="Geometry Type",
+        description="Output geometry format for ring sizing",
         items=GEOMETRY_TYPE_ITEMS,
         default="CURVE"
     ) # type: ignore
 
     bpy.types.Scene.j3d_community_ring_orientation = EnumProperty(
-        name="Orientación",
-        description="Plano de orientación para la creación del anillo",
+        name="Orientation",
+        description="Orientation plane for ring creation",
         items=ORIENTATION_ITEMS,
         default="FRONT"
     ) # type: ignore
 
     bpy.types.Scene.j3d_community_ring_profile = EnumProperty(
-        name="Perfil",
-        description="Perfil de la sección transversal del aro",
+        name="Profile",
+        description="Ring shank cross-section profile",
         items=RING_PROFILE_ITEMS,
         default="MEDIA_CANA"
     ) # type: ignore
 
     bpy.types.Scene.j3d_community_ring_width = FloatProperty(
-        name="Ancho",
-        description="Ancho del aro en mm",
+        name="Width",
+        description="Ring band width in mm",
         default=3.0,
         min=1.0,
         max=20.0,
@@ -228,8 +241,8 @@ def register():
     ) # type: ignore
 
     bpy.types.Scene.j3d_community_ring_height = FloatProperty(
-        name="Grosor",
-        description="Grosor del aro en mm (crece hacia afuera del diámetro interior)",
+        name="Thickness",
+        description="Ring band thickness in mm (grows outwards from inner diameter)",
         default=1.5,
         min=0.3,
         max=10.0,
@@ -238,16 +251,16 @@ def register():
     ) # type: ignore
 
     bpy.types.Scene.j3d_community_ring_radial_segments = IntProperty(
-        name="Segmentos Radiales",
-        description="Número de divisiones circunferenciales del aro",
+        name="Radial Segments",
+        description="Number of circumferential divisions along the ring",
         default=16,
         min=8,
         max=256
     ) # type: ignore
 
     bpy.types.Scene.j3d_community_ring_profile_segments = IntProperty(
-        name="Resolución de Perfil",
-        description="Número de subdivisiones en curvas del perfil",
+        name="Profile Resolution",
+        description="Number of subdivisions for curved profile sections",
         default=2,
         min=2,
         max=64
@@ -255,21 +268,21 @@ def register():
 
     bpy.types.Scene.j3d_community_ring_use_subsurf = BoolProperty(
         name="Subdivision Surface",
-        description="Añadir modificador Subdivision Surface",
+        description="Add Subdivision Surface modifier",
         default=True
     ) # type: ignore
 
     bpy.types.Scene.j3d_community_ring_subsurf_levels = IntProperty(
-        name="Nivel Subsurf",
-        description="Nivel de subdivisión para vista y render",
+        name="Subsurf Level",
+        description="Subdivision level for viewport and render",
         default=2,
         min=1,
         max=5
     ) # type: ignore
 
     bpy.types.Scene.j3d_community_ring_crease = FloatProperty(
-        name="Pliegue de Aristas (Crease)",
-        description="Factor de pliegue (Shift+E) en esquinas vivas (0.8 = pulido/lijado natural)",
+        name="Edge Crease",
+        description="Crease factor (Shift+E) on sharp corners (0.8 = natural polished edge)",
         default=0.8,
         min=0.0,
         max=1.0,
@@ -278,28 +291,28 @@ def register():
     ) # type: ignore
 
     bpy.types.Scene.j3d_community_gem_cut = EnumProperty(
-        name="Corte",
-        description="Seleccion de corte de la gema",
+        name="Cut",
+        description="Gemstone cut selection",
         items=get_cut_enum_items
     ) # type: ignore
 
     bpy.types.Scene.j3d_community_gem_stone = EnumProperty(
-        name="Piedra",
-        description="Tipo de gema / material",
+        name="Stone",
+        description="Gemstone material type",
         items=STONE_ITEMS,
         default="DIAMOND"
     ) # type: ignore
 
     bpy.types.Scene.j3d_community_gem_size_preset = EnumProperty(
-        name="Calibre Comercial",
-        description="Calibres estándar comerciales del mercado según el corte seleccionado",
+        name="Commercial Size",
+        description="Standard commercial market sizes for selected cut",
         items=get_gem_size_preset_items,
         default=0
     ) # type: ignore
 
     bpy.types.Scene.j3d_community_gem_size = FloatProperty(
-        name="Tamano",
-        description="Tamano de la gema en milimetros (modo personalizado)",
+        name="Size",
+        description="Gemstone size in millimeters (custom mode)",
         default=1.0,
         min=0.5,
         max=50.0,
@@ -308,21 +321,21 @@ def register():
     ) # type: ignore
 
     bpy.types.Scene.j3d_community_swap_cut = EnumProperty(
-        name="Nuevo Corte",
-        description="Selección de corte para reemplazo de gemas",
+        name="New Cut",
+        description="Cut selection for gem replacement",
         items=get_cut_enum_items
     ) # type: ignore
 
     bpy.types.Scene.j3d_community_swap_stone = EnumProperty(
-        name="Nueva Piedra",
-        description="Tipo de gema / material para reemplazo",
+        name="New Stone",
+        description="Gemstone material type for replacement",
         items=STONE_ITEMS,
         default="DIAMOND"
     ) # type: ignore
 
     bpy.types.Scene.j3d_community_swap_size = FloatProperty(
-        name="Nuevo Calibre",
-        description="Nuevo calibre en milímetros para reemplazo",
+        name="New Size",
+        description="New size in millimeters for replacement",
         default=3.0,
         min=0.5,
         max=50.0,
@@ -331,16 +344,16 @@ def register():
     ) # type: ignore
 
     bpy.types.Scene.j3d_community_cutter_segments = IntProperty(
-        name="Segmentos Cortador",
-        description="Subdivisiones radiales/facetas para el cortador de asiento (default 8)",
+        name="Cutter Segments",
+        description="Radial segments for seat cutter (default 8)",
         default=8,
         min=4,
         max=64
     ) # type: ignore
 
     bpy.types.Scene.j3d_community_cutter_crease = FloatProperty(
-        name="Crease Cortador",
-        description="Pliegue de aristas horizontales (Shift+E) para Subdivision Surface",
+        name="Cutter Crease",
+        description="Edge crease (Shift+E) for Subdivision Surface",
         default=0.8,
         min=0.0,
         max=1.0,

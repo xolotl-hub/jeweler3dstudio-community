@@ -11,49 +11,49 @@ from bpy.types import Menu
 
 
 class VIEW3D_MT_j3d_add_menu(Menu):
-    """Submenu dedicado en Shift + A > Jeweler 3D"""
+    """Dedicated submenu in Shift + A > Jeweler 3D"""
     bl_idname = "VIEW3D_MT_j3d_add_menu"
     bl_label = "Jeweler 3D"
 
     def draw(self, context: bpy.types.Context) -> None:
         layout = self.layout
 
-        # Seccion Anillos y Tallas
-        layout.label(text="Anillos & Tallas", icon='MESH_TORUS')
-        op_curve = layout.operator("j3d_community.create_ring_size", text="Talla de Anillo (Curva)", icon='CURVE_NCIRCLE')
+        # Rings & Sizes section
+        layout.label(text="Rings & Sizes", icon='MESH_TORUS')
+        op_curve = layout.operator("j3d_community.create_ring_size", text="Ring Size (Curve)", icon='CURVE_NCIRCLE')
         op_curve.geometry_type = 'CURVE'
 
-        op_mesh = layout.operator("j3d_community.create_ring_size", text="Talla de Anillo (Cilindro)", icon='MESH_CYLINDER')
+        op_mesh = layout.operator("j3d_community.create_ring_size", text="Ring Size (Cylinder)", icon='MESH_CYLINDER')
         op_mesh.geometry_type = 'CYLINDER'
 
-        layout.operator("j3d_community.create_ring_profile", text="Aro de Anillo (Perfil)", icon='MESH_TORUS')
+        layout.operator("j3d_community.create_ring_profile", text="Ring Shank (Profile)", icon='MESH_TORUS')
 
         layout.separator()
 
-        # Seccion Gemas
-        layout.label(text="Gemas", icon='MESH_ICOSPHERE')
-        layout.operator("j3d_community.add_gem", text="Añadir Gema", icon='MESH_ICOSPHERE')
+        # Gems section
+        layout.label(text="Gems", icon='MESH_ICOSPHERE')
+        layout.operator("j3d_community.add_gem", text="Add Gem", icon='MESH_ICOSPHERE')
 
 
 def menu_func_curve(self, context: bpy.types.Context) -> None:
-    """Entrada en Shift + A > Curve"""
+    """Entry in Shift + A > Curve"""
     layout = self.layout
     layout.separator()
-    op = layout.operator("j3d_community.create_ring_size", text="Talla de Anillo (Curva)", icon='CURVE_NCIRCLE')
+    op = layout.operator("j3d_community.create_ring_size", text="Ring Size (Curve)", icon='CURVE_NCIRCLE')
     op.geometry_type = 'CURVE'
 
 
 def menu_func_mesh(self, context: bpy.types.Context) -> None:
-    """Entrada en Shift + A > Mesh"""
+    """Entry in Shift + A > Mesh"""
     layout = self.layout
     layout.separator()
-    op = layout.operator("j3d_community.create_ring_size", text="Talla de Anillo (Cilindro)", icon='MESH_CYLINDER')
+    op = layout.operator("j3d_community.create_ring_size", text="Ring Size (Cylinder)", icon='MESH_CYLINDER')
     op.geometry_type = 'CYLINDER'
-    layout.operator("j3d_community.create_ring_profile", text="Aro de Anillo (Perfil)", icon='MESH_TORUS')
+    layout.operator("j3d_community.create_ring_profile", text="Ring Shank (Profile)", icon='MESH_TORUS')
 
 
 def menu_func_add_top(self, context: bpy.types.Context) -> None:
-    """Entrada de submenú en la raíz de Shift + A"""
+    """Submenu entry in root of Shift + A"""
     layout = self.layout
     layout.separator()
     layout.menu(VIEW3D_MT_j3d_add_menu.bl_idname, text="Jeweler 3D", icon='MESH_ICOSPHERE')

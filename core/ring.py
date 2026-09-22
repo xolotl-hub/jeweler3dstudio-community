@@ -33,24 +33,24 @@ US_RING_SIZES: Dict[str, float] = {
 }
 
 US_SIZE_ITEMS: List[Tuple[str, str, str]] = [
-    (k, f"US {k} ({v:.2f} mm)", f"Talla US {k} - Diametro interno {v:.2f} mm")
+    (k, f"US {k} ({v:.2f} mm)", f"US Size {k} - Inner diameter {v:.2f} mm")
     for k, v in US_RING_SIZES.items()
 ]
 
 GEOMETRY_TYPE_ITEMS: List[Tuple[str, str, str, str, int]] = [
-    ("CURVE",    "Curva Bezier",   "Genera curva circular Bezier 3D", "CURVE_NCIRCLE", 0),
-    ("CYLINDER", "Cilindro Malla", "Genera cilindro 3D de referencia", "MESH_CYLINDER", 1),
+    ("CURVE",    "Bezier Curve",  "Generate 3D circular Bezier curve", "CURVE_NCIRCLE", 0),
+    ("CYLINDER", "Mesh Cylinder", "Generate 3D cylinder reference",     "MESH_CYLINDER", 1),
 ]
 
 ORIENTATION_ITEMS: List[Tuple[str, str, str, str, int]] = [
-    ("TOP",   "Superior (XY)", "Anillo acostado en plano horizontal XY (dedo en Z)", "ORIENTATION_GLOBAL", 0),
-    ("FRONT", "Frontal (XZ)",  "Anillo de pie visto de frente en plano XZ (dedo en Y)", "ORIENTATION_VIEW",   1),
-    ("SIDE",  "Lateral (YZ)",  "Anillo de pie visto de perfil en plano YZ (dedo en X)", "ORIENTATION_LOCAL",  2),
+    ("TOP",   "Top (XY)",   "Ring lying flat in horizontal XY plane (finger along Z)", "ORIENTATION_GLOBAL", 0),
+    ("FRONT", "Front (XZ)", "Ring standing upright seen from front in XZ plane (finger along Y)", "ORIENTATION_VIEW",   1),
+    ("SIDE",  "Side (YZ)",  "Ring standing upright seen from side in YZ plane (finger along X)",  "ORIENTATION_LOCAL",  2),
 ]
 
 
 def _get_orientation_euler(orientation_key: str) -> Tuple[float, float, float]:
-    """Calcula rotacion Euler (radianes) para la orientacion seleccionada."""
+    """Calculates Euler rotation (radians) for the selected orientation."""
     if orientation_key == "FRONT":
         return (math.radians(90.0), 0.0, 0.0)
     elif orientation_key == "SIDE":
@@ -63,14 +63,14 @@ def _get_orientation_euler(orientation_key: str) -> Tuple[float, float, float]:
 # Actual 3D: r = inner_radius + u_norm * height_mm,  z = v_norm * width_mm
 
 RING_PROFILE_ITEMS: List[Tuple[str, str, str, int]] = [
-    ("MEDIA_CANA", "Media Cana",  "Plano interior, dome exterior - clasico universal",          0),
-    ("PLANO",      "Plano",       "Rectangular plano en ambas caras - moderno/minimalista",     1),
-    ("CONFORT",    "Confort",     "Exterior plano, interior cupulado - muy comodo al dedo",     2),
-    ("OVAL",       "Oval",        "Seccion eliptica simetrica interior y exterior",             3),
-    ("KNIFE_EDGE", "Filo",        "Arista viva central exterior en forma de cuchilla",          4),
-    ("EURO_SHANK", "Aro Europeo", "Forma plana con biselado exterior elegante",                 5),
-    ("BEVELED",    "Biseado",     "Plano central con biseles a 45 grados en los laterales",     6),
-    ("CONCAVE",    "Concavo",     "Canal hendido central exterior",                             7),
+    ("MEDIA_CANA", "Half Round",  "Flat inner edge, domed outer - classic half-round",         0),
+    ("PLANO",      "Flat",        "Flat rectangular cross-section - modern minimalist",         1),
+    ("CONFORT",    "Comfort Fit", "Flat outside, comfort domed inside - comfortable to wear",  2),
+    ("OVAL",       "Oval",        "Symmetric elliptical cross-section",                         3),
+    ("KNIFE_EDGE", "Knife Edge",  "Sharp knife-edge outer ridge",                               4),
+    ("EURO_SHANK", "Euro Shank",  "Flat exterior shape with elegant corner bevels",             5),
+    ("BEVELED",    "Beveled",     "Flat top with 45-degree angled side bevels",                 6),
+    ("CONCAVE",    "Concave",     "Recessed concave center groove",                             7),
 ]
 
 
@@ -329,35 +329,35 @@ def create_ring_profile_mesh(
 # Operators
 
 class J3DComm_OT_create_ring_size(Operator, AddObjectHelper):
-    """Genera la geometria base de Talla de Anillo (Curva o Cilindro)"""
+    """Generates base ring sizing geometry (Curve or Cylinder)"""
     bl_idname = "j3d_community.create_ring_size"
-    bl_label = "Crear Talla de Anillo"
+    bl_label = "Create Ring Size"
     bl_options = {'REGISTER', 'UNDO'}
 
     us_size: EnumProperty(
-        name="Talla US",
-        description="Seleccion de talla estandar US",
+        name="US Size",
+        description="Standard US ring size selection",
         items=US_SIZE_ITEMS,
         default="7.0"
     )  # type: ignore
 
     geometry_type: EnumProperty(
-        name="Tipo",
-        description="Tipo de geometria a generar",
+        name="Geometry Type",
+        description="Geometry type to generate",
         items=GEOMETRY_TYPE_ITEMS,
         default="CURVE"
     )  # type: ignore
 
     orientation: EnumProperty(
-        name="Orientacion",
-        description="Plano de orientacion para la creacion del anillo",
+        name="Orientation",
+        description="Orientation plane for ring creation",
         items=ORIENTATION_ITEMS,
         default="FRONT"
     )  # type: ignore
 
     cylinder_depth: FloatProperty(
-        name="Grosor Anillo (mm)",
-        description="Profundidad/ancho del cilindro en mm",
+        name="Cylinder Depth (mm)",
+        description="Depth/width of reference cylinder in mm",
         default=2.0,
         min=0.5,
         max=20.0,
@@ -379,9 +379,9 @@ class J3DComm_OT_create_ring_size(Operator, AddObjectHelper):
         if self.geometry_type == 'CYLINDER':
             layout.prop(self, "cylinder_depth")
         layout.separator()
-        layout.prop(self, "align", text="Alineacion")
-        layout.prop(self, "location", text="Ubicacion")
-        layout.prop(self, "rotation", text="Rotacion")
+        layout.prop(self, "align", text="Alignment")
+        layout.prop(self, "location", text="Location")
+        layout.prop(self, "rotation", text="Rotation")
 
     def execute(self, context: bpy.types.Context) -> set:
         dia_mm = US_RING_SIZES.get(self.us_size, 17.32)
@@ -406,75 +406,75 @@ class J3DComm_OT_create_ring_size(Operator, AddObjectHelper):
         obj["j3d_community_orientation"] = self.orientation
         self.report(
             {'INFO'},
-            f"Talla US {self.us_size} ({dia_mm:.2f} mm) creada en {self.orientation}: {obj_name}"
+            f"Ring Size US {self.us_size} ({dia_mm:.2f} mm) created in {self.orientation}: {obj_name}"
         )
         return {'FINISHED'}
 
 
 class J3DComm_OT_create_ring_profile(Operator, AddObjectHelper):
-    """Crea aro 3D completo con perfil parametrico y subdivision con crease"""
+    """Creates complete 3D ring shank with parametric cross-section profile and subdivision crease"""
     bl_idname = "j3d_community.create_ring_profile"
-    bl_label = "Crear Aro con Perfil"
+    bl_label = "Create Ring Shank"
     bl_options = {'REGISTER', 'UNDO'}
 
     us_size: EnumProperty(
-        name="Talla US",
-        description="Define el diametro INTERIOR del aro (superficie que toca el dedo)",
+        name="US Size",
+        description="Defines INNER diameter of ring (finger touching surface)",
         items=US_SIZE_ITEMS, default="7.0"
     )  # type: ignore
 
     profile_type: EnumProperty(
-        name="Perfil",
-        description="Forma de la seccion transversal del metal",
+        name="Profile",
+        description="Metal cross-section shape",
         items=RING_PROFILE_ITEMS, default="MEDIA_CANA"
     )  # type: ignore
 
     orientation: EnumProperty(
-        name="Orientacion",
-        description="Plano de orientacion para la creacion del anillo",
+        name="Orientation",
+        description="Orientation plane for ring creation",
         items=ORIENTATION_ITEMS,
         default="FRONT"
     )  # type: ignore
 
     width_mm: FloatProperty(
-        name="Ancho (mm)",
-        description="Ancho del aro en el eje del dedo",
+        name="Width (mm)",
+        description="Ring width along finger axis in mm",
         default=3.0, min=1.0, max=20.0, step=10, precision=2
     )  # type: ignore
 
     height_mm: FloatProperty(
-        name="Grosor (mm)",
-        description="Grosor radial del metal (crece hacia afuera del diametro interior)",
+        name="Thickness (mm)",
+        description="Radial metal thickness in mm (grows outwards from inner diameter)",
         default=1.5, min=0.3, max=10.0, step=10, precision=2
     )  # type: ignore
 
     radial_segments: IntProperty(
-        name="Segmentos Radiales",
-        description="Numero de divisiones circunferenciales alrededor del aro",
+        name="Radial Segments",
+        description="Number of circumferential divisions around the ring",
         default=16, min=8, max=256
     )  # type: ignore
 
     profile_segments: IntProperty(
-        name="Resolucion de Perfil",
-        description="Numero de subdivisiones en secciones curvas del perfil",
+        name="Profile Resolution",
+        description="Number of subdivisions on curved profile sections",
         default=2, min=2, max=64
     )  # type: ignore
 
     use_subsurf: BoolProperty(
         name="Subdivision Surface",
-        description="Anadir modificador Subdivision Surface",
+        description="Add Subdivision Surface modifier",
         default=True
     )  # type: ignore
 
     subsurf_levels: IntProperty(
-        name="Nivel Subsurf",
-        description="Nivel de subdivision para vista previa y render",
+        name="Subsurf Level",
+        description="Subdivision level for viewport and render",
         default=2, min=1, max=5
     )  # type: ignore
 
     crease_value: FloatProperty(
-        name="Pliegue de Aristas (Crease)",
-        description="Dureza del pliegue (Shift+E) en esquinas vivas (0.8 da redondeo sutil de pulido)",
+        name="Edge Crease",
+        description="Crease sharpness (Shift+E) on sharp corners (0.8 gives subtle polished rounding)",
         default=0.8, min=0.0, max=1.0, step=5, precision=2
     )  # type: ignore
 
@@ -501,13 +501,13 @@ class J3DComm_OT_create_ring_profile(Operator, AddObjectHelper):
             layout.prop(self, "subsurf_levels")
             layout.prop(self, "crease_value")
         layout.separator()
-        layout.prop(self, "align", text="Alineacion")
-        layout.prop(self, "location", text="Ubicacion")
-        layout.prop(self, "rotation", text="Rotacion")
+        layout.prop(self, "align", text="Alignment")
+        layout.prop(self, "location", text="Location")
+        layout.prop(self, "rotation", text="Rotation")
 
     def execute(self, context: bpy.types.Context) -> set:
         inner_dia_mm = US_RING_SIZES.get(self.us_size, 17.32)
-        inner_radius_mm = inner_dia_mm / 2.0  # INTERIOR, toca el dedo
+        inner_radius_mm = inner_dia_mm / 2.0  # INNER, touches finger
 
         obj_name = (
             f"Ring_US{self.us_size}_{self.profile_type}"
@@ -546,8 +546,8 @@ class J3DComm_OT_create_ring_profile(Operator, AddObjectHelper):
 
         self.report(
             {'INFO'},
-            f"Aro US {self.us_size} | {self.profile_type} | "
-            f"Diam.int {inner_dia_mm:.2f}mm | {self.orientation}"
+            f"Ring Shank US {self.us_size} | {self.profile_type} | "
+            f"Inner Dia {inner_dia_mm:.2f}mm | {self.orientation}"
         )
         return {'FINISHED'}
 

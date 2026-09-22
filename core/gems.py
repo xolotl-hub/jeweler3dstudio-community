@@ -17,40 +17,40 @@ from .gem_data import GEM_MESH_DATA
 
 # ── 17 Gem Cut Definitions & Icon Mappings ───────────────────────────────────
 CUT_DEFS = [
-    ("ROUND",     "Redondo",   "round.png"),
-    ("OVAL",      "Oval",      "oval.png"),
-    ("CUSHION",   "Cushion",   "cushion.png"),
-    ("PEAR",      "Pera",      "pear.png"),
-    ("MARQUISE",  "Marquesa",  "marquise.png"),
-    ("PRINCESS",  "Princesa",  "princess.png"),
-    ("BAGUETTE",  "Baguette",  "baguette.png"),
-    ("SQUARE",    "Cuadrado",  "square.png"),
-    ("EMERALD",   "Esmeralda", "emerald.png"),
-    ("ASSCHER",   "Asscher",   "asscher.png"),
-    ("RADIANT",   "Radiante",  "radiant.png"),
-    ("FLANDERS",  "Flanders",  "flanders.png"),
-    ("OCTAGON",   "Octagono",  "octagon.png"),
-    ("HEART",     "Corazon",   "heart.png"),
-    ("TRILLION",  "Trillon",   "trillion.png"),
-    ("TRILLIANT", "Trillante", "trilliant.png"),
-    ("TRIANGLE",  "Triangulo", "triangle.png"),
+    ("ROUND",     "Round Brilliant", "round.png"),
+    ("OVAL",      "Oval",            "oval.png"),
+    ("CUSHION",   "Cushion",         "cushion.png"),
+    ("PEAR",      "Pear",            "pear.png"),
+    ("MARQUISE",  "Marquise",        "marquise.png"),
+    ("PRINCESS",  "Princess",        "princess.png"),
+    ("BAGUETTE",  "Baguette",        "baguette.png"),
+    ("SQUARE",    "Square",          "square.png"),
+    ("EMERALD",   "Emerald",         "emerald.png"),
+    ("ASSCHER",   "Asscher",         "asscher.png"),
+    ("RADIANT",   "Radiant",         "radiant.png"),
+    ("FLANDERS",  "Flanders",        "flanders.png"),
+    ("OCTAGON",   "Octagon",         "octagon.png"),
+    ("HEART",     "Heart",           "heart.png"),
+    ("TRILLION",  "Trillion",        "trillion.png"),
+    ("TRILLIANT", "Trilliant",       "trilliant.png"),
+    ("TRIANGLE",  "Triangle",        "triangle.png"),
 ]
 
 # ── Gem Stones & Physical Properties ─────────────────────────────────────────
 GEM_STONES: Dict[str, Dict] = {
-    "DIAMOND":       {"name": "Diamante",   "ior": 2.417, "density": 3.52, "color": (1.0, 1.0, 1.0, 1.0)},
-    "RUBY":          {"name": "Rubi",       "ior": 1.770, "density": 4.02, "color": (0.85, 0.02, 0.08, 1.0)},
-    "SAPPHIRE":      {"name": "Zafiro",     "ior": 1.770, "density": 4.02, "color": (0.05, 0.15, 0.85, 1.0)},
-    "EMERALD":       {"name": "Esmeralda",  "ior": 1.580, "density": 2.76, "color": (0.02, 0.75, 0.25, 1.0)},
-    "AQUAMARINE":    {"name": "Aquamarina", "ior": 1.575, "density": 2.72, "color": (0.35, 0.85, 0.95, 1.0)},
-    "AMETHYST":      {"name": "Amatista",   "ior": 1.544, "density": 2.65, "color": (0.45, 0.08, 0.65, 1.0)},
-    "CUBIC_ZIRCONIA":{"name": "Circonia",   "ior": 2.150, "density": 5.65, "color": (0.95, 0.95, 1.0, 1.0)},
-    "MOISSANITE":    {"name": "Moissanita", "ior": 2.650, "density": 3.22, "color": (0.98, 0.99, 1.0, 1.0)},
-    "MORGANITE":     {"name": "Morganita",  "ior": 1.580, "density": 2.76, "color": (0.95, 0.65, 0.60, 1.0)},
-    "TANZANITE":     {"name": "Tanzanita",  "ior": 1.695, "density": 3.35, "color": (0.20, 0.15, 0.75, 1.0)},
+    "DIAMOND":       {"name": "Diamond",        "ior": 2.417, "density": 3.52, "color": (1.0, 1.0, 1.0, 1.0)},
+    "RUBY":          {"name": "Ruby",           "ior": 1.770, "density": 4.02, "color": (0.85, 0.02, 0.08, 1.0)},
+    "SAPPHIRE":      {"name": "Sapphire",       "ior": 1.770, "density": 4.02, "color": (0.05, 0.15, 0.85, 1.0)},
+    "EMERALD":       {"name": "Emerald",        "ior": 1.580, "density": 2.76, "color": (0.02, 0.75, 0.25, 1.0)},
+    "AQUAMARINE":    {"name": "Aquamarine",     "ior": 1.575, "density": 2.72, "color": (0.35, 0.85, 0.95, 1.0)},
+    "AMETHYST":      {"name": "Amethyst",       "ior": 1.544, "density": 2.65, "color": (0.45, 0.08, 0.65, 1.0)},
+    "CUBIC_ZIRCONIA":{"name": "Cubic Zirconia", "ior": 2.150, "density": 5.65, "color": (0.95, 0.95, 1.0, 1.0)},
+    "MOISSANITE":    {"name": "Moissanite",     "ior": 2.650, "density": 3.22, "color": (0.98, 0.99, 1.0, 1.0)},
+    "MORGANITE":     {"name": "Morganite",      "ior": 1.580, "density": 2.76, "color": (0.95, 0.65, 0.60, 1.0)},
+    "TANZANITE":     {"name": "Tanzanite",      "ior": 1.695, "density": 3.35, "color": (0.20, 0.15, 0.75, 1.0)},
 }
 
-STONE_ITEMS = [(k, v["name"], f"Piedra {v['name']}") for k, v in GEM_STONES.items()]
+STONE_ITEMS = [(k, v["name"], f"{v['name']} gemstone") for k, v in GEM_STONES.items()]
 
 # ── Relative Volumetric Factors for Carat Estimation ─────────────────────────
 CUT_VOLUME_FACTORS: Dict[str, float] = {
@@ -447,10 +447,10 @@ def create_round_brilliant_mesh(name: str = "Round_Diamond_Mesh", size_mm: float
 
 # ── Operators ─────────────────────────────────────────────────────────────────
 class J3DComm_OT_dummy_cube(Operator):
-    """Aniadir Cubo de Prueba 5mm"""
+    """Add 5mm Reference Cube"""
     bl_idname = "j3d_community.dummy_cube"
-    bl_label = "Aniadir Cubo"
-    bl_description = "Aniade un cubo de 5mm de referencia a la escena"
+    bl_label = "Add Dummy Cube"
+    bl_description = "Adds a 5mm reference cube to the scene"
     bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
@@ -463,20 +463,20 @@ class J3DComm_OT_dummy_cube(Operator):
             size=cube_size,
             location=context.scene.cursor.location
         )
-        self.report({'INFO'}, "Cubo de 5 mm creado.")
+        self.report({'INFO'}, "5 mm reference cube created.")
         return {'FINISHED'}
 
 
 class J3DComm_OT_add_gem(Operator):
-    """Aniadir Gema 3D Facetada"""
+    """Add 3D Faceted Gemstone"""
     bl_idname = "j3d_community.add_gem"
-    bl_label = "Aniadir Gema 3D"
-    bl_description = "Aniade una gema 3D facetada en la posicion del cursor 3D"
+    bl_label = "Add 3D Gem"
+    bl_description = "Adds a 3D faceted gemstone at the 3D cursor position"
     bl_options = {'REGISTER', 'UNDO'}
 
-    cut: EnumProperty(name="Corte", items=get_cut_enum_items)
-    stone: EnumProperty(name="Piedra", items=STONE_ITEMS, default="DIAMOND")
-    size: FloatProperty(name="Tamano (mm)", default=0.0, min=0.0, max=50.0, step=10, precision=2)
+    cut: EnumProperty(name="Cut", items=get_cut_enum_items)
+    stone: EnumProperty(name="Stone", items=STONE_ITEMS, default="DIAMOND")
+    size: FloatProperty(name="Size (mm)", default=0.0, min=0.0, max=50.0, step=10, precision=2)
 
     @classmethod
     def poll(cls, context):
@@ -522,19 +522,19 @@ class J3DComm_OT_add_gem(Operator):
         obj.select_set(True)
         context.view_layer.objects.active = obj
 
-        self.report({'INFO'}, f"Gema {stone_key} {cut_key} ({size_mm:.1f} mm / {ct:.3f} ct) creada con éxito.")
+        self.report({'INFO'}, f"Gem {stone_key} {cut_key} ({size_mm:.1f} mm / {ct:.3f} ct) created successfully.")
         return {'FINISHED'}
 
 
 # ── Scene Gem Inventory & Map Analyzer ────────────────────────────────────────
 def _get_live_size_mm(obj: bpy.types.Object, context: bpy.types.Context) -> float:
-    """Lee el tamaño real de la gema desde sus dimensiones actuales (soporta escala manual).
-    Usa dimensions.x (anchura) como referencia principal.
-    Fallback a custom prop j3d_community_gem_size si las dimensiones no son válidas.
+    """Reads real gemstone size from current object dimensions (supports manual scaling).
+    Uses dimensions.x (width) as principal reference.
+    Fallback to custom prop j3d_community_gem_size if dimensions are invalid.
     """
     try:
         bu_per_mm = mm_to_bu(1.0, context)
-        dim_x = obj.dimensions.x  # anchura real en BU (incluye scale)
+        dim_x = obj.dimensions.x  # real width in BU (includes scale)
         if bu_per_mm > 1e-12 and dim_x > 1e-12:
             return dim_x / bu_per_mm
     except Exception:
@@ -543,8 +543,8 @@ def _get_live_size_mm(obj: bpy.types.Object, context: bpy.types.Context) -> floa
 
 
 def get_scene_gem_inventory(context: bpy.types.Context) -> Dict[str, Any]:
-    """Escanea la escena en busca de gemas 3D y devuelve el inventario agrupado.
-    El tamaño se lee en vivo desde obj.dimensions para reflejar escalas manuales.
+    """Scans the scene for 3D gemstones and returns the grouped inventory.
+    Size is read live from obj.dimensions to reflect manual scaling.
     """
     scene = context.scene
     gems_found = []
@@ -552,7 +552,7 @@ def get_scene_gem_inventory(context: bpy.types.Context) -> Dict[str, Any]:
         if obj.get("j3d_community_type") == "GEM" or ("j3d_community_gem_cut" in obj and "j3d_community_gem_size" in obj):
             cut = obj.get("j3d_community_gem_cut", "ROUND")
             stone = obj.get("j3d_community_gem_stone", "DIAMOND")
-            # Lectura dimensional en vivo
+            # Live dimensional reading
             size = _get_live_size_mm(obj, context)
             carat = calculate_carats(stone, cut, size) if size > 0.0 else 0.0
             gems_found.append({
@@ -563,7 +563,7 @@ def get_scene_gem_inventory(context: bpy.types.Context) -> Dict[str, Any]:
                 "carat": carat,
             })
 
-    # Agrupar por (cut, stone, size redondeado)
+    # Group by (cut, stone, rounded size)
     grouped: Dict[Tuple[str, str, float], Dict[str, Any]] = {}
     for g in gems_found:
         key = (g["cut"], g["stone"], round(g["size"], 2))
@@ -592,10 +592,10 @@ def get_scene_gem_inventory(context: bpy.types.Context) -> Dict[str, Any]:
 
 
 class J3DComm_OT_calculate_gem_map(Operator):
-    """Calcular y revisar el inventario de gemas en la escena"""
+    """Calculate and review gemstone inventory in the scene"""
     bl_idname = "j3d_community.calculate_gem_map"
-    bl_label = "Calcular / Revisar Gemas"
-    bl_description = "Escanea la escena y contabiliza las piedras preciosas, calibres y quilates totales"
+    bl_label = "Calculate / Review Gem Map"
+    bl_description = "Scans the scene and analyzes gemstones, sizes, and total carat weight"
     bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
@@ -607,28 +607,28 @@ class J3DComm_OT_calculate_gem_map(Operator):
         count = inv["total_count"]
         carats = inv["total_carats"]
         if count == 0:
-            self.report({'INFO'}, "Mapa de Gemas: No se detectaron gemas en la escena activa.")
+            self.report({'INFO'}, "Gem Map: No gemstones detected in active scene.")
         else:
             n_groups = len(inv["records"])
             self.report(
                 {'INFO'},
-                f"Mapa de Gemas: {count} gemas ({n_groups} calibres distintos) — {carats:.3f} ct total."
+                f"Gem Map: {count} gems ({n_groups} distinct sizes) — {carats:.3f} ct total."
             )
         return {'FINISHED'}
 
 
 class J3DComm_OT_select_gems(Operator):
-    """Seleccionar gemas en la escena por lote o todas"""
+    """Select gemstones in scene by batch or all"""
     bl_idname = "j3d_community.select_gems"
-    bl_label = "Seleccionar Gemas"
-    bl_description = "Selecciona en el viewport 3D las gemas coincidentes de este lote o todas las gemas"
+    bl_label = "Select Gems"
+    bl_description = "Selects matching gemstones in 3D viewport or all gems"
     bl_options = {'REGISTER', 'UNDO'}
 
-    cut: bpy.props.StringProperty(name="Corte", default="")  # type: ignore
-    stone: bpy.props.StringProperty(name="Piedra", default="")  # type: ignore
-    size_mm: bpy.props.FloatProperty(name="Calibre (mm)", default=0.0, precision=2)  # type: ignore
-    select_all: bpy.props.BoolProperty(name="Seleccionar Todas", default=False)  # type: ignore
-    extend: bpy.props.BoolProperty(name="Extender Selección", default=False)  # type: ignore
+    cut: bpy.props.StringProperty(name="Cut", default="")  # type: ignore
+    stone: bpy.props.StringProperty(name="Stone", default="")  # type: ignore
+    size_mm: bpy.props.FloatProperty(name="Size (mm)", default=0.0, precision=2)  # type: ignore
+    select_all: bpy.props.BoolProperty(name="Select All", default=False)  # type: ignore
+    extend: bpy.props.BoolProperty(name="Extend Selection", default=False)  # type: ignore
 
     @classmethod
     def poll(cls, context: bpy.types.Context) -> bool:
@@ -658,7 +658,7 @@ class J3DComm_OT_select_gems(Operator):
                     matched.append(obj)
 
         if not matched:
-            self.report({'INFO'}, "No se encontraron gemas coincidentes.")
+            self.report({'INFO'}, "No matching gemstones found.")
             return {'CANCELLED'}
 
         for obj in matched:
@@ -668,28 +668,28 @@ class J3DComm_OT_select_gems(Operator):
             context.view_layer.objects.active = matched[0]
 
         if self.select_all:
-            self.report({'INFO'}, f"Seleccionadas {len(matched)} gemas en la escena.")
+            self.report({'INFO'}, f"Selected {len(matched)} gemstones in scene.")
         else:
             self.report(
                 {'INFO'},
-                f"Seleccionadas {len(matched)} gemas: {self.cut.title()} {self.stone.title()} {self.size_mm:.1f}mm"
+                f"Selected {len(matched)} gems: {self.cut.title()} {self.stone.title()} {self.size_mm:.1f}mm"
             )
         return {'FINISHED'}
 
 
 class J3DComm_OT_swap_gems(Operator):
-    """Intercambiar corte, piedra o calibre de gema(s) seleccionadas"""
+    """Swap cut, stone, or size of selected gemstone(s)"""
     bl_idname = "j3d_community.swap_gems"
-    bl_label = "Intercambiar Gemas"
+    bl_label = "Swap Gems"
     bl_description = (
-        "Cambia el corte, la piedra y/o el calibre de las gemas seleccionadas. "
-        "Si tienen cortador asociado, lo regenera automaticamente."
+        "Changes cut, stone, and/or size of selected gem(s). "
+        "If attached cutter exists, regenerates it automatically."
     )
     bl_options = {'REGISTER', 'UNDO'}
 
-    new_cut: EnumProperty(name="Nuevo Corte", items=get_cut_enum_items)  # type: ignore
-    new_stone: EnumProperty(name="Nueva Piedra", items=STONE_ITEMS, default="DIAMOND")  # type: ignore
-    new_size: FloatProperty(name="Nuevo Calibre (mm)", default=3.0, min=0.5, max=50.0, step=10, precision=2)  # type: ignore
+    new_cut: EnumProperty(name="New Cut", items=get_cut_enum_items)  # type: ignore
+    new_stone: EnumProperty(name="New Stone", items=STONE_ITEMS, default="DIAMOND")  # type: ignore
+    new_size: FloatProperty(name="New Size (mm)", default=3.0, min=0.5, max=50.0, step=10, precision=2)  # type: ignore
 
     @classmethod
     def poll(cls, context: bpy.types.Context) -> bool:
@@ -723,7 +723,7 @@ class J3DComm_OT_swap_gems(Operator):
 
         gems = [o for o in context.selected_objects if o.get("j3d_community_type") == "GEM"]
         if not gems:
-            self.report({'WARNING'}, "Selecciona al menos una gema primero.")
+            self.report({'WARNING'}, "Select at least one gemstone first.")
             return {'CANCELLED'}
 
         swapped = 0
@@ -764,9 +764,10 @@ class J3DComm_OT_swap_gems(Operator):
 
         self.report(
             {'INFO'},
-            f"{swapped} gema(s) -> {self.new_cut.title()} {self.new_size:.1f}mm {self.new_stone.title()}"
+            f"{swapped} gem(s) -> {self.new_cut.title()} {self.new_size:.1f}mm {self.new_stone.title()}"
         )
         return {'FINISHED'}
+
 
 
 classes = (

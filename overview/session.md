@@ -2,11 +2,11 @@
 
 - Fecha: 2026-09-21
 - Agente: Gemini 3.7 Flash (Medium)
-- Nodo activo: Ninguno — `w56` cerrado
-- Estado validación: `verificado` (website en manifest + pack_common.py, commit+push pendiente)
+- Nodo activo: `w58` (Normalización UI Base Inglés)
+- Estado validación: `en progreso`
 
 ## Cambios
-- `w56` ✅ **Metadatos website en Manifiestos por Tier**: Agregado `website = "https://github.com/xolotl-hub/jeweler-3d-studio"` en `blender_manifest.toml` y en `transform_manifest` de `pack_common.py` para cada tier (community → repo community, standard/pro → repo studio).
+- `w57` ✅ **Fix Gemas Community — todos los 17 cortes habilitados**: Eliminados filtros erróneos de `GEM_MESH_DATA` y `CUT_DEFS` en `pack_community.py`. La edición Community ahora tiene los 17 cortes completos igual que PRO. Eliminado `distribution_tiers_plan.md`. Community zip 770.1 KB publicado.
 - `w54` ✅ **Modularización de tools/pack_zip/ por Tiers & PRO como Default**: Dividido el sistema de empaquetado en scripts independientes por tier:
   1. `pack_pro.py` (DEFAULT: empaqueta Jeweler 3D Studio PRO comercial en `dist/jeweler3dstudio-0.1.0.zip`).
   2. `pack_community.py` (empaqueta Community libre en `dist/jeweler3dstudio_community-0.1.0.zip` y soporta `--publish`).
