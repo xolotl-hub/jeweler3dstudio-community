@@ -399,11 +399,11 @@ class J3DComm_OT_create_ring_size(Operator, AddObjectHelper):
         if all(abs(r) < 1e-5 for r in self.rotation):
             obj.rotation_euler = _get_orientation_euler(self.orientation)
         obj.name = obj_name
-        obj["j3d_community_type"] = "RING_SIZE"
-        obj["j3d_community_us_size"] = self.us_size
-        obj["j3d_community_diameter_mm"] = dia_mm
-        obj["j3d_community_radius_mm"] = radius_mm
-        obj["j3d_community_orientation"] = self.orientation
+        obj["j3d_type"] = "RING_SIZE"
+        obj["j3d_us_size"] = self.us_size
+        obj["j3d_diameter_mm"] = dia_mm
+        obj["j3d_radius_mm"] = radius_mm
+        obj["j3d_orientation"] = self.orientation
         self.report(
             {'INFO'},
             f"Ring Size US {self.us_size} ({dia_mm:.2f} mm) created in {self.orientation}: {obj_name}"
@@ -528,16 +528,16 @@ class J3DComm_OT_create_ring_profile(Operator, AddObjectHelper):
         if all(abs(r) < 1e-5 for r in self.rotation):
             obj.rotation_euler = _get_orientation_euler(self.orientation)
         obj.name = obj_name
-        obj["j3d_community_type"] = "RING_PROFILE"
-        obj["j3d_community_us_size"] = self.us_size
-        obj["j3d_community_inner_dia_mm"] = inner_dia_mm
-        obj["j3d_community_profile"] = self.profile_type
-        obj["j3d_community_orientation"] = self.orientation
-        obj["j3d_community_width_mm"] = self.width_mm
-        obj["j3d_community_height_mm"] = self.height_mm
-        obj["j3d_community_radial_segments"] = self.radial_segments
-        obj["j3d_community_profile_segments"] = self.profile_segments
-        obj["j3d_community_crease"] = self.crease_value
+        obj["j3d_type"] = "RING_PROFILE"
+        obj["j3d_us_size"] = self.us_size
+        obj["j3d_inner_dia_mm"] = inner_dia_mm
+        obj["j3d_profile"] = self.profile_type
+        obj["j3d_orientation"] = self.orientation
+        obj["j3d_width_mm"] = self.width_mm
+        obj["j3d_height_mm"] = self.height_mm
+        obj["j3d_radial_segments"] = self.radial_segments
+        obj["j3d_profile_segments"] = self.profile_segments
+        obj["j3d_crease"] = self.crease_value
 
         if self.use_subsurf:
             subsurf = obj.modifiers.new(name="Subdivision", type='SUBSURF')

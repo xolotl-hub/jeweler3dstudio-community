@@ -4,6 +4,7 @@
 
 | ID | Tipo | Estado | Resumen | Archivo de Detalle |
 |---|---|---|---|---|
+| $archi | tarea / doc | hecho | Arquitectura 100 % documentada con 3 diagramas Mermaid y 31 componentes. | — |
 | — | — | — | Backlog limpio sin tareas bloqueantes activas | — |
 
 
@@ -17,6 +18,8 @@ Tipos: `tarea`, `bug`, `deuda`. Estados: `pendiente`, `en progreso`, `bloqueado`
 
 | ID | Tipo | Resuelto por (Agente) | Causa Raíz / Resumen Solución | Fecha |
 |---|---|---|---|---|
+| w61 | bug | Gemini 3.7 Flash (Medium) | Corregido regex agresivo en `tools/pack_zip/pack_community.py` y `pack_standard.py`: `re.sub(r'\bj3d\.')` convertía erróneamente la variable local `j3d.gem_cut` en `j3d_community.gem_cut`, disparando `NameError`. Restringido el reemplazo exclusivamente a identificadores de operadores en strings y llamadas `bpy.ops.j3d.`. Añadido test automatizado en `tests/run_tests_headless.py` (6/6 tests passing OK) y regenerados los 3 tiers ZIP. | 2026-09-22 |
+| w60 | tarea / calidad | Gemini 3.7 Flash (Medium) | Blindaje multi-tier y cumplimiento Blender Extensions: 1) Corregido registro de `scene_props` en generación de `ui/panels/__init__.py` en `pack_community.py`, 2) Purgado stub residual `dummy_cube` de `core/gems.py`, `ui/panels/cutters.py` y `ui/panels/stubs.py`, 3) Sincronizada lectura de `scene.j3d` en operadores y callbacks dinámicos de `cutters.py` y `gems.py`, 4) Implementado reseteo automático de preset comercial al cambiar corte (`_on_gem_cut_update`), 5) Creada suite de pruebas headless automatizada `tests/run_tests_headless.py` con 5/5 tests passing (`OK`), 6) Regenerados y validados los 3 paquetes ZIP en `dist/`. | 2026-09-22 |
 | d2 | deuda / refactor | Gemini 3.7 Flash (Medium) | Modularizado `ui/panels.py` (753L) en subpaquete `ui/panels/` (`ring.py`, `gems.py`, `gem_map.py`, `cutters.py`, `stubs.py`, `__init__.py`), todos estrictamente < 250L. Simplificado pipeline de Community en `tools/pack_zip/pack_community.py`. Regenerados y validados los 3 tiers ZIP. | 2026-09-22 |
 | d13 | deuda / refactor | Gemini 3.7 Flash (Medium) | Modularizado `core/gem_data.py` (2589L) en subpaquete `core/gem_data/` con 5 módulos organizados por familias de corte (`_stepped.py`, `_fancy.py`, `_octagon.py`, `_round.py`, `_trillion.py`) y `__init__.py` con reexport de `GEM_MESH_DATA`. Validación de 17 mallas de corte intactas y regeneración de los 3 tiers ZIP. | 2026-09-22 |
 | d11 | bug / deuda | Gemini 3.7 Flash (Medium) | Eliminada llamada no soportada `target_set_prop("matrix", ...)` en `ui/gizmos.py` y unificado `unregister()` redundante. Resuelto `flag-w22` y `d12` (limpieza de `core/prongs.py`). | 2026-09-21 |

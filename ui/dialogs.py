@@ -41,7 +41,7 @@ class J3DComm_OT_export_report(Operator):
             self.filepath = os.path.join(bpy.path.abspath("//"), "Jeweler_3D_Report.txt")
 
         scene = context.scene
-        metal_key = getattr(scene, "j3d_community_metal_type", "GOLD_18K_YELLOW")
+        metal_key = getattr(scene, "j3d_metal_type", "GOLD_18K_YELLOW")
         active_obj = context.active_object
 
         lines = [

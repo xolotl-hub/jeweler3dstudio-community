@@ -23,7 +23,7 @@ class J3DComm_GGT_gem_controls(GizmoGroup):
             context.mode == 'OBJECT'
             and obj is not None
             and obj.type in {'MESH', 'CURVE'}
-            and "j3d_community_type" in obj
+            and "j3d_type" in obj
         )
 
     def setup(self, context: Context) -> None:

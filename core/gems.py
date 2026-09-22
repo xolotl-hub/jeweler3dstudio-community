@@ -270,7 +270,16 @@ GLOBAL_COMMERCIAL_SIZES = CUT_COMMERCIAL_SIZES["ROUND"]
 
 def get_gem_size_preset_items(self, context) -> List[Tuple[str, str, str, int, int]]:
     """Callback dinámico para EnumProperty que entrega los calibres comerciales según el corte activo."""
-    cut_key = getattr(context.scene, "j3d_community_gem_cut", "ROUND") if context and context.scene else "ROUND"
+    cut_key = "ROUND"
+    if hasattr(self, "gem_cut") and self.gem_cut:
+        cut_key = self.gem_cut
+    elif context and context.scene:
+        j3d = getattr(context.scene, "j3d", None)
+        if j3d and hasattr(j3d, "gem_cut"):
+            cut_key = j3d.gem_cut
+        else:
+            cut_key = getattr(context.scene, "j3d_gem_cut", "ROUND")
+
     sizes_list = CUT_COMMERCIAL_SIZES.get(cut_key, GLOBAL_COMMERCIAL_SIZES)
 
     items = []
@@ -284,11 +293,22 @@ def get_effective_gem_size(scene) -> float:
     """Calcula el tamaño milimétrico efectivo según el corte y preset comercial activo."""
     if not scene:
         return 1.0
-    preset_key = getattr(scene, "j3d_community_gem_size_preset", "1.0")
-    if preset_key == "CUSTOM":
-        return getattr(scene, "j3d_community_gem_size", 1.0)
+    j3d = getattr(scene, "j3d", None)
+    if j3d and hasattr(j3d, "gem_size_preset"):
+        preset_key = j3d.gem_size_preset
+    else:
+        preset_key = getattr(scene, "j3d_gem_size_preset", "1.0")
 
-    cut_key = getattr(scene, "j3d_community_gem_cut", "ROUND")
+    if preset_key == "CUSTOM":
+        if j3d and hasattr(j3d, "gem_size"):
+            return float(j3d.gem_size)
+        return float(getattr(scene, "j3d_gem_size", 1.0))
+
+    if j3d and hasattr(j3d, "gem_cut"):
+        cut_key = j3d.gem_cut
+    else:
+        cut_key = getattr(scene, "j3d_gem_cut", "ROUND")
+
     sizes_list = CUT_COMMERCIAL_SIZES.get(cut_key, GLOBAL_COMMERCIAL_SIZES)
     for key, _, mm_val in sizes_list:
         if key == preset_key:
@@ -446,27 +466,6 @@ def create_round_brilliant_mesh(name: str = "Round_Diamond_Mesh", size_mm: float
 
 
 # ── Operators ─────────────────────────────────────────────────────────────────
-class J3DComm_OT_dummy_cube(Operator):
-    """Add 5mm Reference Cube"""
-    bl_idname = "j3d_community.dummy_cube"
-    bl_label = "Add Dummy Cube"
-    bl_description = "Adds a 5mm reference cube to the scene"
-    bl_options = {'REGISTER', 'UNDO'}
-
-    @classmethod
-    def poll(cls, context):
-        return context.mode == 'OBJECT'
-
-    def execute(self, context):
-        cube_size = mm_to_bu(5.0, context)
-        bpy.ops.mesh.primitive_cube_add(
-            size=cube_size,
-            location=context.scene.cursor.location
-        )
-        self.report({'INFO'}, "5 mm reference cube created.")
-        return {'FINISHED'}
-
-
 class J3DComm_OT_add_gem(Operator):
     """Add 3D Faceted Gemstone"""
     bl_idname = "j3d_community.add_gem"
@@ -484,8 +483,20 @@ class J3DComm_OT_add_gem(Operator):
 
     def execute(self, context):
         scene = context.scene
-        cut_key = self.cut if self.cut else getattr(scene, "j3d_community_gem_cut", "ROUND")
-        stone_key = self.stone if self.stone else getattr(scene, "j3d_community_gem_stone", "DIAMOND")
+        j3d = getattr(scene, "j3d", None)
+        if self.cut:
+            cut_key = self.cut
+        elif j3d and hasattr(j3d, "gem_cut"):
+            cut_key = j3d.gem_cut
+        else:
+            cut_key = getattr(scene, "j3d_gem_cut", "ROUND")
+
+        if self.stone:
+            stone_key = self.stone
+        elif j3d and hasattr(j3d, "gem_stone"):
+            stone_key = j3d.gem_stone
+        else:
+            stone_key = getattr(scene, "j3d_gem_stone", "DIAMOND")
 
         if self.size > 0.0:
             size_mm = self.size
@@ -503,13 +514,13 @@ class J3DComm_OT_add_gem(Operator):
         context.collection.objects.link(obj)
         obj.location = context.scene.cursor.location
 
-        obj["j3d_community_type"] = "GEM"
-        obj["j3d_community_gem_cut"] = cut_key
-        obj["j3d_community_gem_stone"] = stone_key
-        obj["j3d_community_gem_size"] = size_mm
+        obj["j3d_type"] = "GEM"
+        obj["j3d_gem_cut"] = cut_key
+        obj["j3d_gem_stone"] = stone_key
+        obj["j3d_gem_size"] = size_mm
 
         ct = calculate_carats(stone_key, cut_key, size_mm)
-        obj["j3d_community_carat"] = ct
+        obj["j3d_carat"] = ct
 
         mat = get_or_create_gem_material(stone_key)
         if not obj.data.materials:
@@ -530,7 +541,7 @@ class J3DComm_OT_add_gem(Operator):
 def _get_live_size_mm(obj: bpy.types.Object, context: bpy.types.Context) -> float:
     """Reads real gemstone size from current object dimensions (supports manual scaling).
     Uses dimensions.x (width) as principal reference.
-    Fallback to custom prop j3d_community_gem_size if dimensions are invalid.
+    Fallback to custom prop j3d_gem_size if dimensions are invalid.
     """
     try:
         bu_per_mm = mm_to_bu(1.0, context)
@@ -539,7 +550,7 @@ def _get_live_size_mm(obj: bpy.types.Object, context: bpy.types.Context) -> floa
             return dim_x / bu_per_mm
     except Exception:
         pass
-    return float(obj.get("j3d_community_gem_size", 0.0))
+    return float(obj.get("j3d_gem_size", 0.0))
 
 
 def get_scene_gem_inventory(context: bpy.types.Context) -> Dict[str, Any]:
@@ -549,9 +560,9 @@ def get_scene_gem_inventory(context: bpy.types.Context) -> Dict[str, Any]:
     scene = context.scene
     gems_found = []
     for obj in scene.objects:
-        if obj.get("j3d_community_type") == "GEM" or ("j3d_community_gem_cut" in obj and "j3d_community_gem_size" in obj):
-            cut = obj.get("j3d_community_gem_cut", "ROUND")
-            stone = obj.get("j3d_community_gem_stone", "DIAMOND")
+        if obj.get("j3d_type") == "GEM" or ("j3d_gem_cut" in obj and "j3d_gem_size" in obj):
+            cut = obj.get("j3d_gem_cut", "ROUND")
+            stone = obj.get("j3d_gem_stone", "DIAMOND")
             # Live dimensional reading
             size = _get_live_size_mm(obj, context)
             carat = calculate_carats(stone, cut, size) if size > 0.0 else 0.0
@@ -641,13 +652,13 @@ class J3DComm_OT_select_gems(Operator):
 
         matched = []
         for obj in scene.objects:
-            if obj.get("j3d_community_type") == "GEM" or ("j3d_community_gem_cut" in obj and "j3d_community_gem_size" in obj):
+            if obj.get("j3d_type") == "GEM" or ("j3d_gem_cut" in obj and "j3d_gem_size" in obj):
                 if self.select_all:
                     matched.append(obj)
                     continue
 
-                obj_cut = str(obj.get("j3d_community_gem_cut", ""))
-                obj_stone = str(obj.get("j3d_community_gem_stone", ""))
+                obj_cut = str(obj.get("j3d_gem_cut", ""))
+                obj_stone = str(obj.get("j3d_gem_stone", ""))
                 obj_size = round(_get_live_size_mm(obj, context), 2)
 
                 cut_match = (not self.cut) or (obj_cut.upper() == self.cut.upper())
@@ -695,33 +706,55 @@ class J3DComm_OT_swap_gems(Operator):
     def poll(cls, context: bpy.types.Context) -> bool:
         return (
             context.mode == 'OBJECT'
-            and any(obj.get("j3d_community_type") == "GEM" for obj in context.selected_objects)
+            and any(obj.get("j3d_type") == "GEM" for obj in context.selected_objects)
         )
 
     def invoke(self, context: bpy.types.Context, event) -> set:
         scene = context.scene
-        if hasattr(scene, "j3d_community_swap_cut"):
-            self.new_cut = scene.j3d_community_swap_cut
-        if hasattr(scene, "j3d_community_swap_stone"):
-            self.new_stone = scene.j3d_community_swap_stone
-        if hasattr(scene, "j3d_community_swap_size"):
-            self.new_size = scene.j3d_community_swap_size
+        j3d = getattr(scene, "j3d", None)
+        if j3d and hasattr(j3d, "swap_cut"):
+            self.new_cut = j3d.swap_cut
+        elif hasattr(scene, "j3d_swap_cut"):
+            self.new_cut = scene.j3d_swap_cut
+
+        if j3d and hasattr(j3d, "swap_stone"):
+            self.new_stone = j3d.swap_stone
+        elif hasattr(scene, "j3d_swap_stone"):
+            self.new_stone = scene.j3d_swap_stone
+
+        if j3d and hasattr(j3d, "swap_size"):
+            self.new_size = j3d.swap_size
+        elif hasattr(scene, "j3d_swap_size"):
+            self.new_size = scene.j3d_swap_size
+
         return self.execute(context)
 
     def execute(self, context: bpy.types.Context) -> set:
         # Sincronizar con scene si no se definio explicitamente
         scene = context.scene
-        if not self.properties.is_property_set("new_cut") and hasattr(scene, "j3d_community_swap_cut"):
-            self.new_cut = scene.j3d_community_swap_cut
-        if not self.properties.is_property_set("new_stone") and hasattr(scene, "j3d_community_swap_stone"):
-            self.new_stone = scene.j3d_community_swap_stone
-        if not self.properties.is_property_set("new_size") and hasattr(scene, "j3d_community_swap_size"):
-            self.new_size = scene.j3d_community_swap_size
+        j3d = getattr(scene, "j3d", None)
+        if not self.properties.is_property_set("new_cut"):
+            if j3d and hasattr(j3d, "swap_cut"):
+                self.new_cut = j3d.swap_cut
+            elif hasattr(scene, "j3d_swap_cut"):
+                self.new_cut = scene.j3d_swap_cut
+
+        if not self.properties.is_property_set("new_stone"):
+            if j3d and hasattr(j3d, "swap_stone"):
+                self.new_stone = j3d.swap_stone
+            elif hasattr(scene, "j3d_swap_stone"):
+                self.new_stone = scene.j3d_swap_stone
+
+        if not self.properties.is_property_set("new_size"):
+            if j3d and hasattr(j3d, "swap_size"):
+                self.new_size = j3d.swap_size
+            elif hasattr(scene, "j3d_swap_size"):
+                self.new_size = scene.j3d_swap_size
 
         # Importacion diferida para evitar importacion circular en el nivel de modulo
         from .cutters import rebuild_cutter_for_gem, find_cutter_for_gem
 
-        gems = [o for o in context.selected_objects if o.get("j3d_community_type") == "GEM"]
+        gems = [o for o in context.selected_objects if o.get("j3d_type") == "GEM"]
         if not gems:
             self.report({'WARNING'}, "Select at least one gemstone first.")
             return {'CANCELLED'}
@@ -750,10 +783,10 @@ class J3DComm_OT_swap_gems(Operator):
 
             # Actualizar custom props
             ct = calculate_carats(self.new_stone, self.new_cut, self.new_size)
-            gem_obj["j3d_community_gem_cut"]   = self.new_cut
-            gem_obj["j3d_community_gem_stone"] = self.new_stone
-            gem_obj["j3d_community_gem_size"]  = self.new_size
-            gem_obj["j3d_community_carat"]     = ct
+            gem_obj["j3d_gem_cut"]   = self.new_cut
+            gem_obj["j3d_gem_stone"] = self.new_stone
+            gem_obj["j3d_gem_size"]  = self.new_size
+            gem_obj["j3d_carat"]     = ct
 
             # Regenerar cortador asociado si existe
             cutter_obj = find_cutter_for_gem(gem_obj)
@@ -771,7 +804,6 @@ class J3DComm_OT_swap_gems(Operator):
 
 
 classes = (
-    J3DComm_OT_dummy_cube,
     J3DComm_OT_add_gem,
     J3DComm_OT_calculate_gem_map,
     J3DComm_OT_select_gems,

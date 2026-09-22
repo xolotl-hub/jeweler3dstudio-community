@@ -17,16 +17,3 @@
 ## 🛣️ Rutas de Trabajo y Posibles Soluciones
 
 —
-
-
-
-
-
-
-
-
-
-
-
-
-

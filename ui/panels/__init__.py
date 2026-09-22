@@ -5,6 +5,7 @@ Jeweler 3D Studio - UI Panels Subpackage (Community Edition)
 import bpy
 from . import ring
 from . import gems
+from . import scene_props
 
 classes = (
     *ring.classes,
@@ -13,8 +14,7 @@ classes = (
 
 
 def register():
-    ring.register_properties()
-    gems.register_properties()
+    scene_props.register()
 
     for cls in classes:
         if hasattr(bpy.types, cls.__name__):
@@ -41,5 +41,4 @@ def unregister():
             except Exception:
                 pass
 
-    ring.unregister_properties()
-    gems.unregister_properties()
+    scene_props.unregister()

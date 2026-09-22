@@ -33,7 +33,7 @@ def mm_to_bu(value_mm: float, context: Optional[bpy.types.Context] = None) -> fl
     """
     try:
         ctx = context or bpy.context
-        scale_mode = getattr(ctx.scene, "j3d_community_scale_mode", "DIRECT_MM")
+        scale_mode = getattr(ctx.scene, "j3d_scale_mode", "DIRECT_MM")
         if scale_mode == "DIRECT_MM":
             return float(value_mm)
 
@@ -48,7 +48,7 @@ def bu_to_mm(value_bu: float, context: Optional[bpy.types.Context] = None) -> fl
     """Convierte una longitud en Blender Units (BU) a milímetros."""
     try:
         ctx = context or bpy.context
-        scale_mode = getattr(ctx.scene, "j3d_community_scale_mode", "DIRECT_MM")
+        scale_mode = getattr(ctx.scene, "j3d_scale_mode", "DIRECT_MM")
         if scale_mode == "DIRECT_MM":
             return float(value_bu)
 

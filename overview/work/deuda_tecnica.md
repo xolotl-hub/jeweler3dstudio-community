@@ -17,7 +17,6 @@
 | d5 | `core/gems.py` (746L) | Módulo supera límite de 250L — separar motor geométrico y cálculo volumétrico de operadores de inserción, swap y previews. | Mantenibilidad. |
 | d7 | `core/ring.py` (588L) | Módulo supera límite de 250L — separar generador de tallas/curvas de perfiles de metal y operadores. | Mantenibilidad. |
 | d14 | `core/gems.py` / `ui/panels/` | Calibres elongados (Oval, Pear, Marquise, Baguette) operan con un solo eje; falta soporte `L x W` (`p10`). | Precisión física y volumétrica. |
-| d15 | `core/gems.py` | Presets de calibres (`j3d_gem_size_preset`) conservan clave al cambiar de corte si no se resetea dinámicamente (`p11`). | Glitch en N-Panel. |
 
 ## 🟢 Prioridad Baja (Mejora Menor / Estilo & Tooling)
 
@@ -33,6 +32,8 @@
 
 | ID | Ubicación / Componente | Descripción de la Deuda | Solución Aplicada | Agente | Fecha |
 |---|---|---|---|---|---|
+| d15 | `core/gems.py` / `ui/panels/scene_props.py` | Presets de calibres (`j3d_gem_size_preset`) conservaban clave al cambiar de corte si no se reseteaba dinámicamente (`p11`). | Añadido callback `_on_gem_cut_update` en `scene_props.py` que valida/resetea automáticamente el preset comercial activo a la primera clave válida del nuevo corte. | Gemini 3.7 Flash (Medium) | 2026-09-22 |
+| d17 | `ui/panels/` (ring, gems, gem_map, cutters) | 20 propiedades sueltas registradas directamente en `bpy.types.Scene` — violación de buenas prácticas detectada en revisión de blender.org. | Consolidadas en `J3D_SceneSettings(PropertyGroup)` en `ui/panels/scene_props.py` y registradas como `scene.j3d` (PointerProperty). Todos los paneles actualizados a `j3d = context.scene.j3d` → `j3d.xxx`. | Gemini 2.5 Pro | 2026-09-22 |
 | d2 | `ui/panels.py` (753L) | Monolito de UI N-Panel superaba ampliamente 250L. | Modularizado en subpaquete `ui/panels/` con submódulos temáticos (`ring.py`, `gems.py`, `gem_map.py`, `cutters.py`, `stubs.py`, `__init__.py`), todos estrictamente < 250L. Simplificado pipeline de exclusión en `pack_community.py`. | Gemini 3.7 Flash (Medium) | 2026-09-22 |
 | d13 | `core/gem_data.py` (2589L) | Monolito de mallas normalizadas de 17 cortes. | Modularizado en subpaquete `core/gem_data/` (5 familias de corte: `_stepped`, `_fancy`, `_octagon`, `_round`, `_trillion` + `__init__.py` con reexport de `GEM_MESH_DATA`). Mantiene retrocompatibilidad 100%. | Gemini 3.7 Flash (Medium) | 2026-09-22 |
 | d11 | `ui/gizmos.py` | `target_set_prop("matrix", ...)` inválido en Blender 4.2+ y función `unregister()` duplicada. | Eliminada llamada no soportada y unificado `unregister()` a bloque simétrico limpio. Resuelve `flag-w22`. | Gemini 3.7 Flash (Medium) | 2026-09-21 |
