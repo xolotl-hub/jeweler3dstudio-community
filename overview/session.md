@@ -2,10 +2,17 @@
 
 - Fecha: 2026-09-21
 - Agente: Gemini 3.7 Flash (Medium)
-- Nodo activo: Ninguno — `w53` cerrado y validado
-- Estado validación: `verificado` (build multi-tier y pipeline de publicación Community configurado)
+- Nodo activo: `w55` (Publicación automática por defecto en pack_community.py)
+- Estado validación: `en progreso`
 
 ## Cambios
+- `w54` ✅ **Modularización de tools/pack_zip/ por Tiers & PRO como Default**: Dividido el sistema de empaquetado en scripts independientes por tier:
+  1. `pack_pro.py` (DEFAULT: empaqueta Jeweler 3D Studio PRO comercial en `dist/jeweler3dstudio-0.1.0.zip`).
+  2. `pack_community.py` (empaqueta Community libre en `dist/jeweler3dstudio_community-0.1.0.zip` y soporta `--publish`).
+  3. `pack_standard.py` (empaqueta Standard en `dist/jeweler3dstudio_standard-0.1.0.zip`).
+  4. `pack_all.py` (orquestador maestro multi-tier).
+  5. `pack_common.py` (utilidades compartidas de manifest, archivos y zip).
+  6. `pack_tiers.py` (enrutador con PRO por defecto).
 - `w53` ✅ **Gobernanza de Agentes (.agents, .skill, overview) en Pipeline de Publicación Community**: Actualizada la función `publish_community` en `tools/pack_zip/pack_tiers.py` para sincronizar `.gitmodules`, submódulos `.agents` (`python-agent-rules`), `.skill/*` (`python-blender-addon-agent-skill`, `i18n-agent-skill`) y el directorio de trazabilidad viva `overview/` en el repo público de GitHub, sirviendo como caso de estudio y vitrina de `*-agent-rules`.
 - `w52` ✅ **Omitidos Subpaneles 'Mapa de Gemas' e 'Intercambiar Gemas' en Community**: Actualizado `tools/pack_zip/pack_tiers.py` para recortar `VIEW3D_PT_j3d_community_sub_gem_map` y `VIEW3D_PT_j3d_community_sub_gem_swap` en la edición Community. El panel 'Gemas' ahora contiene únicamente 'Añadir Gema' con los 3 cortes base y promo box de Studio PRO.
 - `w51` ✅ **Exclusión de Paneles Stub en Edición Community & Fix Regex Lookahead**: Filtrados paneles no utilizados (Engastes, Cortadores, Canastas y Métricas/Cotizador) en `ui/panels.py` para la edición Community en `tools/pack_zip/pack_tiers.py`. Eliminados stubs (`prongs.py`, `pave.py`, `metrics.py`) del paquete. Corregido lookahead regex para evitar duplicación de prefijos (`j3d_community_community`). Community ZIP (760.0 KB) ahora solo despliega "Anillo y Talla" y "Gemas".

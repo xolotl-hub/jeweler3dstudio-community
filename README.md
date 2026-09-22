@@ -8,21 +8,6 @@
 
 > **Jeweler 3D Community** is the free tier of the Jeweler 3D Studio suite — a modular toolkit for jewelry design and production inside Blender 4.2+.
 
----
-
-## ✨ What's included in Community
-
-| Feature | Community | Standard | Studio Pro |
-|---|:---:|:---:|:---:|
-| Ring sizes (all standards) | ✅ | ✅ | ✅ |
-| Metal profiles — Half-round, Flat, Comfort | ✅ | ✅ | ✅ |
-| Metal profiles — All profiles | ❌ | ✅ | ✅ |
-| Stones — Diamond, Ruby, Sapphire … Tanzanite | ✅ | ✅ | ✅ |
-| Extended stone library | ❌ | ✅ | ✅ |
-| Gem Map | ❌ | ✅ | ✅ |
-| Gem Map selector & object signaling | ❌ | ❌ | ✅ |
-| Add menu shortcuts | ❌ | ✅ | ✅ |
-| Metrics & Quoting | ❌ | ❌ | ✅ |
 
 ---
 

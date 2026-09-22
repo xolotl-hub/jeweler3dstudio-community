@@ -4,6 +4,7 @@
 
 | ID | Tipo | Estado | Resumen | Archivo de Detalle |
 |---|---|---|---|---|
+| [w55] | mejora | en progreso | Habilitar commit y push por defecto en `tools/pack_zip/pack_community.py` (con flag opcional `--no-publish`). | `tools/pack_zip/pack_community.py` |
 | [flag-w22] | bug | no verificado | Historial declara eliminada `target_set_prop("matrix", ...)`, pero aún existe en `ui/gizmos.py:33`. Verificar en Blender y corregir el historial o el código. | `ui/gizmos.py` |
 
 
@@ -17,6 +18,7 @@ Tipos: `tarea`, `bug`, `deuda`. Estados: `pendiente`, `en progreso`, `bloqueado`
 
 | ID | Tipo | Resuelto por (Agente) | Causa Raíz / Resumen Solución | Fecha |
 |---|---|---|---|---|
+| w54 | tarea | Gemini 3.7 Flash (Medium) | Modularizado `tools/pack_zip/` en scripts independientes por tier (`pack_pro.py` [default], `pack_community.py`, `pack_standard.py`, `pack_all.py`, `pack_common.py`), estableciendo Jeweler 3D Studio PRO como el tier default y prioritario en el flujo de desarrollo. | 2026-09-21 |
 | w53 | mejora | Gemini 3.7 Flash (Medium) | Integrado ecosistema de gobernanza completo (`.gitmodules`, submódulos `.agents`, `.skill/` y carpeta `overview/`) en el pipeline de publicación automática `publish_community` en `tools/pack_zip/pack_tiers.py` para demostrar capacidades de `*-agent-rules` en el repo público. | 2026-09-21 |
 | w52 | mejora | Gemini 3.7 Flash (Medium) | Omitidos subpaneles 'Mapa de Gemas' e 'Intercambiar Gemas' de la edición Community en `tools/pack_zip/pack_tiers.py`. El panel 'Gemas' de Community ahora contiene exclusivamente 'Añadir Gema' (con 3 cortes base y promo box de Studio PRO). | 2026-09-21 |
 | w51 | mejora | Gemini 3.7 Flash (Medium) | Filtrados paneles y eliminados stubs inactivos (Engastes, Cortadores, Canastas y Métricas/Cotizador) de la edición Community en `tools/pack_zip/pack_tiers.py`. N-Panel en Community despliega exclusivamente Anillo y Gemas. Corregido lookahead regex para prefijos de operadores. | 2026-09-21 |
