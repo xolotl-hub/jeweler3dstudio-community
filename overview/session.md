@@ -2,10 +2,11 @@
 
 - Fecha: 2026-09-21
 - Agente: Gemini 3.7 Flash (Medium)
-- Nodo activo: `w58` (Normalización UI Base Inglés)
-- Estado validación: `en progreso`
+- Nodo activo: Ninguno — `w58` cerrado
+- Estado validación: `verificado` (UI base normalizada a inglés, i18n actualizado, tiers empaquetados, community publicado en GitHub)
 
 ## Cambios
+- `w58` ✅ **Normalización UI Base Inglés & Catálogo i18n (Requisito Blender Extensions)**: Refactorizados todos los labels, descripciones de operadores, items de menús Shift+A, nombres de propiedades de escena y paneles N-Panel a inglés canónico (`ui/panels.py`, `ui/menus.py`, `core/ring.py`, `core/gems.py`, `core/cutters.py`). Sincronizado `ui/i18n.py` con catálogo de 80+ términos en inglés mapeados a `es_ES` y `fr_FR` vía `bpy.app.translations`. Reconstruido pipeline multi-tier (`pack_all.py`) y publicado Community ZIP (771.0 KB) en GitHub.
 - `w57` ✅ **Fix Gemas Community — todos los 17 cortes habilitados**: Eliminados filtros erróneos de `GEM_MESH_DATA` y `CUT_DEFS` en `pack_community.py`. La edición Community ahora tiene los 17 cortes completos igual que PRO. Eliminado `distribution_tiers_plan.md`. Community zip 770.1 KB publicado.
 - `w54` ✅ **Modularización de tools/pack_zip/ por Tiers & PRO como Default**: Dividido el sistema de empaquetado en scripts independientes por tier:
   1. `pack_pro.py` (DEFAULT: empaqueta Jeweler 3D Studio PRO comercial en `dist/jeweler3dstudio-0.1.0.zip`).

@@ -4,7 +4,6 @@
 
 | ID | Tipo | Estado | Resumen | Archivo de Detalle |
 |---|---|---|---|---|
-| w58 | mejora | en progreso | Normalización UI Base Inglés para cumplimiento de Blender Extensions y sincronización de traducciones i18n (`ui/i18n.py`). | `overview/work/tasks.md` |
 | [flag-w22] | bug | no verificado | Historial declara eliminada `target_set_prop("matrix", ...)`, pero aún existe en `ui/gizmos.py:33`. Verificar en Blender y corregir el historial o el código. | `ui/gizmos.py` |
 
 
@@ -18,6 +17,8 @@ Tipos: `tarea`, `bug`, `deuda`. Estados: `pendiente`, `en progreso`, `bloqueado`
 
 | ID | Tipo | Resuelto por (Agente) | Causa Raíz / Resumen Solución | Fecha |
 |---|---|---|---|---|
+| w58 | mejora | Gemini 3.7 Flash (Medium) | Normalización UI Base a Inglés Canónico (`ui/panels.py`, `ui/menus.py`, `core/ring.py`, `core/gems.py`, `core/cutters.py`) para cumplimiento de Blender Extensions. Actualizado catálogo de traducciones i18n (`ui/i18n.py`) con llaves en inglés y soporte `es_ES`/`fr_FR`. Reconstruido y publicado Community ZIP (771.0 KB). | 2026-09-21 |
+| w57 | bug | Gemini 3.7 Flash (Medium) | Fix: Gemas en Community caían a ROUND porque GEM_MESH_DATA estaba filtrado a 3 cortes. Eliminados filtros en `pack_community.py`; Community ahora tiene los 17 cortes completos igual que PRO. | 2026-09-21 |
 | w56 | mejora | Gemini 3.7 Flash (Medium) | Añadido campo `website` oficial en `blender_manifest.toml` y en la generación paramétrica de manifiestos en `tools/pack_zip/pack_common.py`. Sincronizado y publicado en GitHub Community. | 2026-09-21 |
 | w55 | mejora | Gemini 3.7 Flash (Medium) | Habilitada la publicación automática (build + commit + push) por defecto al ejecutar `tools/pack_zip/pack_community.py`, agregando flag `--no-publish` para omitir el push. Verificado commit y push con actualización de LICENSE_community.txt y README_community.md. | 2026-09-21 |
 | w54 | tarea | Gemini 3.7 Flash (Medium) | Modularizado `tools/pack_zip/` en scripts independientes por tier (`pack_pro.py` [default], `pack_community.py`, `pack_standard.py`, `pack_all.py`, `pack_common.py`), estableciendo Jeweler 3D Studio PRO como el tier default y prioritario en el flujo de desarrollo. | 2026-09-21 |

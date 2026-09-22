@@ -22,11 +22,11 @@
 ## 📌 Fase 2: Model & Metadata Fallback Engine
 *Estandarización de nombres de cortes (17 cuts), perfiles de metal y materiales en inglés base con diccionario ES.*
 
-- [ ] **MOD-01**: Estandarizar `RING_PROFILE_ITEMS` en `core/ring.py` (Base EN + traducción ES).
-- [ ] **MOD-02**: Estandarizar `CUT_DEFS` y nombres de gemas en `core/gem_data.py` / `core/gems.py`.
-- [ ] **MOD-03**: Estandarizar nombres de zonas y parámetros en `core/cutters.py`.
-- [ ] **MOD-04**: Estandarizar metales preciosos y densidades en `core/metrics.py`.
-- [ ] ✅ **Validación Fase 2**: Ejecución de operadores con nombres traducidos sin romper `j3d_type` ni props internas.
+- [x] **MOD-01**: Estandarizar `RING_PROFILE_ITEMS` en `core/ring.py` (Base EN + traducción ES).
+- [x] **MOD-02**: Estandarizar `CUT_DEFS` y nombres de gemas en `core/gem_data.py` / `core/gems.py`.
+- [x] **MOD-03**: Estandarizar nombres de zonas y parámetros en `core/cutters.py`.
+- [x] **MOD-04**: Estandarizar metales preciosos y densidades en `core/metrics.py`.
+- [x] ✅ **Validación Fase 2**: Ejecución de operadores con nombres traducidos sin romper `j3d_type` ni props internas.
 
 ---
 

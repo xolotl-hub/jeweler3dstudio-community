@@ -168,19 +168,6 @@ class VIEW3D_PT_j3d_community_sub_gem_visor(Panel):
 
         col.separator()
         op = col.operator("j3d_community.add_gem", icon='MESH_ICOSPHERE', text="Add 3D Gem")
-
-        # --- Studio PRO Promo Box (Community Edition) ---
-        box = layout.box()
-        col = box.column(align=True)
-        col.label(text="💎 Unlock Jeweler 3D Studio PRO", icon="SOLO_ON")
-        col.label(text="• 17 Luxury Faceted Cuts (GIA/ISO)", icon="DOT")
-        col.label(text="• 8 Metal Shank Profiles + Edge Crease", icon="DOT")
-        col.label(text="• 5-Zone Calibrated Boolean Cutters", icon="DOT")
-        col.label(text="• Live Gem Map & Interactive Inventory", icon="DOT")
-        col.label(text="• Shift+A Add Menu & Redo Panel (F9)", icon="DOT")
-        col.separator()
-        col.operator("wm.url_open", text="Get Studio PRO on Blender Market", icon="URL").url = "https://blendermarket.com"
-
         op.cut = scene.j3d_community_gem_cut
         op.stone = scene.j3d_community_gem_stone
         op.size = effective_size
