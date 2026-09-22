@@ -4,6 +4,7 @@
 
 | ID | Tipo | Estado | Resumen | Archivo de Detalle |
 |---|---|---|---|---|
+| [w57] | bug | en progreso | Community: "Añadir Gema" crea siempre ROUND porque `CUT_DEFS` en `gems.py` no se filtra — sólo `GEM_MESH_DATA` estaba filtrado en `gem_data.py`. | `tools/pack_zip/pack_community.py` |
 | [flag-w22] | bug | no verificado | Historial declara eliminada `target_set_prop("matrix", ...)`, pero aún existe en `ui/gizmos.py:33`. Verificar en Blender y corregir el historial o el código. | `ui/gizmos.py` |
 
 

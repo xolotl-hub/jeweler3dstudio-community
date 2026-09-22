@@ -804,3 +804,9 @@ def unregister():
             except Exception:
                 pass
     clear_previews()
+
+# ── Community Edition: restrict available cuts ──────────────────────────────
+_COMMUNITY_CUTS = {'ROUND', 'OVAL', 'PRINCESS'}
+CUT_DEFS = [entry for entry in CUT_DEFS if entry[0] in _COMMUNITY_CUTS]
+CUT_COMMERCIAL_SIZES = {k: v for k, v in CUT_COMMERCIAL_SIZES.items() if k in _COMMUNITY_CUTS}
+GLOBAL_COMMERCIAL_SIZES = CUT_COMMERCIAL_SIZES['ROUND']
