@@ -2,11 +2,11 @@
 
 - Fecha: 2026-09-21
 - Agente: Gemini 3.7 Flash (Medium)
-- Nodo activo: `w56` (Metadatos website en manifiestos)
-- Estado validación: `en progreso`
+- Nodo activo: Ninguno — `w56` cerrado
+- Estado validación: `verificado` (website en manifest + pack_common.py, commit+push pendiente)
 
 ## Cambios
-- `w55` ✅ **Publicación Automática por Defecto en pack_community.py**: Actualizado `tools/pack_zip/pack_community.py` para que la ejecución directa empaquete, prepare el staging y ejecute `git commit` + `git push` automáticamente hacia `xolotl-hub/jeweler3dstudio-community`. Si se desea omitir el push, se usa el flag `--no-publish`. Publicados cambios del texto completo de `LICENSE` (GPLv3) y `README.md`.
+- `w56` ✅ **Metadatos website en Manifiestos por Tier**: Agregado `website = "https://github.com/xolotl-hub/jeweler-3d-studio"` en `blender_manifest.toml` y en `transform_manifest` de `pack_common.py` para cada tier (community → repo community, standard/pro → repo studio).
 - `w54` ✅ **Modularización de tools/pack_zip/ por Tiers & PRO como Default**: Dividido el sistema de empaquetado en scripts independientes por tier:
   1. `pack_pro.py` (DEFAULT: empaqueta Jeweler 3D Studio PRO comercial en `dist/jeweler3dstudio-0.1.0.zip`).
   2. `pack_community.py` (empaqueta Community libre en `dist/jeweler3dstudio_community-0.1.0.zip` y soporta `--publish`).
