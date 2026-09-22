@@ -2586,6 +2586,3 @@ GEM_MESH_DATA: Dict[str, Dict[str, Any]] = {
         ],
     },
 }
-
-# Filter cuts for Community Edition
-GEM_MESH_DATA = {k: v for k, v in GEM_MESH_DATA.items() if k in ['ROUND', 'OVAL', 'PRINCESS']}
