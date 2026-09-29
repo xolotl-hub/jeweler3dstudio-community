@@ -3,13 +3,20 @@ Jeweler 3D Studio - UI Package Initialization
 Registers user interface panels, dialogs, and viewport gizmo groups.
 """
 
-from . import i18n
-from . import panels
-# from . import menus (Disabled in Community)
+_needs_reload = "bpy" in locals()
 
-# Desconectados por el momento
-# from . import dialogs
-# from . import gizmos
+import bpy
+from . import (
+    i18n,
+    panels,
+    # menus, (Disabled in Community)
+)
+
+if _needs_reload:
+    import importlib
+    i18n = importlib.reload(i18n)
+    panels = importlib.reload(panels)
+    # menus = importlib.reload(menus) (Disabled in Community)
 
 modules = (
     i18n,
@@ -20,9 +27,11 @@ modules = (
 
 def register():
     for mod in modules:
-        mod.register()
+        if hasattr(mod, "register"):
+            mod.register()
 
 
 def unregister():
     for mod in reversed(modules):
-        mod.unregister()
+        if hasattr(mod, "unregister"):
+            mod.unregister()

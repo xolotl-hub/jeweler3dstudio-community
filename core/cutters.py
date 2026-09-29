@@ -271,7 +271,7 @@ def update_cutter_object_props_callback(self, context):
     global _UPDATING_CUTTER
     if _UPDATING_CUTTER:
         return
-    if self.get("j3d_community_type") != "CUTTER" or not self.data:
+    if self.get("j3d_type") != "CUTTER" or not self.data:
         return
     rebuild_cutter_from_object_props(self, context)
 
@@ -282,46 +282,46 @@ def init_cutter_object_props(ctr_obj: bpy.types.Object, cut_key: str, size_mm: f
     _UPDATING_CUTTER = True
     try:
         r_half = size_mm * 0.5
-        ctr_obj["j3d_community_type"] = "CUTTER"
-        ctr_obj["j3d_community_gem_cut"] = cut_key
-        ctr_obj["j3d_community_gem_size"] = size_mm
-        ctr_obj.j3d_community_cutter_segments = max(4, int(segments))
-        ctr_obj.j3d_community_cutter_crease = max(0.0, min(1.0, float(crease)))
+        ctr_obj["j3d_type"] = "CUTTER"
+        ctr_obj["j3d_gem_cut"] = cut_key
+        ctr_obj["j3d_gem_size"] = size_mm
+        ctr_obj.j3d_cutter_segments = max(4, int(segments))
+        ctr_obj.j3d_cutter_crease = max(0.0, min(1.0, float(crease)))
 
-        ctr_obj.j3d_community_cutter_r_top = r_half * CUTTER_R_TABLE
-        ctr_obj.j3d_community_cutter_z_top = size_mm * CUTTER_TOP_RATIO
+        ctr_obj.j3d_cutter_r_top = r_half * CUTTER_R_TABLE
+        ctr_obj.j3d_cutter_z_top = size_mm * CUTTER_TOP_RATIO
 
-        ctr_obj.j3d_community_cutter_r_table = r_half * CUTTER_R_TABLE
-        ctr_obj.j3d_community_cutter_z_table = size_mm * CUTTER_TABLE_RATIO
+        ctr_obj.j3d_cutter_r_table = r_half * CUTTER_R_TABLE
+        ctr_obj.j3d_cutter_z_table = size_mm * CUTTER_TABLE_RATIO
 
-        ctr_obj.j3d_community_cutter_r_girdle_top = r_half * CUTTER_R_GIRDLE
-        ctr_obj.j3d_community_cutter_z_girdle_top = size_mm * CUTTER_GIRDLE_TOP_RATIO
+        ctr_obj.j3d_cutter_r_girdle_top = r_half * CUTTER_R_GIRDLE
+        ctr_obj.j3d_cutter_z_girdle_top = size_mm * CUTTER_GIRDLE_TOP_RATIO
 
-        ctr_obj.j3d_community_cutter_r_girdle_bot = r_half * CUTTER_R_GIRDLE
-        ctr_obj.j3d_community_cutter_z_girdle_bot = size_mm * CUTTER_GIRDLE_BOT_RATIO
+        ctr_obj.j3d_cutter_r_girdle_bot = r_half * CUTTER_R_GIRDLE
+        ctr_obj.j3d_cutter_z_girdle_bot = size_mm * CUTTER_GIRDLE_BOT_RATIO
 
-        ctr_obj.j3d_community_cutter_r_seat = r_half * CUTTER_R_HOLE
-        ctr_obj.j3d_community_cutter_z_seat = size_mm * CUTTER_SEAT_RATIO
+        ctr_obj.j3d_cutter_r_seat = r_half * CUTTER_R_HOLE
+        ctr_obj.j3d_cutter_z_seat = size_mm * CUTTER_SEAT_RATIO
 
-        ctr_obj.j3d_community_cutter_r_hole_bot = r_half * CUTTER_R_HOLE
-        ctr_obj.j3d_community_cutter_z_hole_bot = -size_mm * CUTTER_DEPTH_RATIO
+        ctr_obj.j3d_cutter_r_hole_bot = r_half * CUTTER_R_HOLE
+        ctr_obj.j3d_cutter_z_hole_bot = -size_mm * CUTTER_DEPTH_RATIO
     finally:
         _UPDATING_CUTTER = False
 
 
 def rebuild_cutter_from_object_props(ctr_obj: bpy.types.Object, context=None):
     """Regenera la malla del cortador in-place a partir de sus propiedades de objeto."""
-    cut_key = ctr_obj.get("j3d_community_gem_cut", "ROUND")
-    segments = int(getattr(ctr_obj, "j3d_community_cutter_segments", 8))
-    crease = float(getattr(ctr_obj, "j3d_community_cutter_crease", 0.8))
+    cut_key = ctr_obj.get("j3d_gem_cut", "ROUND")
+    segments = int(getattr(ctr_obj, "j3d_cutter_segments", 8))
+    crease = float(getattr(ctr_obj, "j3d_cutter_crease", 0.8))
 
     levels_mm = [
-        (float(getattr(ctr_obj, "j3d_community_cutter_r_top", 1.588)),        float(getattr(ctr_obj, "j3d_community_cutter_z_top", 2.880))),
-        (float(getattr(ctr_obj, "j3d_community_cutter_r_table", 1.588)),      float(getattr(ctr_obj, "j3d_community_cutter_z_table", 1.050))),
-        (float(getattr(ctr_obj, "j3d_community_cutter_r_girdle_top", 2.610)), float(getattr(ctr_obj, "j3d_community_cutter_z_girdle_top", 0.240))),
-        (float(getattr(ctr_obj, "j3d_community_cutter_r_girdle_bot", 2.610)), float(getattr(ctr_obj, "j3d_community_cutter_z_girdle_bot", -0.130))),
-        (float(getattr(ctr_obj, "j3d_community_cutter_r_seat", 1.220)),       float(getattr(ctr_obj, "j3d_community_cutter_z_seat", -1.330))),
-        (float(getattr(ctr_obj, "j3d_community_cutter_r_hole_bot", 1.220)),   float(getattr(ctr_obj, "j3d_community_cutter_z_hole_bot", -5.050))),
+        (float(getattr(ctr_obj, "j3d_cutter_r_top", 1.588)),        float(getattr(ctr_obj, "j3d_cutter_z_top", 2.880))),
+        (float(getattr(ctr_obj, "j3d_cutter_r_table", 1.588)),      float(getattr(ctr_obj, "j3d_cutter_z_table", 1.050))),
+        (float(getattr(ctr_obj, "j3d_cutter_r_girdle_top", 2.610)), float(getattr(ctr_obj, "j3d_cutter_z_girdle_top", 0.240))),
+        (float(getattr(ctr_obj, "j3d_cutter_r_girdle_bot", 2.610)), float(getattr(ctr_obj, "j3d_cutter_z_girdle_bot", -0.130))),
+        (float(getattr(ctr_obj, "j3d_cutter_r_seat", 1.220)),       float(getattr(ctr_obj, "j3d_cutter_z_seat", -1.330))),
+        (float(getattr(ctr_obj, "j3d_cutter_r_hole_bot", 1.220)),   float(getattr(ctr_obj, "j3d_cutter_z_hole_bot", -5.050))),
     ]
 
     bm = build_cutter_bmesh_from_levels(cut_key, segments, crease, levels_mm, context)
@@ -337,7 +337,7 @@ def find_cutter_for_gem(gem_obj: bpy.types.Object):
     """Busca el cortador asociado a una gema."""
     if not gem_obj:
         return None
-    cutter_name = gem_obj.get("j3d_community_has_cutter", "")
+    cutter_name = gem_obj.get("j3d_has_cutter", "")
     if cutter_name and cutter_name in bpy.data.objects:
         return bpy.data.objects[cutter_name]
     expected = "CTR_" + gem_obj.name
@@ -353,8 +353,8 @@ def rebuild_cutter_for_gem(
     context=None,
 ):
     """Regenera el mesh de un cortador al cambiar gema, preservando segmentos y crease."""
-    segs = int(getattr(cutter_obj, "j3d_community_cutter_segments", 8))
-    crease = float(getattr(cutter_obj, "j3d_community_cutter_crease", 0.8))
+    segs = int(getattr(cutter_obj, "j3d_cutter_segments", 8))
+    crease = float(getattr(cutter_obj, "j3d_cutter_crease", 0.8))
     init_cutter_object_props(cutter_obj, cut_key, size_mm, segments=segs, crease=crease)
     rebuild_cutter_from_object_props(cutter_obj, context)
 
@@ -362,18 +362,18 @@ def rebuild_cutter_for_gem(
 # -- Operadores -------------------------------------------------------------------
 
 class J3DComm_OT_add_cutter_to_gem(Operator):
-    """Añadir cortador booleano procedural a la(s) gema(s) seleccionadas"""
-    bl_idname = "j3d_community_community.add_cutter_to_gem"
-    bl_label = "Añadir Cortador a Gema"
+    """Add procedural boolean seat cutter to selected gemstone(s)"""
+    bl_idname = "j3d_community.add_cutter_to_gem"
+    bl_label = "Add Cutter to Gem"
     bl_description = (
-        "Genera un cortador de asiento procedural (5 zonas) para cada gema seleccionada. "
-        "Permite ajuste interactivo en el panel inferior izquierdo (F9 / Ajustar última operación)."
+        "Generates a 5-zone procedural seat cutter for each selected gemstone. "
+        "Allows interactive adjustment in Redo Panel (F9 / Adjust Last Operation)."
     )
     bl_options = {'REGISTER', 'UNDO'}
 
     segments: IntProperty(  # type: ignore
-        name="Segmentos",
-        description="Subdivisiones radiales/facetas del cortador",
+        name="Segments",
+        description="Radial segments / subdivisions of cutter",
         default=8,
         min=4,
         max=64,
@@ -381,7 +381,7 @@ class J3DComm_OT_add_cutter_to_gem(Operator):
 
     crease: FloatProperty(  # type: ignore
         name="Crease",
-        description="Pliegue de aristas horizontales (Shift+E) para Subdivision Surface",
+        description="Edge crease (Shift+E) for Subdivision Surface",
         default=0.8,
         min=0.0,
         max=1.0,
@@ -389,47 +389,47 @@ class J3DComm_OT_add_cutter_to_gem(Operator):
         precision=2,
     )
 
-    # 1. Cima Superior
-    r_top: FloatProperty(name="Radio Cima", default=1.588, min=0.001, precision=3, step=10)  # type: ignore
-    z_top: FloatProperty(name="Z Cima", default=2.880, precision=3, step=10)  # type: ignore
+    # 1. Top Extension
+    r_top: FloatProperty(name="Top Radius", default=1.588, min=0.001, precision=3, step=10)  # type: ignore
+    z_top: FloatProperty(name="Top Z", default=2.880, precision=3, step=10)  # type: ignore
 
-    # 2. Tabla / Transicion Superior
-    r_table: FloatProperty(name="Radio Tabla", default=1.588, min=0.001, precision=3, step=10)  # type: ignore
-    z_table: FloatProperty(name="Z Tabla", default=1.050, precision=3, step=10)  # type: ignore
+    # 2. Table / Crown Transition
+    r_table: FloatProperty(name="Table Radius", default=1.588, min=0.001, precision=3, step=10)  # type: ignore
+    z_table: FloatProperty(name="Table Z", default=1.050, precision=3, step=10)  # type: ignore
 
-    # 3. Filetin Superior
-    r_girdle_top: FloatProperty(name="Radio Filetín Sup.", default=2.610, min=0.001, precision=3, step=10)  # type: ignore
-    z_girdle_top: FloatProperty(name="Z Filetín Sup.", default=0.240, precision=3, step=10)  # type: ignore
+    # 3. Upper Girdle
+    r_girdle_top: FloatProperty(name="Upper Girdle Radius", default=2.610, min=0.001, precision=3, step=10)  # type: ignore
+    z_girdle_top: FloatProperty(name="Upper Girdle Z", default=0.240, precision=3, step=10)  # type: ignore
 
-    # 4. Filetin Inferior
-    r_girdle_bot: FloatProperty(name="Radio Filetín Inf.", default=2.610, min=0.001, precision=3, step=10)  # type: ignore
-    z_girdle_bot: FloatProperty(name="Z Filetín Inf.", default=-0.130, precision=3, step=10)  # type: ignore
+    # 4. Lower Girdle
+    r_girdle_bot: FloatProperty(name="Lower Girdle Radius", default=2.610, min=0.001, precision=3, step=10)  # type: ignore
+    z_girdle_bot: FloatProperty(name="Lower Girdle Z", default=-0.130, precision=3, step=10)  # type: ignore
 
-    # 5. Asiento Pabellon
-    r_seat: FloatProperty(name="Radio Asiento", default=1.220, min=0.001, precision=3, step=10)  # type: ignore
-    z_seat: FloatProperty(name="Z Asiento", default=-1.330, precision=3, step=10)  # type: ignore
+    # 5. Pavilion Seat
+    r_seat: FloatProperty(name="Seat Radius", default=1.220, min=0.001, precision=3, step=10)  # type: ignore
+    z_seat: FloatProperty(name="Seat Z", default=-1.330, precision=3, step=10)  # type: ignore
 
-    # 6. Perforacion Inferior
-    r_hole_bot: FloatProperty(name="Radio Perforación", default=1.220, min=0.001, precision=3, step=10)  # type: ignore
-    z_hole_bot: FloatProperty(name="Z Perforación", default=-5.050, precision=3, step=10)  # type: ignore
+    # 6. Drill Hole Bottom
+    r_hole_bot: FloatProperty(name="Hole Radius", default=1.220, min=0.001, precision=3, step=10)  # type: ignore
+    z_hole_bot: FloatProperty(name="Hole Z", default=-5.050, precision=3, step=10)  # type: ignore
 
     @classmethod
     def poll(cls, context: bpy.types.Context) -> bool:
         return (
             context.mode == 'OBJECT'
             and (
-                any(obj.get("j3d_community_type") == "GEM" for obj in context.selected_objects)
-                or (context.active_object and context.active_object.get("j3d_community_type") == "GEM")
+                any(obj.get("j3d_type") == "GEM" for obj in context.selected_objects)
+                or (context.active_object and context.active_object.get("j3d_type") == "GEM")
             )
         )
 
     def invoke(self, context: bpy.types.Context, event: bpy.types.Event) -> set:
-        active_gem = next((o for o in context.selected_objects if o.get("j3d_community_type") == "GEM"), None)
-        if not active_gem and context.active_object and context.active_object.get("j3d_community_type") == "GEM":
+        active_gem = next((o for o in context.selected_objects if o.get("j3d_type") == "GEM"), None)
+        if not active_gem and context.active_object and context.active_object.get("j3d_type") == "GEM":
             active_gem = context.active_object
 
         if active_gem:
-            size_mm = float(active_gem.get("j3d_community_gem_size", 5.0))
+            size_mm = float(active_gem.get("j3d_gem_size", 5.0))
             r_half = size_mm * 0.5
             self.r_top = r_half * CUTTER_R_TABLE
             self.z_top = size_mm * CUTTER_TOP_RATIO
@@ -449,42 +449,50 @@ class J3DComm_OT_add_cutter_to_gem(Operator):
             self.r_hole_bot = r_half * CUTTER_R_HOLE
             self.z_hole_bot = -size_mm * CUTTER_DEPTH_RATIO
 
-            self.segments = int(getattr(context.scene, "j3d_community_cutter_segments", 8))
-            self.crease = float(getattr(context.scene, "j3d_community_cutter_crease", 0.8))
+            j3d = getattr(context.scene, "j3d", None)
+            if j3d and hasattr(j3d, "cutter_segments"):
+                self.segments = int(j3d.cutter_segments)
+            else:
+                self.segments = int(getattr(context.scene, "j3d_cutter_segments", 8))
+
+            if j3d and hasattr(j3d, "cutter_crease"):
+                self.crease = float(j3d.cutter_crease)
+            else:
+                self.crease = float(getattr(context.scene, "j3d_cutter_crease", 0.8))
 
         return self.execute(context)
 
     def draw(self, context: bpy.types.Context) -> None:
         layout = self.layout
         col = layout.column(align=True)
-        col.prop(self, "segments", text="Segmentos")
+        col.prop(self, "segments", text="Segments")
         col.prop(self, "crease", text="Crease (Shift+E)")
 
-        layout.label(text="Perímetros Horizontales (Radio y Z):", icon='MESH_CIRCLE')
+        layout.label(text="Horizontal Diameters (Radius & Z):", icon='MESH_CIRCLE')
 
         rings_info = [
-            ("1. Cima Superior (Extensión)", "r_top",        "z_top"),
-            ("2. Tabla / Corona",            "r_table",      "z_table"),
-            ("3. Filetín Superior",          "r_girdle_top", "z_girdle_top"),
-            ("4. Filetín Inferior",          "r_girdle_bot", "z_girdle_bot"),
-            ("5. Asiento (Pabellón)",        "r_seat",       "z_seat"),
-            ("6. Perforación Inferior",      "r_hole_bot",   "z_hole_bot"),
+            ("1. Top Extension",        "r_top",        "z_top"),
+            ("2. Table / Crown",        "r_table",      "z_table"),
+            ("3. Upper Girdle",         "r_girdle_top", "z_girdle_top"),
+            ("4. Lower Girdle",         "r_girdle_bot", "z_girdle_bot"),
+            ("5. Pavilion Seat",        "r_seat",       "z_seat"),
+            ("6. Drill Hole Bottom",    "r_hole_bot",   "z_hole_bot"),
         ]
 
         for label_txt, r_prop, z_prop in rings_info:
             pbox = layout.box()
             pbox.label(text=label_txt)
             row = pbox.row(align=True)
-            row.prop(self, r_prop, text="Radio (mm)")
+            row.prop(self, r_prop, text="Radius (mm)")
             row.prop(self, z_prop, text="Z (mm)")
 
     def execute(self, context: bpy.types.Context) -> set:
-        gems = [o for o in context.selected_objects if o.get("j3d_community_type") == "GEM"]
-        if not gems and context.active_object and context.active_object.get("j3d_community_type") == "GEM":
+        gems = [o for o in context.selected_objects if o.get("j3d_type") == "GEM"]
+        if not gems and context.active_object and context.active_object.get("j3d_type") == "GEM":
             gems = [context.active_object]
 
         if not gems:
-            self.report({'WARNING'}, "Selecciona al menos una gema primero.")
+            self.report({'WARNING'}, "Select at least one gemstone first.")
             return {'CANCELLED'}
 
         custom_levels = [
@@ -498,8 +506,8 @@ class J3DComm_OT_add_cutter_to_gem(Operator):
 
         created = 0
         for gem_obj in gems:
-            cut_key  = gem_obj.get("j3d_community_gem_cut", "ROUND")
-            size_mm  = float(gem_obj.get("j3d_community_gem_size", 1.0))
+            cut_key  = gem_obj.get("j3d_gem_cut", "ROUND")
+            size_mm  = float(gem_obj.get("j3d_gem_size", 1.0))
             ctr_name = "CTR_" + gem_obj.name
 
             existing_ctr = find_cutter_for_gem(gem_obj)
@@ -509,20 +517,20 @@ class J3DComm_OT_add_cutter_to_gem(Operator):
                 bm.free()
                 existing_ctr.data.update()
                 # Sincronizar propiedades de objeto
-                existing_ctr.j3d_community_cutter_segments = self.segments
-                existing_ctr.j3d_community_cutter_crease = self.crease
-                existing_ctr.j3d_community_cutter_r_top = self.r_top
-                existing_ctr.j3d_community_cutter_z_top = self.z_top
-                existing_ctr.j3d_community_cutter_r_table = self.r_table
-                existing_ctr.j3d_community_cutter_z_table = self.z_table
-                existing_ctr.j3d_community_cutter_r_girdle_top = self.r_girdle_top
-                existing_ctr.j3d_community_cutter_z_girdle_top = self.z_girdle_top
-                existing_ctr.j3d_community_cutter_r_girdle_bot = self.r_girdle_bot
-                existing_ctr.j3d_community_cutter_z_girdle_bot = self.z_girdle_bot
-                existing_ctr.j3d_community_cutter_r_seat = self.r_seat
-                existing_ctr.j3d_community_cutter_z_seat = self.z_seat
-                existing_ctr.j3d_community_cutter_r_hole_bot = self.r_hole_bot
-                existing_ctr.j3d_community_cutter_z_hole_bot = self.z_hole_bot
+                existing_ctr.j3d_cutter_segments = self.segments
+                existing_ctr.j3d_cutter_crease = self.crease
+                existing_ctr.j3d_cutter_r_top = self.r_top
+                existing_ctr.j3d_cutter_z_top = self.z_top
+                existing_ctr.j3d_cutter_r_table = self.r_table
+                existing_ctr.j3d_cutter_z_table = self.z_table
+                existing_ctr.j3d_cutter_r_girdle_top = self.r_girdle_top
+                existing_ctr.j3d_cutter_z_girdle_top = self.z_girdle_top
+                existing_ctr.j3d_cutter_r_girdle_bot = self.r_girdle_bot
+                existing_ctr.j3d_cutter_z_girdle_bot = self.z_girdle_bot
+                existing_ctr.j3d_cutter_r_seat = self.r_seat
+                existing_ctr.j3d_cutter_z_seat = self.z_seat
+                existing_ctr.j3d_cutter_r_hole_bot = self.r_hole_bot
+                existing_ctr.j3d_cutter_z_hole_bot = self.z_hole_bot
                 created += 1
                 continue
 
@@ -542,37 +550,37 @@ class J3DComm_OT_add_cutter_to_gem(Operator):
             ctr_obj.rotation_euler = gem_obj.rotation_euler.copy()
             ctr_obj.display_type   = 'WIRE'
 
-            ctr_obj["j3d_community_type"] = "CUTTER"
-            ctr_obj["j3d_community_cutter_for"] = gem_obj.name
-            ctr_obj["j3d_community_gem_cut"] = cut_key
-            ctr_obj["j3d_community_gem_size"] = size_mm
-            ctr_obj.j3d_community_cutter_segments = self.segments
-            ctr_obj.j3d_community_cutter_crease = self.crease
-            ctr_obj.j3d_community_cutter_r_top = self.r_top
-            ctr_obj.j3d_community_cutter_z_top = self.z_top
-            ctr_obj.j3d_community_cutter_r_table = self.r_table
-            ctr_obj.j3d_community_cutter_z_table = self.z_table
-            ctr_obj.j3d_community_cutter_r_girdle_top = self.r_girdle_top
-            ctr_obj.j3d_community_cutter_z_girdle_top = self.z_girdle_top
-            ctr_obj.j3d_community_cutter_r_girdle_bot = self.r_girdle_bot
-            ctr_obj.j3d_community_cutter_z_girdle_bot = self.z_girdle_bot
-            ctr_obj.j3d_community_cutter_r_seat = self.r_seat
-            ctr_obj.j3d_community_cutter_z_seat = self.z_seat
-            ctr_obj.j3d_community_cutter_r_hole_bot = self.r_hole_bot
-            ctr_obj.j3d_community_cutter_z_hole_bot = self.z_hole_bot
+            ctr_obj["j3d_type"] = "CUTTER"
+            ctr_obj["j3d_cutter_for"] = gem_obj.name
+            ctr_obj["j3d_gem_cut"] = cut_key
+            ctr_obj["j3d_gem_size"] = size_mm
+            ctr_obj.j3d_cutter_segments = self.segments
+            ctr_obj.j3d_cutter_crease = self.crease
+            ctr_obj.j3d_cutter_r_top = self.r_top
+            ctr_obj.j3d_cutter_z_top = self.z_top
+            ctr_obj.j3d_cutter_r_table = self.r_table
+            ctr_obj.j3d_cutter_z_table = self.z_table
+            ctr_obj.j3d_cutter_r_girdle_top = self.r_girdle_top
+            ctr_obj.j3d_cutter_z_girdle_top = self.z_girdle_top
+            ctr_obj.j3d_cutter_r_girdle_bot = self.r_girdle_bot
+            ctr_obj.j3d_cutter_z_girdle_bot = self.z_girdle_bot
+            ctr_obj.j3d_cutter_r_seat = self.r_seat
+            ctr_obj.j3d_cutter_z_seat = self.z_seat
+            ctr_obj.j3d_cutter_r_hole_bot = self.r_hole_bot
+            ctr_obj.j3d_cutter_z_hole_bot = self.z_hole_bot
 
-            gem_obj["j3d_community_has_cutter"] = ctr_name
+            gem_obj["j3d_has_cutter"] = ctr_name
             created += 1
 
-        self.report({'INFO'}, f"{created} cortador(es) generado(s).")
+        self.report({'INFO'}, f"{created} cutter(s) generated.")
         return {'FINISHED'}
 
 
 class J3DComm_OT_reset_cutter_defaults(Operator):
-    """Restablecer los 6 perimetros del cortador activo a sus proporciones estandar de joyeria"""
-    bl_idname = "j3d_community_community.reset_cutter_defaults"
-    bl_label = "Restablecer Cotas por Defecto"
-    bl_description = "Restaura los 6 perimetros del cortador a las proporciones estandar de la gema"
+    """Reset the 6 cutter rings of active cutter to standard jewelry proportions"""
+    bl_idname = "j3d_community.reset_cutter_defaults"
+    bl_label = "Reset Cutter Defaults"
+    bl_description = "Restores the 6 cutter perimeter levels to standard gemstone proportions"
     bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
@@ -580,31 +588,31 @@ class J3DComm_OT_reset_cutter_defaults(Operator):
         obj = context.active_object
         if not obj:
             return False
-        return obj.get("j3d_community_type") == "CUTTER" or find_cutter_for_gem(obj) is not None
+        return obj.get("j3d_type") == "CUTTER" or find_cutter_for_gem(obj) is not None
 
     def execute(self, context: bpy.types.Context) -> set:
         obj = context.active_object
-        ctr_obj = obj if obj.get("j3d_community_type") == "CUTTER" else find_cutter_for_gem(obj)
+        ctr_obj = obj if obj.get("j3d_type") == "CUTTER" else find_cutter_for_gem(obj)
         if not ctr_obj:
-            self.report({'WARNING'}, "No se encontro cortador activo.")
+            self.report({'WARNING'}, "No active cutter found.")
             return {'CANCELLED'}
 
-        cut_key = ctr_obj.get("j3d_community_gem_cut", "ROUND")
-        size_mm = float(ctr_obj.get("j3d_community_gem_size", 1.0))
-        segs = int(getattr(ctr_obj, "j3d_community_cutter_segments", 8))
-        crease = float(getattr(ctr_obj, "j3d_community_cutter_crease", 0.8))
+        cut_key = ctr_obj.get("j3d_gem_cut", "ROUND")
+        size_mm = float(ctr_obj.get("j3d_gem_size", 1.0))
+        segs = int(getattr(ctr_obj, "j3d_cutter_segments", 8))
+        crease = float(getattr(ctr_obj, "j3d_cutter_crease", 0.8))
 
         init_cutter_object_props(ctr_obj, cut_key, size_mm, segments=segs, crease=crease)
         rebuild_cutter_from_object_props(ctr_obj, context)
-        self.report({'INFO'}, f"Cortador {ctr_obj.name} restablecido a cotas estándar.")
+        self.report({'INFO'}, f"Cutter {ctr_obj.name} reset to default dimensions.")
         return {'FINISHED'}
 
 
 class J3DComm_OT_add_cutters(Operator):
-    """Aniadir Cortador Base"""
-    bl_idname = "j3d_community_community.add_cutters"
-    bl_label = "Aniadir Cortador"
-    bl_description = "Anade un cortador booleano; si hay gemas seleccionadas las usa como referencia"
+    """Add Base Cutter"""
+    bl_idname = "j3d_community.add_cutters"
+    bl_label = "Add Cutter"
+    bl_description = "Adds a boolean cutter; uses selected gems as reference if present"
     bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
@@ -612,8 +620,8 @@ class J3DComm_OT_add_cutters(Operator):
         return context.mode == 'OBJECT'
 
     def execute(self, context: bpy.types.Context) -> set:
-        if any(o.get("j3d_community_type") == "GEM" for o in context.selected_objects):
-            return bpy.ops.j3d.add_cutter_to_gem()
+        if any(o.get("j3d_type") == "GEM" for o in context.selected_objects):
+            return bpy.ops.j3d_community.add_cutter_to_gem()
         size_bu = mm_to_bu(3.0, context)
         bpy.ops.mesh.primitive_cylinder_add(
             radius=size_bu * 0.5,
@@ -624,25 +632,25 @@ class J3DComm_OT_add_cutters(Operator):
         obj.name = "CTR_Base"
         obj.display_type = 'WIRE'
         init_cutter_object_props(obj, "ROUND", 3.0, 8, 0.8)
-        self.report({'INFO'}, "Cortador base anadido (sin gema asociada).")
+        self.report({'INFO'}, "Base cutter added (without attached gem).")
         return {'FINISHED'}
 
 
 OBJECT_CUTTER_PROPS = (
-    "j3d_community_cutter_segments",
-    "j3d_community_cutter_crease",
-    "j3d_community_cutter_r_top",
-    "j3d_community_cutter_z_top",
-    "j3d_community_cutter_r_table",
-    "j3d_community_cutter_z_table",
-    "j3d_community_cutter_r_girdle_top",
-    "j3d_community_cutter_z_girdle_top",
-    "j3d_community_cutter_r_girdle_bot",
-    "j3d_community_cutter_z_girdle_bot",
-    "j3d_community_cutter_r_seat",
-    "j3d_community_cutter_z_seat",
-    "j3d_community_cutter_r_hole_bot",
-    "j3d_community_cutter_z_hole_bot",
+    "j3d_cutter_segments",
+    "j3d_cutter_crease",
+    "j3d_cutter_r_top",
+    "j3d_cutter_z_top",
+    "j3d_cutter_r_table",
+    "j3d_cutter_z_table",
+    "j3d_cutter_r_girdle_top",
+    "j3d_cutter_z_girdle_top",
+    "j3d_cutter_r_girdle_bot",
+    "j3d_cutter_z_girdle_bot",
+    "j3d_cutter_r_seat",
+    "j3d_cutter_z_seat",
+    "j3d_cutter_r_hole_bot",
+    "j3d_cutter_z_hole_bot",
 )
 
 classes = (
@@ -654,7 +662,7 @@ classes = (
 
 def register():
     # Registrar propiedades parametricas en bpy.types.Object para edicion en vivo
-    bpy.types.Object.j3d_community_cutter_segments = IntProperty(
+    bpy.types.Object.j3d_cutter_segments = IntProperty(
         name="Segmentos",
         description="Subdivisiones radiales/facetas del cortador",
         default=8,
@@ -663,7 +671,7 @@ def register():
         update=update_cutter_object_props_callback,
     ) # type: ignore
 
-    bpy.types.Object.j3d_community_cutter_crease = FloatProperty(
+    bpy.types.Object.j3d_cutter_crease = FloatProperty(
         name="Crease",
         description="Pliegue de aristas horizontales (Shift+E) para Subdivision Surface",
         default=0.8,
@@ -675,7 +683,7 @@ def register():
     ) # type: ignore
 
     # 1. Cima Superior
-    bpy.types.Object.j3d_community_cutter_r_top = FloatProperty(
+    bpy.types.Object.j3d_cutter_r_top = FloatProperty(
         name="Radio Cima",
         description="Radio del perimetro de la cima superior (mm)",
         default=1.588,
@@ -684,7 +692,7 @@ def register():
         precision=3,
         update=update_cutter_object_props_callback,
     ) # type: ignore
-    bpy.types.Object.j3d_community_cutter_z_top = FloatProperty(
+    bpy.types.Object.j3d_cutter_z_top = FloatProperty(
         name="Z Cima",
         description="Posicion Z de la cima superior respecto al centro Z=0 (mm)",
         default=2.880,
@@ -694,7 +702,7 @@ def register():
     ) # type: ignore
 
     # 2. Tabla / Transicion Superior
-    bpy.types.Object.j3d_community_cutter_r_table = FloatProperty(
+    bpy.types.Object.j3d_cutter_r_table = FloatProperty(
         name="Radio Tabla",
         description="Radio del perimetro a nivel de la tabla (mm)",
         default=1.588,
@@ -703,7 +711,7 @@ def register():
         precision=3,
         update=update_cutter_object_props_callback,
     ) # type: ignore
-    bpy.types.Object.j3d_community_cutter_z_table = FloatProperty(
+    bpy.types.Object.j3d_cutter_z_table = FloatProperty(
         name="Z Tabla",
         description="Posicion Z a nivel de tabla respecto al centro Z=0 (mm)",
         default=1.050,
@@ -713,7 +721,7 @@ def register():
     ) # type: ignore
 
     # 3. Filetin Superior
-    bpy.types.Object.j3d_community_cutter_r_girdle_top = FloatProperty(
+    bpy.types.Object.j3d_cutter_r_girdle_top = FloatProperty(
         name="Radio Filetin Sup.",
         description="Radio del perimetro superior del filetin (mm)",
         default=2.610,
@@ -722,7 +730,7 @@ def register():
         precision=3,
         update=update_cutter_object_props_callback,
     ) # type: ignore
-    bpy.types.Object.j3d_community_cutter_z_girdle_top = FloatProperty(
+    bpy.types.Object.j3d_cutter_z_girdle_top = FloatProperty(
         name="Z Filetin Sup.",
         description="Posicion Z superior del filetin respecto al centro Z=0 (mm)",
         default=0.240,
@@ -732,7 +740,7 @@ def register():
     ) # type: ignore
 
     # 4. Filetin Inferior
-    bpy.types.Object.j3d_community_cutter_r_girdle_bot = FloatProperty(
+    bpy.types.Object.j3d_cutter_r_girdle_bot = FloatProperty(
         name="Radio Filetin Inf.",
         description="Radio del perimetro inferior del filetin (mm)",
         default=2.610,
@@ -741,7 +749,7 @@ def register():
         precision=3,
         update=update_cutter_object_props_callback,
     ) # type: ignore
-    bpy.types.Object.j3d_community_cutter_z_girdle_bot = FloatProperty(
+    bpy.types.Object.j3d_cutter_z_girdle_bot = FloatProperty(
         name="Z Filetin Inf.",
         description="Posicion Z inferior del filetin respecto al centro Z=0 (mm)",
         default=-0.130,
@@ -751,7 +759,7 @@ def register():
     ) # type: ignore
 
     # 5. Asiento Pabellon
-    bpy.types.Object.j3d_community_cutter_r_seat = FloatProperty(
+    bpy.types.Object.j3d_cutter_r_seat = FloatProperty(
         name="Radio Asiento",
         description="Radio del cono de asiento / pabellon (mm)",
         default=1.220,
@@ -760,7 +768,7 @@ def register():
         precision=3,
         update=update_cutter_object_props_callback,
     ) # type: ignore
-    bpy.types.Object.j3d_community_cutter_z_seat = FloatProperty(
+    bpy.types.Object.j3d_cutter_z_seat = FloatProperty(
         name="Z Asiento",
         description="Posicion Z del asiento respecto al centro Z=0 (mm)",
         default=-1.330,
@@ -770,7 +778,7 @@ def register():
     ) # type: ignore
 
     # 6. Perforacion Inferior
-    bpy.types.Object.j3d_community_cutter_r_hole_bot = FloatProperty(
+    bpy.types.Object.j3d_cutter_r_hole_bot = FloatProperty(
         name="Radio Perforacion",
         description="Radio del canal inferior de perforacion (mm)",
         default=1.220,
@@ -779,7 +787,7 @@ def register():
         precision=3,
         update=update_cutter_object_props_callback,
     ) # type: ignore
-    bpy.types.Object.j3d_community_cutter_z_hole_bot = FloatProperty(
+    bpy.types.Object.j3d_cutter_z_hole_bot = FloatProperty(
         name="Z Perforacion",
         description="Posicion Z del fondo de perforacion respecto al centro Z=0 (mm)",
         default=-5.050,

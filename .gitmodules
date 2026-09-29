@@ -1,0 +1,9 @@
+[submodule ".agents"]
+	path = .agents
+	url = https://github.com/Agent-Rules-Ecosystem/python-agent-rules.git
+[submodule ".skill/python-blender-addon-agent-skill"]
+	path = .skill/python-blender-addon-agent-skill
+	url = https://github.com/Agent-Rules-Ecosystem/python-blender-addon-agent-skill.git
+[submodule ".skill/i18n-agent-skill"]
+	path = .skill/i18n-agent-skill
+	url = https://github.com/Agent-Rules-Ecosystem/i18n-agent-skill.git

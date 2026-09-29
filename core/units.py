@@ -33,7 +33,7 @@ def mm_to_bu(value_mm: float, context: Optional[bpy.types.Context] = None) -> fl
     """
     try:
         ctx = context or bpy.context
-        scale_mode = getattr(ctx.scene, "j3d_community_scale_mode", "DIRECT_MM")
+        scale_mode = getattr(ctx.scene, "j3d_scale_mode", "DIRECT_MM")
         if scale_mode == "DIRECT_MM":
             return float(value_mm)
 
@@ -48,7 +48,7 @@ def bu_to_mm(value_bu: float, context: Optional[bpy.types.Context] = None) -> fl
     """Convierte una longitud en Blender Units (BU) a milímetros."""
     try:
         ctx = context or bpy.context
-        scale_mode = getattr(ctx.scene, "j3d_community_scale_mode", "DIRECT_MM")
+        scale_mode = getattr(ctx.scene, "j3d_scale_mode", "DIRECT_MM")
         if scale_mode == "DIRECT_MM":
             return float(value_bu)
 
@@ -61,7 +61,7 @@ def bu_to_mm(value_bu: float, context: Optional[bpy.types.Context] = None) -> fl
 
 class J3DComm_OT_set_scene_units(Operator):
     """Configura las unidades de la escena de Blender para diseño de joyería (Milímetros)."""
-    bl_idname = "j3d_community_community.set_scene_units"
+    bl_idname = "j3d_community.set_scene_units"
     bl_label = "Configurar Unidades de Escena"
     bl_description = "Ajusta la escena a Sistema Métrico, escala 0.001 (1 BU = 1 mm) y unidades en milímetros"
     bl_options = {'REGISTER', 'UNDO'}
