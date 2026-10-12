@@ -1,6 +1,6 @@
 schema_version = "1.0.0"
 id = "jeweler3dstudio_community"
-version = "0.1.0"
+version = "0.2.0"
 name = "Jeweler 3D Community"
 tagline = "Free community jewelry design tools for Blender 4.2 and later"
 maintainer = "Jeweler 3D Studio Team"
