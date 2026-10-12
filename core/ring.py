@@ -12,16 +12,18 @@ Scale standard: 1 BU = 1 mm direct jewelry modeling.
 Inner diameter = US ring size specification (touching-finger surface).
 """
 
-from typing import Dict, Tuple, List, Set
+from typing import Dict, Tuple, List, Set, Optional
 import math
 import bpy
 import bmesh
-from bpy.props import EnumProperty, FloatProperty, IntProperty, BoolProperty
+from bpy.props import EnumProperty, FloatProperty, IntProperty, BoolProperty, StringProperty
 from bpy.types import Operator
 from bpy_extras.object_utils import AddObjectHelper, object_data_add
 from .units import mm_to_bu
 
-# US Ring Size Chart (US Size -> Inner Diameter in mm)
+# International Ring Size Charts (Size -> Inner Diameter in mm)
+
+# 1. US / Canada (US Size -> Inner Diameter mm)
 US_RING_SIZES: Dict[str, float] = {
     "3.0": 14.05, "3.5": 14.45, "4.0": 14.86, "4.5": 15.27,
     "5.0": 15.70, "5.5": 16.10, "6.0": 16.51, "6.5": 16.92,
@@ -32,10 +34,88 @@ US_RING_SIZES: Dict[str, float] = {
     "13.0": 22.20, "13.5": 22.61,
 }
 
+# 2. UK / Australia / South Africa (Letter Size -> Inner Diameter mm)
+UK_RING_SIZES: Dict[str, float] = {
+    "F": 14.05, "F 1/2": 14.25, "G": 14.45, "G 1/2": 14.65,
+    "H": 14.86, "H 1/2": 15.06, "I": 15.27, "I 1/2": 15.40,
+    "J": 15.49, "J 1/2": 15.70, "K": 15.90, "K 1/2": 16.10,
+    "L": 16.31, "L 1/2": 16.51, "M": 16.71, "M 1/2": 16.92,
+    "N": 17.12, "N 1/2": 17.32, "O": 17.53, "O 1/2": 17.73,
+    "P": 17.93, "P 1/2": 18.14, "Q": 18.34, "Q 1/2": 18.54,
+    "R": 18.75, "R 1/2": 18.95, "S": 19.15, "S 1/2": 19.35,
+    "T": 19.56, "T 1/2": 19.76, "U": 19.96, "U 1/2": 20.17,
+    "V": 20.37, "V 1/2": 20.57, "W": 20.78, "W 1/2": 20.98,
+    "X": 21.18, "X 1/2": 21.39, "Y": 21.59, "Z": 21.99,
+    "Z+1": 22.40, "Z+2": 22.81, "Z+3": 23.22, "Z+4": 23.62,
+}
+
+# 3. EU / ISO 8653 (Inner Circumference mm -> Inner Diameter mm = C / pi)
+EU_RING_SIZES: Dict[str, float] = {
+    "44": 14.01, "45": 14.32, "46": 14.64, "47": 14.96, "48": 15.28,
+    "49": 15.60, "50": 15.92, "51": 16.23, "52": 16.55, "53": 16.87,
+    "54": 17.19, "55": 17.51, "56": 17.83, "57": 18.14, "58": 18.46,
+    "59": 18.78, "60": 19.10, "61": 19.42, "62": 19.74, "63": 20.05,
+    "64": 20.37, "65": 20.69, "66": 21.01, "67": 21.33, "68": 21.65,
+    "69": 21.96, "70": 22.28, "72": 22.92,
+}
+
+# 4. Japan / China / Asia (Numerical Size 1-27 -> Inner Diameter mm)
+JP_RING_SIZES: Dict[str, float] = {
+    "1": 13.00, "2": 13.33, "3": 13.67, "4": 14.00, "5": 14.33,
+    "6": 14.67, "7": 15.00, "8": 15.33, "9": 15.67, "10": 16.00,
+    "11": 16.33, "12": 16.67, "13": 17.00, "14": 17.33, "15": 17.67,
+    "16": 18.00, "17": 18.33, "18": 18.67, "19": 19.00, "20": 19.33,
+    "21": 19.67, "22": 20.00, "23": 20.33, "24": 20.67, "25": 21.00,
+    "26": 21.33, "27": 21.67,
+}
+
+RING_SIZE_SYSTEMS: Dict[str, Dict[str, float]] = {
+    "US": US_RING_SIZES,
+    "UK": UK_RING_SIZES,
+    "EU": EU_RING_SIZES,
+    "JP": JP_RING_SIZES,
+}
+
+RING_SYSTEM_ITEMS: List[Tuple[str, str, str]] = [
+    ("US", "US / Canada", "United States & Canada numerical ring sizing standard (3.0 - 13.5)"),
+    ("UK", "UK / Australia", "United Kingdom & Australia letter ring sizing standard (F - Z+4)"),
+    ("EU", "EU / ISO (Circumference)", "European / ISO 8653 inner circumference in mm (44 - 72)"),
+    ("JP", "Japan / Asia", "Japan, China & Asian numerical ring sizing standard (1 - 27)"),
+]
+
 US_SIZE_ITEMS: List[Tuple[str, str, str]] = [
-    (k, f"US {k} ({v:.2f} mm)", f"US Size {k} - Inner diameter {v:.2f} mm")
+    (k, f"US {k} (Ø {v:.2f} mm)", f"US Size {k} - Inner diameter {v:.2f} mm (Circumference {v*math.pi:.1f} mm)")
     for k, v in US_RING_SIZES.items()
 ]
+
+UK_SIZE_ITEMS: List[Tuple[str, str, str]] = [
+    (k, f"UK {k} (Ø {v:.2f} mm)", f"UK Size {k} - Inner diameter {v:.2f} mm (Circumference {v*math.pi:.1f} mm)")
+    for k, v in UK_RING_SIZES.items()
+]
+
+EU_SIZE_ITEMS: List[Tuple[str, str, str]] = [
+    (k, f"EU {k} (Ø {v:.2f} mm / Circ {k} mm)", f"EU Size {k} - Inner circumference {k} mm (Diameter {v:.2f} mm)")
+    for k, v in EU_RING_SIZES.items()
+]
+
+JP_SIZE_ITEMS: List[Tuple[str, str, str]] = [
+    (k, f"JP {k} (Ø {v:.2f} mm)", f"Japan Size {k} - Inner diameter {v:.2f} mm (Circumference {v*math.pi:.1f} mm)")
+    for k, v in JP_RING_SIZES.items()
+]
+
+
+def get_ring_diameter(system: str = "US", size_key: str = "7.0") -> float:
+    """Returns the inner diameter in mm for the given system and size key."""
+    table = RING_SIZE_SYSTEMS.get(system, US_RING_SIZES)
+    if size_key in table:
+        return table[size_key]
+    # Fallback to US key or standard default 17.32 mm (US 7)
+    return US_RING_SIZES.get(size_key, 17.32)
+
+
+def get_ring_circumference(diameter_mm: float) -> float:
+    """Calculates inner circumference in mm from inner diameter."""
+    return diameter_mm * math.pi
 
 GEOMETRY_TYPE_ITEMS: List[Tuple[str, str, str, str, int]] = [
     ("CURVE",    "Bezier Curve",  "Generate 3D circular Bezier curve", "CURVE_NCIRCLE", 0),
@@ -334,9 +414,22 @@ class J3DComm_OT_create_ring_size(Operator, AddObjectHelper):
     bl_label = "Create Ring Size"
     bl_options = {'REGISTER', 'UNDO'}
 
+    ring_system: EnumProperty(
+        name="System",
+        description="Ring sizing standard (US, UK, EU, JP)",
+        items=RING_SYSTEM_ITEMS,
+        default="US"
+    )  # type: ignore
+
+    ring_size: StringProperty(
+        name="Size",
+        description="Ring size in the selected system",
+        default="7.0"
+    )  # type: ignore
+
     us_size: EnumProperty(
         name="US Size",
-        description="Standard US ring size selection",
+        description="Standard US ring size selection (legacy / direct access)",
         items=US_SIZE_ITEMS,
         default="7.0"
     )  # type: ignore
@@ -373,7 +466,11 @@ class J3DComm_OT_create_ring_size(Operator, AddObjectHelper):
         layout = self.layout
         layout.use_property_split = True
         layout.use_property_decorate = False
-        layout.prop(self, "us_size")
+        layout.prop(self, "ring_system")
+        if self.ring_system == "US":
+            layout.prop(self, "us_size", text="US Size")
+        else:
+            layout.prop(self, "ring_size", text="Size")
         layout.prop(self, "geometry_type")
         layout.prop(self, "orientation")
         if self.geometry_type == 'CYLINDER':
@@ -384,9 +481,15 @@ class J3DComm_OT_create_ring_size(Operator, AddObjectHelper):
         layout.prop(self, "rotation", text="Rotation")
 
     def execute(self, context: bpy.types.Context) -> set:
-        dia_mm = US_RING_SIZES.get(self.us_size, 17.32)
+        system = self.ring_system
+        size_key = self.ring_size if self.ring_size else self.us_size
+        if system == "US" and (not self.ring_size or self.ring_size == "7.0") and self.us_size:
+            size_key = self.us_size
+
+        dia_mm = get_ring_diameter(system, size_key)
         radius_mm = dia_mm / 2.0
-        obj_name = f"Ring_Size_US_{self.us_size}"
+        circ_mm = get_ring_circumference(dia_mm)
+        obj_name = f"Ring_Size_{system}_{size_key.replace(' ', '_')}"
 
         if self.geometry_type == 'CURVE':
             obdata = create_ring_bezier_curve(f"{obj_name}_Curve", radius_mm)
@@ -400,13 +503,16 @@ class J3DComm_OT_create_ring_size(Operator, AddObjectHelper):
             obj.rotation_euler = _get_orientation_euler(self.orientation)
         obj.name = obj_name
         obj["j3d_type"] = "RING_SIZE"
+        obj["j3d_ring_system"] = system
+        obj["j3d_ring_size"] = size_key
         obj["j3d_us_size"] = self.us_size
         obj["j3d_diameter_mm"] = dia_mm
+        obj["j3d_circ_mm"] = circ_mm
         obj["j3d_radius_mm"] = radius_mm
         obj["j3d_orientation"] = self.orientation
         self.report(
             {'INFO'},
-            f"Ring Size US {self.us_size} ({dia_mm:.2f} mm) created in {self.orientation}: {obj_name}"
+            f"Ring Size {system} {size_key} (Ø {dia_mm:.2f} mm | Circ {circ_mm:.1f} mm) created in {self.orientation}: {obj_name}"
         )
         return {'FINISHED'}
 
@@ -417,9 +523,22 @@ class J3DComm_OT_create_ring_profile(Operator, AddObjectHelper):
     bl_label = "Create Ring Shank"
     bl_options = {'REGISTER', 'UNDO'}
 
+    ring_system: EnumProperty(
+        name="System",
+        description="Ring sizing standard (US, UK, EU, JP)",
+        items=RING_SYSTEM_ITEMS,
+        default="US"
+    )  # type: ignore
+
+    ring_size: StringProperty(
+        name="Size",
+        description="Ring size in the selected system",
+        default="7.0"
+    )  # type: ignore
+
     us_size: EnumProperty(
         name="US Size",
-        description="Defines INNER diameter of ring (finger touching surface)",
+        description="Defines INNER diameter of ring (legacy / direct access)",
         items=US_SIZE_ITEMS, default="7.0"
     )  # type: ignore
 
@@ -486,7 +605,11 @@ class J3DComm_OT_create_ring_profile(Operator, AddObjectHelper):
         layout = self.layout
         layout.use_property_split = True
         layout.use_property_decorate = False
-        layout.prop(self, "us_size")
+        layout.prop(self, "ring_system")
+        if self.ring_system == "US":
+            layout.prop(self, "us_size", text="US Size")
+        else:
+            layout.prop(self, "ring_size", text="Size")
         layout.prop(self, "profile_type")
         layout.prop(self, "orientation")
         layout.separator()
@@ -506,11 +629,17 @@ class J3DComm_OT_create_ring_profile(Operator, AddObjectHelper):
         layout.prop(self, "rotation", text="Rotation")
 
     def execute(self, context: bpy.types.Context) -> set:
-        inner_dia_mm = US_RING_SIZES.get(self.us_size, 17.32)
+        system = self.ring_system
+        size_key = self.ring_size if self.ring_size else self.us_size
+        if system == "US" and (not self.ring_size or self.ring_size == "7.0") and self.us_size:
+            size_key = self.us_size
+
+        inner_dia_mm = get_ring_diameter(system, size_key)
         inner_radius_mm = inner_dia_mm / 2.0  # INNER, touches finger
+        circ_mm = get_ring_circumference(inner_dia_mm)
 
         obj_name = (
-            f"Ring_US{self.us_size}_{self.profile_type}"
+            f"Ring_{system}{size_key.replace(' ', '_')}_{self.profile_type}"
             f"_{self.width_mm:.1f}x{self.height_mm:.1f}mm"
         )
         mesh = create_ring_profile_mesh(
@@ -529,8 +658,11 @@ class J3DComm_OT_create_ring_profile(Operator, AddObjectHelper):
             obj.rotation_euler = _get_orientation_euler(self.orientation)
         obj.name = obj_name
         obj["j3d_type"] = "RING_PROFILE"
+        obj["j3d_ring_system"] = system
+        obj["j3d_ring_size"] = size_key
         obj["j3d_us_size"] = self.us_size
         obj["j3d_inner_dia_mm"] = inner_dia_mm
+        obj["j3d_circ_mm"] = circ_mm
         obj["j3d_profile"] = self.profile_type
         obj["j3d_orientation"] = self.orientation
         obj["j3d_width_mm"] = self.width_mm
@@ -546,8 +678,8 @@ class J3DComm_OT_create_ring_profile(Operator, AddObjectHelper):
 
         self.report(
             {'INFO'},
-            f"Ring Shank US {self.us_size} | {self.profile_type} | "
-            f"Inner Dia {inner_dia_mm:.2f}mm | {self.orientation}"
+            f"Ring Shank {system} {size_key} | {self.profile_type} | "
+            f"Inner Dia {inner_dia_mm:.2f}mm (Circ {circ_mm:.1f}mm) | {self.orientation}"
         )
         return {'FINISHED'}
 

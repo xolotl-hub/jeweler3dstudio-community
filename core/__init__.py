@@ -12,6 +12,8 @@ from . import (
     ring,
     gems,
     cutters,
+    prongs,
+    v_cutters,
 )
 
 if _needs_reload:
@@ -21,12 +23,16 @@ if _needs_reload:
     ring = importlib.reload(ring)
     gems = importlib.reload(gems)
     cutters = importlib.reload(cutters)
+    prongs = importlib.reload(prongs)
+    v_cutters = importlib.reload(v_cutters)
 
 modules = (
     units,
     ring,
     gems,
     cutters,
+    prongs,
+    v_cutters,
 )
 
 

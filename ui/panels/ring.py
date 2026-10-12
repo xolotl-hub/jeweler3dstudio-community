@@ -5,7 +5,18 @@ Panels for Ring Size references and parametric Metal Shank / Profiles.
 
 import bpy
 from bpy.types import Panel, Context
-from ...core.ring import US_SIZE_ITEMS, GEOMETRY_TYPE_ITEMS, RING_PROFILE_ITEMS, ORIENTATION_ITEMS
+from ...core.ring import (
+    US_SIZE_ITEMS,
+    UK_SIZE_ITEMS,
+    EU_SIZE_ITEMS,
+    JP_SIZE_ITEMS,
+    RING_SYSTEM_ITEMS,
+    GEOMETRY_TYPE_ITEMS,
+    RING_PROFILE_ITEMS,
+    ORIENTATION_ITEMS,
+    get_ring_diameter,
+    get_ring_circumference,
+)
 
 
 # ===================================================================
@@ -37,7 +48,30 @@ class VIEW3D_PT_j3d_community_sub_size(Panel):
         j3d = context.scene.j3d
         col = layout.column(align=True)
 
-        col.prop(j3d, "us_size", text="US Size")
+        system = j3d.ring_system
+        col.prop(j3d, "ring_system", text="System")
+
+        if system == "US":
+            col.prop(j3d, "us_size", text="Size")
+            active_size = j3d.us_size
+        elif system == "UK":
+            col.prop(j3d, "uk_size", text="Size")
+            active_size = j3d.uk_size
+        elif system == "EU":
+            col.prop(j3d, "eu_size", text="Size")
+            active_size = j3d.eu_size
+        elif system == "JP":
+            col.prop(j3d, "jp_size", text="Size")
+            active_size = j3d.jp_size
+        else:
+            col.prop(j3d, "us_size", text="Size")
+            active_size = j3d.us_size
+
+        dia_mm = get_ring_diameter(system, active_size)
+        circ_mm = get_ring_circumference(dia_mm)
+        box_info = col.box()
+        box_row = box_info.row()
+        box_row.label(text=f"Ø {dia_mm:.2f} mm | Circ: {circ_mm:.1f} mm", icon='INFO_TARGET')
 
         row = col.row(align=True)
         row.prop(j3d, "geometry_type", expand=True)
@@ -46,6 +80,8 @@ class VIEW3D_PT_j3d_community_sub_size(Panel):
 
         col.separator()
         op = col.operator("j3d_community.create_ring_size", icon='CURVE_NCIRCLE', text="Create Ring Size")
+        op.ring_system = system
+        op.ring_size = active_size
         op.us_size = j3d.us_size
         op.geometry_type = j3d.geometry_type
         op.orientation = j3d.ring_orientation
@@ -64,6 +100,18 @@ class VIEW3D_PT_j3d_community_sub_profile(Panel):
         layout = self.layout
         j3d = context.scene.j3d
         col = layout.column(align=True)
+
+        system = j3d.ring_system
+        if system == "US":
+            active_size = j3d.us_size
+        elif system == "UK":
+            active_size = j3d.uk_size
+        elif system == "EU":
+            active_size = j3d.eu_size
+        elif system == "JP":
+            active_size = j3d.jp_size
+        else:
+            active_size = j3d.us_size
 
         col.prop(j3d, "ring_profile", text="Profile")
         col.prop(j3d, "ring_orientation", text="Orientation")
@@ -86,6 +134,8 @@ class VIEW3D_PT_j3d_community_sub_profile(Panel):
 
         col.separator()
         op = col.operator("j3d_community.create_ring_profile", icon='MESH_CYLINDER', text="Create Ring Shank")
+        op.ring_system = system
+        op.ring_size = active_size
         op.us_size = j3d.us_size
         op.profile_type = j3d.ring_profile
         op.orientation = j3d.ring_orientation

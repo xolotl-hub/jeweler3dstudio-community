@@ -10,6 +10,7 @@ from . import (
     i18n,
     panels,
     # menus, (Disabled in Community)
+    preferences,
 )
 
 if _needs_reload:
@@ -17,9 +18,11 @@ if _needs_reload:
     i18n = importlib.reload(i18n)
     panels = importlib.reload(panels)
     # menus = importlib.reload(menus) (Disabled in Community)
+    preferences = importlib.reload(preferences)
 
 modules = (
     i18n,
+    preferences,
     panels,
     # menus, (Disabled in Community)
 )

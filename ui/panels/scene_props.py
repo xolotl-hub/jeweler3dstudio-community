@@ -22,7 +22,13 @@ from ...core.ring import (
     GEOMETRY_TYPE_ITEMS,
     ORIENTATION_ITEMS,
     RING_PROFILE_ITEMS,
+    RING_SYSTEM_ITEMS,
     US_SIZE_ITEMS,
+    UK_SIZE_ITEMS,
+    EU_SIZE_ITEMS,
+    JP_SIZE_ITEMS,
+    get_ring_diameter,
+    get_ring_circumference,
 )
 from ...core.gems import (
     STONE_ITEMS,
@@ -51,11 +57,39 @@ class J3D_SceneSettings(PropertyGroup):
     # Ring & Size
     # ------------------------------------------------------------------
 
+    ring_system: EnumProperty(
+        name="System",
+        description="Ring sizing standard (US, UK, EU/ISO, JP)",
+        items=RING_SYSTEM_ITEMS,
+        default="US",
+    )  # type: ignore
+
     us_size: EnumProperty(
-        name="US Ring Size",
-        description="Standard US ring size selection (includes half sizes)",
+        name="US Size",
+        description="Standard US & Canada ring size selection",
         items=US_SIZE_ITEMS,
         default="7.0",
+    )  # type: ignore
+
+    uk_size: EnumProperty(
+        name="UK Size",
+        description="UK & Australia letter ring size selection",
+        items=UK_SIZE_ITEMS,
+        default="N 1/2",
+    )  # type: ignore
+
+    eu_size: EnumProperty(
+        name="EU / ISO Size",
+        description="European / ISO 8653 inner circumference (mm)",
+        items=EU_SIZE_ITEMS,
+        default="54",
+    )  # type: ignore
+
+    jp_size: EnumProperty(
+        name="Japan Size",
+        description="Japan, China & Asian numerical ring size selection",
+        items=JP_SIZE_ITEMS,
+        default="14",
     )  # type: ignore
 
     geometry_type: EnumProperty(
@@ -211,8 +245,8 @@ class J3D_SceneSettings(PropertyGroup):
 
     cutter_segments: IntProperty(
         name="Cutter Segments",
-        description="Radial segments for seat cutter (default 8)",
-        default=8,
+        description="Radial segments for seat cutter (default 16)",
+        default=16,
         min=4,
         max=64,
     )  # type: ignore
@@ -220,7 +254,7 @@ class J3D_SceneSettings(PropertyGroup):
     cutter_crease: FloatProperty(
         name="Cutter Crease",
         description="Edge crease (Shift+E) for Subdivision Surface",
-        default=0.8,
+        default=0.90,
         min=0.0,
         max=1.0,
         step=10,
