@@ -39,13 +39,16 @@ def get_oval_positions(
         ux, uy = nx / l, ny / l
 
         x0, y0 = px + ux * dist, py + uy * dist
-        rz = atan2(-ux, uy)
+        rz0 = atan2(-ux,  uy)
+        rz1 = atan2( ux,  uy)
+        rz2 = atan2( ux, -uy)
+        rz3 = atan2(-ux, -uy)
 
         return [
-            ProngPosition(x= x0, y= y0, rot_z_rad= rz, tip_type=None),
-            ProngPosition(x=-x0, y= y0, rot_z_rad=-rz, tip_type=None),
-            ProngPosition(x=-x0, y=-y0, rot_z_rad= rz, tip_type=None),
-            ProngPosition(x= x0, y=-y0, rot_z_rad=-rz, tip_type=None),
+            ProngPosition(x= x0, y= y0, rot_z_rad=rz0, tip_type=None),
+            ProngPosition(x=-x0, y= y0, rot_z_rad=rz1, tip_type=None),
+            ProngPosition(x=-x0, y=-y0, rot_z_rad=rz2, tip_type=None),
+            ProngPosition(x= x0, y=-y0, rot_z_rad=rz3, tip_type=None),
         ]
 
     elif n == 6:
@@ -57,18 +60,20 @@ def get_oval_positions(
         l = sqrt(nx * nx + ny * ny) or 1.0
         ux, uy = nx / l, ny / l
         x0, y0 = px + ux * dist, py + uy * dist
-        rz = atan2(-ux, uy)
+        rz0 = atan2(-ux,  uy)
+        rz1 = atan2( ux,  uy)
+        rz2 = atan2( ux, -uy)
+        rz3 = atan2(-ux, -uy)
 
         x_waist = a + dist
-        rz_waist = radians(90.0)
 
         return [
-            ProngPosition(x= x0, y= y0, rot_z_rad= rz, tip_type=None),
-            ProngPosition(x= x_waist, y= 0.0, rot_z_rad=rz_waist, tip_type=None),
-            ProngPosition(x= x0, y=-y0, rot_z_rad=-rz, tip_type=None),
-            ProngPosition(x=-x0, y=-y0, rot_z_rad= rz, tip_type=None),
-            ProngPosition(x=-x_waist, y= 0.0, rot_z_rad=-rz_waist, tip_type=None),
-            ProngPosition(x=-x0, y= y0, rot_z_rad=-rz, tip_type=None),
+            ProngPosition(x= x0, y= y0, rot_z_rad=rz0, tip_type=None),
+            ProngPosition(x= x_waist, y= 0.0, rot_z_rad=radians(-90.0), tip_type=None),
+            ProngPosition(x= x0, y=-y0, rot_z_rad=rz3, tip_type=None),
+            ProngPosition(x=-x0, y=-y0, rot_z_rad=rz2, tip_type=None),
+            ProngPosition(x=-x_waist, y= 0.0, rot_z_rad=radians(90.0), tip_type=None),
+            ProngPosition(x=-x0, y= y0, rot_z_rad=rz1, tip_type=None),
         ]
 
     else:

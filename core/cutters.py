@@ -37,7 +37,8 @@ CUTTER_R_HOLE   = 0.634   # Radio de asiento y canal inferior (0.317 mm para gem
 _ROUND_CUTS    = {"ROUND"}
 _RECT_CUTS     = {"PRINCESS", "ASSCHER", "SQUARE", "FLANDERS", "OCTAGON"}
 _BAGUETTE_CUTS = {"BAGUETTE", "EMERALD", "RADIANT"}
-_OVAL_CUTS     = {"OVAL", "CUSHION"}
+_OVAL_CUTS     = {"OVAL"}
+_CUSHION_CUTS  = {"CUSHION"}
 _PEAR_CUTS     = {"PEAR"}
 _MARQUISE_CUTS = {"MARQUISE"}
 _HEART_CUTS    = {"HEART"}
@@ -52,15 +53,15 @@ def _circle(n: int):
             for i in range(n)]
 
 
-def _ellipse(n: int, a: float = 0.75, b: float = 1.0):
-    """Elipse para ovales y cojines (eje mayor a lo largo de Y)."""
+def _ellipse(n: int, a: float = 0.625, b: float = 1.0):
+    """Elipse para corte Oval calibrado (ancho relativo a largo = 0.625)."""
     return [(a * math.cos(2 * math.pi * i / n), b * math.sin(2 * math.pi * i / n))
             for i in range(n)]
 
 
 def _superellipse(n: int, a: float = 1.0, b: float = 1.0, p: float = 4.5):
     """Rectangulo con esquinas suavizadas (superelipse).
-    p=4.5 da bordes levemente redondeados; p=2 da circulo.
+    p=4.5 da bordes levemente redondeados; p=2 da circulo; p=2.8 da cojin (cushion).
     """
     pts = []
     for i in range(n):
@@ -73,18 +74,13 @@ def _superellipse(n: int, a: float = 1.0, b: float = 1.0, p: float = 4.5):
     return pts
 
 
-def _triangle_rounded(n: int, r_factor: float = 0.18):
-    """Triangulo equilatero con vertices redondeados y vertice inferior hacia -Y."""
+def _triangle_rounded(n: int, r_factor: float = 0.1585):
+    """Triangulo curvado (Trillion) con 3 vertices redondeados y vertice inferior hacia -Y."""
     pts = []
     for i in range(n):
-        ang = 2 * math.pi * i / n - math.pi / 2
-        c = math.cos(ang)
-        s = math.sin(ang)
-        p_tri = 0.65
-        denom = abs(c) ** p_tri + abs(s) ** p_tri
-        r_tri = denom ** (-1.0 / p_tri) if denom > 1e-12 else 1.0
-        r = r_tri * (1.0 - r_factor) + 1.0 * r_factor
-        pts.append((c * r * 0.82, s * r * 0.82))
+        ang = 2 * math.pi * i / n
+        r = (1.0 - r_factor) + r_factor * math.sin(3.0 * ang)
+        pts.append((r * math.cos(ang), r * math.sin(ang)))
     return pts
 
 
@@ -117,14 +113,14 @@ def _marquise(n: int):
 
 
 def _heart(n: int):
-    """Corazon parametrico clasico normalizado."""
+    """Corazon parametrico clasico normalizado con punta aguda hacia -Y."""
     pts = []
     for i in range(n):
         t = 2 * math.pi * i / n - math.pi / 2
         x = 16 * math.sin(t) ** 3
         y = -(13 * math.cos(t) - 5 * math.cos(2 * t)
               - 2 * math.cos(3 * t) - math.cos(4 * t))
-        pts.append((x / 16.5, y / 17.5))
+        pts.append((x / 16.5, -y / 17.5))
     return pts
 
 
@@ -149,7 +145,9 @@ def get_cut_outline(cut_key: str, n: int):
     elif k in _BAGUETTE_CUTS:
         return _superellipse(n, a=0.58, b=1.0, p=4.5)
     elif k in _OVAL_CUTS:
-        return _ellipse(n, a=0.75, b=1.0)
+        return _ellipse(n, a=0.625, b=1.0)
+    elif k in _CUSHION_CUTS:
+        return _superellipse(n, a=1.0, b=1.0, p=2.8)
     elif k in _PEAR_CUTS:
         return _pear(n)
     elif k in _MARQUISE_CUTS:

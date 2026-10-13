@@ -71,7 +71,7 @@ class VIEW3D_PT_j3d_community_sub_size(Panel):
         circ_mm = get_ring_circumference(dia_mm)
         box_info = col.box()
         box_row = box_info.row()
-        box_row.label(text=f"Ø {dia_mm:.2f} mm | Circ: {circ_mm:.1f} mm", icon='INFO_TARGET')
+        box_row.label(text=f"Ø {dia_mm:.2f} mm | Circ: {circ_mm:.1f} mm", icon='INFO')
 
         row = col.row(align=True)
         row.prop(j3d, "geometry_type", expand=True)
