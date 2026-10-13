@@ -36,6 +36,25 @@ CUT_DEFS = [
     ("TRIANGLE",  "Triangle",        "triangle.png"),
 ]
 
+# Cortes visibles en tiers de producción (Community / Essential / Standard / Pro).
+# Lab siempre muestra todos los cortes definidos en CUT_DEFS.
+CUTS_RELEASED = {"ROUND", "OVAL"}
+
+
+def _is_lab_tier() -> bool:
+    """Detecta en runtime si el addon activo es el tier Lab (jeweler3dstudio_lab).
+    En Blender 4.2+, __package__ del módulo core/gems.py es
+    '<addon_id>.core', por lo que se extrae el primer componente.
+    """
+    try:
+        pkg = __package__ or ""          # e.g. "jeweler3dstudio_lab.core"
+        root = pkg.split(".")[0]          # e.g. "jeweler3dstudio_lab"
+        return root.endswith("_lab")
+    except Exception:
+        pass
+    return False
+
+
 # ── Gem Stones & Physical Properties ─────────────────────────────────────────
 GEM_STONES: Dict[str, Dict] = {
     "DIAMOND":       {"name": "Diamond",        "ior": 2.417, "density": 3.52, "color": (1.0, 1.0, 1.0, 1.0)},
@@ -364,14 +383,20 @@ def clear_previews():
 
 
 def get_cut_enum_items(self, context):
-    """Callback dinámico para EnumProperty con iconos de previsualización para los 17 cortes."""
+    """Callback dinámico para EnumProperty con iconos de previsualización.
+    En tiers de producción solo muestra los cortes de CUTS_RELEASED (Round y Oval).
+    El tier Lab siempre expone los 17 cortes.
+    """
     try:
         pcoll = get_cut_preview_collection()
     except Exception:
         pcoll = None
 
+    lab = _is_lab_tier()
     items = []
     for i, (key, label, icon_file) in enumerate(CUT_DEFS):
+        if not lab and key not in CUTS_RELEASED:
+            continue
         icon_id = 0
         if pcoll is not None and key in pcoll:
             icon_id = pcoll[key].icon_id
