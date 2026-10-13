@@ -185,6 +185,7 @@ class J3D_SceneSettings(PropertyGroup):
         name="Cut",
         description="Gemstone cut selection",
         items=get_cut_enum_items,
+        default=0,
         update=_on_gem_cut_update,
     )  # type: ignore
 
@@ -263,6 +264,33 @@ class J3D_SceneSettings(PropertyGroup):
 
 
 # ------------------------------------------------------------------
+# Auto-heal & Validation for Stale / Cross-Tier Sessions
+# ------------------------------------------------------------------
+
+def _validate_all_scenes_gem_cut() -> None:
+    """Auto-corrige gem_cut si una escena previa guardó un corte no disponible en este tier."""
+    try:
+        from ...core.gems import CUTS_RELEASED, _is_lab_tier
+        lab = _is_lab_tier()
+        for scn in bpy.data.scenes:
+            j3d = getattr(scn, "j3d", None)
+            if j3d:
+                cut = getattr(j3d, "gem_cut", "")
+                if not cut or (not lab and cut not in CUTS_RELEASED):
+                    try:
+                        j3d.gem_cut = "ROUND"
+                    except Exception:
+                        pass
+    except Exception:
+        pass
+
+
+@bpy.app.handlers.persistent
+def _on_load_post_validate_gem_cut(dummy1=None, dummy2=None) -> None:
+    _validate_all_scenes_gem_cut()
+
+
+# ------------------------------------------------------------------
 # Registration
 # ------------------------------------------------------------------
 
@@ -278,8 +306,18 @@ def register() -> None:
         pass
     bpy.types.Scene.j3d = PointerProperty(type=J3D_SceneSettings)  # type: ignore
 
+    # Auto-sanación en caliente para escenas activas o recargas de addon
+    _validate_all_scenes_gem_cut()
+    if _on_load_post_validate_gem_cut not in bpy.app.handlers.load_post:
+        bpy.app.handlers.load_post.append(_on_load_post_validate_gem_cut)
+
 
 def unregister() -> None:
+    if _on_load_post_validate_gem_cut in bpy.app.handlers.load_post:
+        try:
+            bpy.app.handlers.load_post.remove(_on_load_post_validate_gem_cut)
+        except Exception:
+            pass
     if hasattr(bpy.types.Scene, "j3d"):
         try:
             del bpy.types.Scene.j3d

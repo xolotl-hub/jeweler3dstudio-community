@@ -294,10 +294,10 @@ def get_gem_size_preset_items(self, context) -> List[Tuple[str, str, str, int, i
         cut_key = self.gem_cut
     elif context and context.scene:
         j3d = getattr(context.scene, "j3d", None)
-        if j3d and hasattr(j3d, "gem_cut"):
+        if j3d and hasattr(j3d, "gem_cut") and j3d.gem_cut:
             cut_key = j3d.gem_cut
         else:
-            cut_key = getattr(context.scene, "j3d_gem_cut", "ROUND")
+            cut_key = getattr(context.scene, "j3d_gem_cut", "ROUND") or "ROUND"
 
     sizes_list = CUT_COMMERCIAL_SIZES.get(cut_key, GLOBAL_COMMERCIAL_SIZES)
 
@@ -323,10 +323,10 @@ def get_effective_gem_size(scene) -> float:
             return float(j3d.gem_size)
         return float(getattr(scene, "j3d_gem_size", 1.0))
 
-    if j3d and hasattr(j3d, "gem_cut"):
+    if j3d and hasattr(j3d, "gem_cut") and j3d.gem_cut:
         cut_key = j3d.gem_cut
     else:
-        cut_key = getattr(scene, "j3d_gem_cut", "ROUND")
+        cut_key = getattr(scene, "j3d_gem_cut", "ROUND") or "ROUND"
 
     sizes_list = CUT_COMMERCIAL_SIZES.get(cut_key, GLOBAL_COMMERCIAL_SIZES)
     for key, _, mm_val in sizes_list:
@@ -394,13 +394,13 @@ def get_cut_enum_items(self, context):
 
     lab = _is_lab_tier()
     items = []
-    for i, (key, label, icon_file) in enumerate(CUT_DEFS):
+    for key, label, icon_file in CUT_DEFS:
         if not lab and key not in CUTS_RELEASED:
             continue
         icon_id = 0
         if pcoll is not None and key in pcoll:
             icon_id = pcoll[key].icon_id
-        items.append((key, label, f"Corte {label}", icon_id, i))
+        items.append((key, label, f"Corte {label}", icon_id, len(items)))
     return items
 
 
@@ -511,10 +511,10 @@ class J3DComm_OT_add_gem(Operator):
         j3d = getattr(scene, "j3d", None)
         if self.cut:
             cut_key = self.cut
-        elif j3d and hasattr(j3d, "gem_cut"):
+        elif j3d and hasattr(j3d, "gem_cut") and j3d.gem_cut:
             cut_key = j3d.gem_cut
         else:
-            cut_key = getattr(scene, "j3d_gem_cut", "ROUND")
+            cut_key = getattr(scene, "j3d_gem_cut", "ROUND") or "ROUND"
 
         if self.stone:
             stone_key = self.stone

@@ -46,12 +46,13 @@ class VIEW3D_PT_j3d_community_sub_gem_visor(Panel):
         col.prop(j3d, "gem_cut", text="Cut")
 
         pcoll = get_cut_preview_collection()
-        if pcoll and j3d.gem_cut in pcoll:
+        cut_key = j3d.gem_cut if (j3d.gem_cut and pcoll and j3d.gem_cut in pcoll) else "ROUND"
+        if pcoll and cut_key in pcoll:
             preview = col.box()
             row = preview.row(align=True)
             row.alignment = 'EXPAND'
             row.scale_y = 0.75
-            row.template_icon(icon_value=pcoll[j3d.gem_cut].icon_id, scale=10)
+            row.template_icon(icon_value=pcoll[cut_key].icon_id, scale=10)
 
         col.separator()
         col.prop(j3d, "gem_stone", text="Stone")
