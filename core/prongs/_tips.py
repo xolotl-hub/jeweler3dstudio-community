@@ -102,16 +102,7 @@ def _build_top_flat_cap(bm: BMesh, top_rim_verts: list, inset_scale: float = 0.7
 # ---------------------------------------------------------------------------
 
 def _build_v_prong_coords(z: float, s: float, t: float, d: float) -> list:
-    """Calculates the 6 coordinates of a V-Prong cross section at height z (Rust native con fallback)."""
-    try:
-        from .. import _rust_bridge as rb
-        if rb.has_rust_engine():
-            res = rb.calc_v_prong_coords(s, t, d)
-            if res is not None and len(res) == 6:
-                return [(x, y, z) for (x, y) in res]
-    except Exception:
-        pass
-
+    """Calculates the 6 coordinates of a V-Prong cross section at height z."""
     L = sqrt(s * s + d * d)
     if L > 1e-6:
         nx = d / L

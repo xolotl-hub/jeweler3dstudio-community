@@ -125,18 +125,9 @@ def _heart(n: int):
 
 
 def get_cut_outline(cut_key: str, n: int):
-    """Devuelve N puntos 2D normalizados del outline del corte dado (Rust native con fallback)."""
+    """Devuelve N puntos 2D normalizados del outline del corte dado."""
     k = cut_key.upper()
     n = max(4, n)
-
-    try:
-        from . import _rust_bridge as rb
-        if rb.has_rust_engine():
-            res = rb.get_cut_outline(k, n)
-            if res is not None and len(res) == n:
-                return res
-    except Exception:
-        pass
 
     if k in _ROUND_CUTS:
         return _circle(n)

@@ -1,9 +1,18 @@
 [submodule ".agents"]
-	path = .agents
+	path = lab/.agents
 	url = https://github.com/Agent-Rules-Ecosystem/python-agent-rules.git
 [submodule ".skill/python-blender-addon-agent-skill"]
-	path = .skill/python-blender-addon-agent-skill
+	path = lab/.skill/python-blender-addon-agent-skill
 	url = https://github.com/Agent-Rules-Ecosystem/python-blender-addon-agent-skill.git
 [submodule ".skill/i18n-agent-skill"]
-	path = .skill/i18n-agent-skill
+	path = lab/.skill/i18n-agent-skill
 	url = https://github.com/Agent-Rules-Ecosystem/i18n-agent-skill.git
+[submodule "knowledge/.agents"]
+	path = knowledge/.agents
+	url = git@github.com:Agent-Rules-Ecosystem/second-brain-agent-rules.git
+[submodule "multicore-agent-rules"]
+	path = .agents
+	url = git@github.com:Agent-Rules-Ecosystem/multicore-agent-rules.git
+[submodule "rust-agent-rules"]
+	path = engine/.agents
+	url = git@github.com:Agent-Rules-Ecosystem/rust-agent-rules.git
