@@ -11,7 +11,7 @@ from . import (
     panels,
     # menus, (Disabled in baseline)
     preferences,
-    pave_panel,
+    # pave_panel, (Lab tier only)
 )
 
 if _needs_reload:
@@ -20,14 +20,14 @@ if _needs_reload:
     panels = importlib.reload(panels)
     # menus = importlib.reload(menus) (Disabled in baseline)
     preferences = importlib.reload(preferences)
-    pave_panel = importlib.reload(pave_panel)
+    # pave_panel = importlib.reload(pave_panel) (Lab tier only)
 
 modules = (
     i18n,
     preferences,
     panels,
     # menus, (Disabled in baseline)
-    pave_panel,
+    # pave_panel, (Lab tier only)
 )
 
 
