@@ -14,6 +14,7 @@ from . import (
     cutters,
     prongs,
     v_cutters,
+    pave,
 )
 
 if _needs_reload:
@@ -25,6 +26,7 @@ if _needs_reload:
     cutters = importlib.reload(cutters)
     prongs = importlib.reload(prongs)
     v_cutters = importlib.reload(v_cutters)
+    pave = importlib.reload(pave)
 
 modules = (
     units,
@@ -33,6 +35,7 @@ modules = (
     cutters,
     prongs,
     v_cutters,
+    pave,
 )
 
 

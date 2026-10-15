@@ -11,6 +11,7 @@ from . import (
     panels,
     # menus, (Disabled in Community)
     preferences,
+    pave_panel,
 )
 
 if _needs_reload:
@@ -19,12 +20,14 @@ if _needs_reload:
     panels = importlib.reload(panels)
     # menus = importlib.reload(menus) (Disabled in Community)
     preferences = importlib.reload(preferences)
+    pave_panel = importlib.reload(pave_panel)
 
 modules = (
     i18n,
     preferences,
     panels,
     # menus, (Disabled in Community)
+    pave_panel,
 )
 
 
