@@ -9,7 +9,7 @@ import bpy
 from . import (
     i18n,
     panels,
-    # menus, (Disabled in Community)
+    # menus, (Disabled in baseline)
     preferences,
     pave_panel,
 )
@@ -18,7 +18,7 @@ if _needs_reload:
     import importlib
     i18n = importlib.reload(i18n)
     panels = importlib.reload(panels)
-    # menus = importlib.reload(menus) (Disabled in Community)
+    # menus = importlib.reload(menus) (Disabled in baseline)
     preferences = importlib.reload(preferences)
     pave_panel = importlib.reload(pave_panel)
 
@@ -26,7 +26,7 @@ modules = (
     i18n,
     preferences,
     panels,
-    # menus, (Disabled in Community)
+    # menus, (Disabled in baseline)
     pave_panel,
 )
 

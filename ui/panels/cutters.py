@@ -1,6 +1,6 @@
 """
 Jeweler 3D Studio - UI Cutters Panels Module (Community Edition)
-Only the Seat & Hole Cutter subpanel is available. V-Cutter requires Standard or higher.
+Only the Seat & Hole Cutter subpanel is available.
 """
 
 import bpy

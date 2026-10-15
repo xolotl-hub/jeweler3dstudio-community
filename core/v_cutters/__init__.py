@@ -27,7 +27,6 @@ from ._v_wedge import J3DComm_OT_add_v_cutter_long, J3DComm_OT_add_v_cutter_tran
 
 classes = (
     J3DComm_OT_add_u_cutter,
-    J3DComm_OT_add_v_cutter_long,
     J3DComm_OT_add_v_cutter_trans,
 )
 
