@@ -315,6 +315,7 @@ class FaceShirtStrategy(PaveStrategy):
         shirt_obj: bpy.types.Object,
         gem_size_mm: float = 1.5,
         spacing_mm: float = 0.2,
+        create_cutters: bool = True,
     ) -> Set[str]:
         from ..gems import create_gem_mesh, get_or_create_gem_material
 
@@ -330,6 +331,19 @@ class FaceShirtStrategy(PaveStrategy):
             context=context,
         )
         mat = get_or_create_gem_material("DIAMOND")
+
+        cutter_mesh = None
+        if create_cutters:
+            try:
+                from ..cutters import create_cutter_mesh
+                cutter_mesh = create_cutter_mesh(
+                    cut_key="ROUND",
+                    name=f"PaveCutter_{gem_size_mm:.1f}mm_Mesh",
+                    size_mm=gem_size_mm,
+                    context=context,
+                )
+            except Exception:
+                cutter_mesh = None
 
         for pos, nrm in points:
             obj = bpy.data.objects.new(f"PaveGem_{gem_size_mm:.1f}mm", gem_mesh)
@@ -366,7 +380,18 @@ class FaceShirtStrategy(PaveStrategy):
 
             placed_objs.append(obj)
 
-        # Parent all gems to the shirt for clean hierarchy
+            # Emparejar con cortador booleano (asiento y canal de luz)
+            if create_cutters and cutter_mesh:
+                cutter_obj = bpy.data.objects.new(f"PaveCutter_{gem_size_mm:.1f}mm", cutter_mesh)
+                context.collection.objects.link(cutter_obj)
+                cutter_obj.matrix_world = obj.matrix_world.copy()
+                cutter_obj["j3d_type"] = "CUTTER"
+                cutter_obj["j3d_source_gem"] = obj.name
+                cutter_obj["j3d_pave_shirt"] = shirt_obj.name
+                cutter_obj.display_type = 'WIRE'
+                placed_objs.append(cutter_obj)
+
+        # Parent all gems & cutters to the shirt for clean hierarchy
         for o in placed_objs:
             o.parent = shirt_obj
 
@@ -514,6 +539,11 @@ class J3DComm_OT_pave_distribute(Operator):
         min=0,
         max=9999,
     )
+    create_cutters: BoolProperty(
+        name="Crear Cortadores (Asientos)",
+        description="Genera cortadores booleanos (asiento + taladro) alineados con cada micro-gema",
+        default=True,
+    )
 
     @classmethod
     def poll(cls, context):
@@ -533,7 +563,11 @@ class J3DComm_OT_pave_distribute(Operator):
         random.seed(self.seed)
         strategy = FaceShirtStrategy()
         result = strategy.create_distribution(
-            context, shirt, self.gem_size_mm, self.spacing_mm
+            context,
+            shirt,
+            self.gem_size_mm,
+            self.spacing_mm,
+            create_cutters=self.create_cutters,
         )
         if 'FINISHED' in result:
             count = sum(
@@ -555,6 +589,7 @@ class J3DComm_OT_pave_distribute(Operator):
         col.prop(self, "spacing_mm")
         layout.separator()
         layout.prop(self, "seed")
+        layout.prop(self, "create_cutters")
 
 
 # ── Registration ───────────────────────────────────────────────────────────────
