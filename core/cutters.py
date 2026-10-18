@@ -218,14 +218,15 @@ def find_prongs_for_gem(gem_obj: bpy.types.Object):
 
 
 def apply_seat_cutter_boolean_to_prongs(prongs_obj: bpy.types.Object, cutter_obj: bpy.types.Object) -> None:
-    """Añade modificador Boolean en prongs para asiento de corte con show_viewport=False."""
+    """Añade modificador Boolean en prongs para asiento de corte (MANIFOLD con fallback EXACT)."""
     if not prongs_obj or not cutter_obj:
         return
     if not any(m.type == 'BOOLEAN' and m.object == cutter_obj for m in prongs_obj.modifiers):
         mod = prongs_obj.modifiers.new(name=f"SeatCut_{cutter_obj.name}", type='BOOLEAN')
         mod.operation = 'DIFFERENCE'
         mod.object = cutter_obj
-        mod.solver = 'EXACT'
+        solvers = [e.identifier for e in mod.bl_rna.properties['solver'].enum_items]
+        mod.solver = 'MANIFOLD' if 'MANIFOLD' in solvers else 'EXACT'
         mod.show_viewport = False
         mod.show_render = True
 

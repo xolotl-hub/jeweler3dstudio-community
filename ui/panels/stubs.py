@@ -49,50 +49,7 @@ class VIEW3D_PT_j3d_community_sub_pave(Panel):
         col.label(text="Pavé Distribution (PRO)", icon='INFO')
 
 
-# ===================================================================
-# PANEL: Baskets & Galleries
-# ===================================================================
 
-class VIEW3D_PT_j3d_community_baskets(Panel):
-    bl_label = "Baskets & Galleries"
-    bl_idname = "VIEW3D_PT_j3d_community_baskets"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = "Jeweler 3D Community"
-
-    def draw(self, context: Context) -> None:
-        pass
-
-
-class VIEW3D_PT_j3d_community_sub_basket_gallery(Panel):
-    bl_label = "Standard Gallery"
-    bl_idname = "VIEW3D_PT_j3d_community_sub_basket_gallery"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = "Jeweler 3D Community"
-    bl_parent_id = "VIEW3D_PT_j3d_community_baskets"
-    bl_options = {'DEFAULT_CLOSED'}
-
-    def draw(self, context: Context) -> None:
-        col = self.layout.column(align=True)
-        col.label(text="Under-Gallery (PRO)", icon='INFO')
-
-
-class VIEW3D_PT_j3d_community_sub_basket_supports(Panel):
-    bl_label = "Under Gallery Supports"
-    bl_idname = "VIEW3D_PT_j3d_community_sub_basket_supports"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = "Jeweler 3D Community"
-    bl_parent_id = "VIEW3D_PT_j3d_community_baskets"
-    bl_options = {'DEFAULT_CLOSED'}
-
-    def draw(self, context: Context) -> None:
-        col = self.layout.column(align=True)
-        col.label(text="Gallery Supports (PRO)", icon='INFO')
-
-
-# ===================================================================
 # PANEL: Metrics & Quoting
 # ===================================================================
 
@@ -139,9 +96,6 @@ classes = (
     VIEW3D_PT_j3d_community_settings,
     VIEW3D_PT_j3d_community_sub_bezel,
     VIEW3D_PT_j3d_community_sub_pave,
-    VIEW3D_PT_j3d_community_baskets,
-    VIEW3D_PT_j3d_community_sub_basket_gallery,
-    VIEW3D_PT_j3d_community_sub_basket_supports,
     VIEW3D_PT_j3d_community_metrics,
     VIEW3D_PT_j3d_community_sub_weights,
     VIEW3D_PT_j3d_community_sub_quotation,
