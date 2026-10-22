@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Prongs Operator Shared Helpers
+Jeweler 3D Community - Prongs Operator Shared Helpers
 Mesh application, property persistence, and redo UI layout.
 """
 
@@ -17,14 +17,14 @@ _MAX_PRONG_SETS = 2
 
 
 def get_prong_children(gem_obj):
-    """Devuelve lista de hijos PRONGS ordenados por j3d_prong_slot (ascendente)."""
+    """Return PRONGS children sorted by j3d_prong_slot in ascending order."""
     children = [ch for ch in gem_obj.children if ch.get("j3d_type") == "PRONGS"]
     children.sort(key=lambda o: int(o.get("j3d_prong_slot", 0)))
     return children
 
 
 def build_and_apply_mesh(prongs_obj, bm, mesh_name):
-    """Reemplaza la malla de prongs_obj con el BMesh dado."""
+    """Replace the mesh of prongs_obj with the supplied BMesh."""
     old_mesh = prongs_obj.data
     new_mesh = bpy.data.meshes.new(mesh_name)
     bm.to_mesh(new_mesh)
@@ -45,7 +45,7 @@ def ensure_subsurf(prongs_obj, level):
 
 
 def build_prongs_bm(op, gem):
-    """Genera el BMesh de garras con los parámetros actuales del operador."""
+    """Generate the prong BMesh using the operator's current parameters."""
     cut = gem.get("j3d_gem_cut", "ROUND")
     dim = gem.dimensions.copy()
     if max(dim.x, dim.y) < 0.05:
@@ -72,7 +72,7 @@ SAVED_PROPS = (
 
 
 def load_props_from(op, source_obj):
-    """Restaura SAVED_PROPS desde las propiedades guardadas en source_obj."""
+    """Restore SAVED_PROPS from the properties stored on source_obj."""
     restored = False
     for k in SAVED_PROPS:
         saved_key = f"j3d_p_{k}"
@@ -86,7 +86,7 @@ def load_props_from(op, source_obj):
 
 
 def save_props_to(op, prongs_obj):
-    """Persiste SAVED_PROPS del operador en las propiedades del objeto."""
+    """Store the operator's SAVED_PROPS in the object properties."""
     for k in SAVED_PROPS:
         prongs_obj[f"j3d_p_{k}"] = getattr(op, k)
 
@@ -117,7 +117,7 @@ PRONG_PROPS = dict(
 
 
 def draw_prong_params(op, layout):
-    """Panel de Redo común a add y readjust."""
+    """Draw the shared redo panel for add and readjust operations."""
     col = layout.column()
     col.prop(op, "number")
     col.prop(op, "position_deg")

@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Gem Topology Data — Octagon cuts
+Jeweler 3D Community - Gem Topology Data — Octagon cuts
 Part of core/gem_data/ subpackage.
 """
 from typing import Dict, Any

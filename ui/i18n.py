@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Internationalization & Translation Module (i18n)
+Jeweler 3D Community - Internationalization & Translation Module (i18n)
 Registers UI translations for Blender 4.2+ via bpy.app.translations.
 Supports:
   - Spanish ('es_ES', 'es')
@@ -24,9 +24,7 @@ TRANSLATIONS_DICT: Dict[str, Dict[Tuple[str, str], str]] = {
         ("*", "Gems"): "Gemas",
         ("*", "Add Gem"): "Añadir Gema",
         ("*", "Add 3D Gem"): "Añadir Gema 3D",
-        ("*", "Gem Map (Inventory)"): "Mapa de Gemas (Inventario)",
         ("*", "Calculate / Review Gems"): "Calcular / Revisar Gemas",
-        ("*", "Calculate Gem Map"): "Calcular Mapa de Gemas",
         ("*", "Select Gems"): "Seleccionar Gemas",
         ("*", "Select All"): "Sel. Todas",
         ("*", "Swap Gems"): "Intercambiar Gemas",
@@ -47,16 +45,19 @@ TRANSLATIONS_DICT: Dict[str, Dict[Tuple[str, str], str]] = {
         ("*", "Reset Cutter Defaults"): "Restablecer Cortador",
         ("*", "V-Cutter"): "Cortador en V",
         ("*", "Settings (Prongs & Bezel)"): "Engastes (Garras y Bisel)",
-        ("*", "Prongs"): "Garras (Prongs)",
+        ("*", "Prongs"): "Garras",
+        ("*", "Add Prongs"): "Añadir Garras",
+        ("*", "Add Prongs (New Set)"): "Añadir Garras (Nuevo Set)",
+        ("*", "Readjust Prongs"): "Reajustar Garras",
+        ("*", "Readjust Prongs on Gems"): "Reajustar Prongs on Gems",
+        ("*", "Prongs on Gems"): "Prongs on Gems",
+        ("*", "Select a gem to enable"): "Selecciona una gema para activar",
+        ("*", "Linked to:"): "Vinculada a:",
+        ("*", "Active sets"): "Sets activos",
         ("*", "Bezel"): "Bisel (Bezel)",
-        ("*", "Pavé"): "Pavé",
         ("*", "Baskets & Galleries"): "Canastas y Galerías",
-        ("*", "Standard Gallery"): "Galería Estándar",
         ("*", "Under Gallery Supports"): "Soportes",
-        ("*", "Metrics & Costs"): "Métricas y Costos",
-        ("*", "Metrics & Quoting"): "Métricas y Cotizador",
         ("*", "Weights & Metals"): "Pesos y Metales",
-        ("*", "Quoting & Technical Sheet"): "Cotizador & Ficha Técnica",
         ("*", "Calculate Metal Weight"): "Calcular Peso de Metal",
         ("*", "Technical Sheet"): "Ficha Técnica",
         
@@ -75,6 +76,9 @@ TRANSLATIONS_DICT: Dict[str, Dict[Tuple[str, str], str]] = {
         ("*", "US Size"): "Talla US",
         ("*", "US Ring Size"): "Talla US",
         ("*", "Talla US"): "Talla US",
+        ("*", "Commercial size"): "Calibre comercial",
+        ("*", "Custom (free mm)..."): "Personalizado (mm libre)...",
+        ("*", "Free manual millimeter size"): "Ajuste milimétrico manual libre",
         ("*", "Alignment"): "Alineación",
         ("*", "Location"): "Ubicación",
         ("*", "Rotation"): "Rotación",
@@ -184,7 +188,6 @@ TRANSLATIONS_DICT: Dict[str, Dict[Tuple[str, str], str]] = {
         ("*", "Gems"): "Pierres",
         ("*", "Add Gem"): "Ajouter une Pierre",
         ("*", "Add 3D Gem"): "Ajouter Pierre 3D",
-        ("*", "Gem Map (Inventory)"): "Carte des Pierres (Inventaire)",
         ("*", "Calculate / Review Gems"): "Calculer / Examiner Pierres",
         ("*", "Boolean Cutters"): "Percés et Découpeurs",
         ("*", "Cutters"): "Découpeurs",
@@ -202,6 +205,19 @@ TRANSLATIONS_DICT: Dict[str, Dict[Tuple[str, str], str]] = {
         ("*", "Half Round"): "Demi-Jonc",
         ("*", "Flat"): "Ruban Plat",
         ("*", "Comfort Fit"): "Confort",
+        ("*", "Cut"): "Taille",
+        ("*", "Commercial size"): "Taille commerciale",
+        ("*", "Custom (free mm)..."): "Personnalisé (mm libre)...",
+        ("*", "Free manual millimeter size"): "Dimension millimétrique manuelle libre",
+        ("*", "Prongs"): "Griffes",
+        ("*", "Add Prongs"): "Ajouter Griffes",
+        ("*", "Add Prongs (New Set)"): "Ajouter Griffes (Nouveau Set)",
+        ("*", "Readjust Prongs"): "Réajuster Griffes",
+        ("*", "Readjust Prongs on Gems"): "Réajuster Prongs on Gems",
+        ("*", "Prongs on Gems"): "Prongs on Gems",
+        ("*", "Select a gem to enable"): "Sélectionnez une pierre pour activer",
+        ("*", "Linked to:"): "Lié à :",
+        ("*", "Active sets"): "Sets actifs",
     }
 }
 
@@ -211,7 +227,7 @@ TRANSLATIONS_DICT["es"] = TRANSLATIONS_DICT["es_ES"]
 
 
 def register():
-    """Registra catalogo de traducciones en Blender"""
+    """Register the translation catalog with Blender."""
     try:
         bpy.app.translations.register(__name__, TRANSLATIONS_DICT)
     except Exception as e:
@@ -219,7 +235,7 @@ def register():
 
 
 def unregister():
-    """Elimina catalogo de traducciones al desactivar extension"""
+    """Unregister the translation catalog when disabling the extension."""
     try:
         bpy.app.translations.unregister(__name__)
     except Exception as e:

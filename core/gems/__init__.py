@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Core Gems Package
+Jeweler 3D Community - Core Gems Package
 
 Modular gemstone suite: 17 luxury cut generation, preview collections,
 BSDF materials, commercial size charts, carat estimation, and UI operators.
@@ -11,8 +11,7 @@ import bpy
 
 from ._constants import (
     CUT_DEFS,
-    CUTS_RELEASED,
-    _is_lab_tier,
+    AVAILABLE_CUTS,
     GEM_STONES,
     STONE_ITEMS,
     CUT_VOLUME_FACTORS,
@@ -41,17 +40,12 @@ from ._inventory import (
 )
 from ._op_gem import (
     J3DComm_OT_add_gem,
-    J3DComm_OT_swap_gems,
-)
-from ._op_map import (
-    J3DComm_OT_calculate_gem_map,
-    J3DComm_OT_select_gems,
 )
 from ._operators import classes
 
 if _needs_reload:
     import importlib
-    from . import _constants, _sizes_data, _sizes, _previews, _geometry, _inventory, _op_gem, _op_map, _operators
+    from . import _constants, _sizes_data, _sizes, _previews, _geometry, _inventory, _op_gem, _operators
     _constants = importlib.reload(_constants)
     _sizes_data = importlib.reload(_sizes_data)
     _sizes = importlib.reload(_sizes)
@@ -59,7 +53,6 @@ if _needs_reload:
     _geometry = importlib.reload(_geometry)
     _inventory = importlib.reload(_inventory)
     _op_gem = importlib.reload(_op_gem)
-    _op_map = importlib.reload(_op_map)
     _operators = importlib.reload(_operators)
 
 

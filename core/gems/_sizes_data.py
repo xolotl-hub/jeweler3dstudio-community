@@ -1,7 +1,7 @@
 """
-Jeweler 3D Studio - Gems: Commercial Size Catalog
+Jeweler 3D Community - Gems: Commercial Size Catalog
 
-Standard commercial millimeter size tables for 17 gemstone cuts.
+Standard commercial sizes in millimeters for 17 gemstone cuts.
 """
 
 from typing import Dict, List, Tuple

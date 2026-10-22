@@ -1,7 +1,7 @@
 """
-Jeweler 3D Studio - Single Gem Prongs Operator
+Jeweler 3D Community - Single Gem Prongs Operator
 Blender Operators: J3DComm_OT_add_prongs (always creates new set, max 2 per gem)
-                   J3DComm_OT_readjust_prongs (reajusta el set de prongs seleccionado)
+                   J3DComm_OT_readjust_prongs (rebuilds the selected prong set in place)
 """
 
 try:
@@ -28,7 +28,7 @@ from ._op_helpers import (
 
 
 class J3DComm_OT_add_prongs(Operator):
-    """Crea un nuevo set de garras como hijo de la gema seleccionada (máx 2 por gema)"""
+    """Create a new prong set as child of the selected gem (max 2 per gem)."""
     bl_idname  = "j3d_community.add_prongs"
     bl_label   = "Add Prongs"
     bl_description = "Generates a new prong set as child of active gemstone (max 2 per gem)"
@@ -153,12 +153,12 @@ class J3DComm_OT_add_prongs(Operator):
             last_prongs.select_set(True)
             context.view_layer.objects.active = last_prongs
 
-        self.report({'INFO'}, f"Garras '{self.tip_type}' ({self.number}x) añadidas a {created} gema(s).")
+        self.report({'INFO'}, f"Prongs '{self.tip_type}' ({self.number}x) added to {created} gem(s).")
         return {'FINISHED'}
 
 
 class J3DComm_OT_readjust_prongs(Operator):
-    """Reajusta el set de garras seleccionado conservando sus parámetros guardados"""
+    """Rebuild the selected prong set in place, keeping saved parameters."""
     bl_idname  = "j3d_community.readjust_prongs"
     bl_label   = "Readjust Prongs"
     bl_description = "Regenerates this prong set in-place with current/modified parameters"
@@ -213,7 +213,7 @@ class J3DComm_OT_readjust_prongs(Operator):
         ensure_subsurf(prongs_obj, self.subsurf_level)
         save_props_to(self, prongs_obj)
 
-        self.report({'INFO'}, f"Garras '{self.tip_type}' ({self.number}x) reajustadas.")
+        self.report({'INFO'}, f"Prongs '{self.tip_type}' ({self.number}x) readjusted.")
         return {'FINISHED'}
 
 
@@ -235,8 +235,7 @@ def register() -> None:
 
 def unregister() -> None:
     for cls in reversed(classes):
-        if hasattr(bpy.types, cls.__name__):
-            try:
-                bpy.utils.unregister_class(getattr(bpy.types, cls.__name__))
-            except Exception:
-                pass
+        try:
+            bpy.utils.unregister_class(cls)
+        except Exception:
+            pass

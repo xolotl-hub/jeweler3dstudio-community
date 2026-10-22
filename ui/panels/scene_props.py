@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Unified Scene PropertyGroup
+Jeweler 3D Community - Unified Scene PropertyGroup
 All add-on scene-level properties collected in one J3D_SceneSettings group
 and registered as ``bpy.types.Scene.j3d``.  Access from panels / operators:
 
@@ -66,7 +66,7 @@ class J3D_SceneSettings(PropertyGroup):
 
     us_size: EnumProperty(
         name="US Size",
-        description="Standard US & Canada ring size selection",
+        description="US & Canada ring size selection",
         items=US_SIZE_ITEMS,
         default="7.0",
     )  # type: ignore
@@ -198,7 +198,7 @@ class J3D_SceneSettings(PropertyGroup):
 
     gem_size_preset: EnumProperty(
         name="Commercial Size",
-        description="Standard commercial market sizes for selected cut",
+        description="Commercial market sizes for selected cut",
         items=get_gem_size_preset_items,
         default=0,
     )  # type: ignore
@@ -264,19 +264,18 @@ class J3D_SceneSettings(PropertyGroup):
 
 
 # ------------------------------------------------------------------
-# Auto-heal & Validation for Stale / Cross-Tier Sessions
+# Auto-heal & Validation for Stale / Stale scene validation
 # ------------------------------------------------------------------
 
 def _validate_all_scenes_gem_cut() -> None:
-    """Auto-corrige gem_cut si una escena previa guardó un corte no disponible en este tier."""
+    """Reset unavailable gem cuts saved in older scenes to the supported default."""
     try:
-        from ...core.gems import CUTS_RELEASED, _is_lab_tier
-        lab = _is_lab_tier()
+        from ...core.gems import AVAILABLE_CUTS
         for scn in bpy.data.scenes:
             j3d = getattr(scn, "j3d", None)
             if j3d:
                 cut = getattr(j3d, "gem_cut", "")
-                if not cut or (not lab and cut not in CUTS_RELEASED):
+                if not cut or cut not in AVAILABLE_CUTS:
                     try:
                         j3d.gem_cut = "ROUND"
                     except Exception:

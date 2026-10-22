@@ -1,31 +1,36 @@
 """
-Jeweler 3D Studio - Core Cutters Module
+Jeweler 3D Community - Core Cutters Module
 Procedural gem seat cutters with 5-zone calibrated profile and live parametric editing.
 """
+
+_needs_reload = "bpy" in locals()
 
 import bpy
 import bmesh
 from .units import mm_to_bu
+from . import cutters_outlines, cutters_props, cutters_ops
+
+if _needs_reload:
+    import importlib
+    cutters_outlines = importlib.reload(cutters_outlines)
+    cutters_props = importlib.reload(cutters_props)
+    cutters_ops = importlib.reload(cutters_ops)
+
 from .cutters_outlines import (
     CUTTER_TOP_RATIO, CUTTER_TABLE_RATIO, CUTTER_GIRDLE_TOP_RATIO,
     CUTTER_GIRDLE_BOT_RATIO, CUTTER_SEAT_RATIO, CUTTER_DEPTH_RATIO,
-    CUTTER_R_TABLE, CUTTER_R_GIRDLE, CUTTER_R_HOLE,
-    _ROUND_CUTS, _RECT_CUTS, _BAGUETTE_CUTS, _OVAL_CUTS, _CUSHION_CUTS,
-    _PEAR_CUTS, _MARQUISE_CUTS, _HEART_CUTS, _TRIANGLE_CUTS,
-    get_cut_outline,
+    CUTTER_R_TABLE, CUTTER_R_GIRDLE, CUTTER_R_HOLE, get_cut_outline,
 )
 from .cutters_ops import (
     J3DComm_OT_add_cutter_to_gem,
-    J3DComm_OT_reset_cutter_defaults,
-    J3DComm_OT_add_cutters,
 )
 from .cutters_props import (
-    OBJECT_CUTTER_PROPS,
-    register_cutter_properties,
-    unregister_cutter_properties,
+    OBJECT_CUTTER_PROPS, register_cutter_properties, unregister_cutter_properties,
 )
 
-classes = (J3DComm_OT_add_cutter_to_gem, J3DComm_OT_reset_cutter_defaults, J3DComm_OT_add_cutters)
+classes = (J3DComm_OT_add_cutter_to_gem,)
+
+
 
 # -- Constructor de BMesh para Cortadores -----------------------------------------
 
@@ -36,7 +41,7 @@ def build_cutter_bmesh_from_levels(
     levels_mm: list,
     context=None,
 ) -> bmesh.types.BMesh:
-    """Construye un BMesh con 6 anillos a partir de [(r_mm, z_mm), ...] con tapas y crease."""
+    """Build a BMesh with six rings from [(r_mm, z_mm), ...], including caps and crease."""
     segments = max(4, int(segments))
     bu = mm_to_bu(1.0, context)
     outline = get_cut_outline(cut_key, segments)
@@ -104,7 +109,7 @@ def create_cutter_mesh(
     custom_levels: list = None,
     context=None,
 ) -> bpy.types.Mesh:
-    """Genera un mesh de cortador booleano profesional en 5 zonas."""
+    """Generate a five-zone boolean cutter mesh."""
     if custom_levels is None:
         r_half = size_mm * 0.5
         levels_mm = [
@@ -131,7 +136,7 @@ _UPDATING_OBJECTS = set()
 
 
 def update_cutter_object_props_callback(self, context):
-    """Callback invocado en tiempo real cuando el usuario mueve cualquier slider en la UI."""
+    """Callback invoked when the user changes a UI slider."""
     name = getattr(self, "name", "")
     if name in _UPDATING_OBJECTS:
         return
@@ -141,34 +146,30 @@ def update_cutter_object_props_callback(self, context):
 
 
 def init_cutter_object_props(ctr_obj: bpy.types.Object, cut_key: str, size_mm: float, segments: int = 16, crease: float = 0.9):
-    """Inicializa las propiedades del objeto cortador segun calibre y tipo de corte."""
+    """Initialize cutter object properties from the gem size and cut type."""
     name = ctr_obj.name
     _UPDATING_OBJECTS.add(name)
     try:
         r_half = size_mm * 0.5
-        ctr_obj["j3d_type"] = "CUTTER"
-        ctr_obj["j3d_gem_cut"] = cut_key
-        ctr_obj["j3d_gem_size"] = size_mm
+        ctr_obj["j3d_type"], ctr_obj["j3d_gem_cut"], ctr_obj["j3d_gem_size"] = "CUTTER", cut_key, size_mm
         ctr_obj.j3d_cutter_segments = max(4, int(segments))
         ctr_obj.j3d_cutter_crease = max(0.0, min(1.0, float(crease)))
-        ctr_obj.j3d_cutter_r_top = r_half * CUTTER_R_TABLE
+        ctr_obj.j3d_cutter_r_top = ctr_obj.j3d_cutter_r_table = r_half * CUTTER_R_TABLE
         ctr_obj.j3d_cutter_z_top = size_mm * CUTTER_TOP_RATIO
-        ctr_obj.j3d_cutter_r_table = r_half * CUTTER_R_TABLE
         ctr_obj.j3d_cutter_z_table = size_mm * CUTTER_TABLE_RATIO
-        ctr_obj.j3d_cutter_r_girdle_top = r_half * CUTTER_R_GIRDLE
+        ctr_obj.j3d_cutter_r_girdle_top = ctr_obj.j3d_cutter_r_girdle_bot = r_half * CUTTER_R_GIRDLE
         ctr_obj.j3d_cutter_z_girdle_top = size_mm * CUTTER_GIRDLE_TOP_RATIO
-        ctr_obj.j3d_cutter_r_girdle_bot = r_half * CUTTER_R_GIRDLE
         ctr_obj.j3d_cutter_z_girdle_bot = size_mm * CUTTER_GIRDLE_BOT_RATIO
-        ctr_obj.j3d_cutter_r_seat = r_half * CUTTER_R_HOLE
+        ctr_obj.j3d_cutter_r_seat = ctr_obj.j3d_cutter_r_hole_bot = r_half * CUTTER_R_HOLE
         ctr_obj.j3d_cutter_z_seat = size_mm * CUTTER_SEAT_RATIO
-        ctr_obj.j3d_cutter_r_hole_bot = r_half * CUTTER_R_HOLE
         ctr_obj.j3d_cutter_z_hole_bot = -size_mm * CUTTER_DEPTH_RATIO
+
     finally:
         _UPDATING_OBJECTS.discard(name)
 
 
 def rebuild_cutter_from_object_props(ctr_obj: bpy.types.Object, context=None):
-    """Regenera la malla del cortador in-place a partir de sus propiedades de objeto."""
+    """Rebuild the cutter mesh in place from its object properties."""
     cut_key = ctr_obj.get("j3d_gem_cut", "ROUND")
     segments = int(getattr(ctr_obj, "j3d_cutter_segments", 8))
     crease = float(getattr(ctr_obj, "j3d_cutter_crease", 0.8))
@@ -190,7 +191,7 @@ def rebuild_cutter_from_object_props(ctr_obj: bpy.types.Object, context=None):
 # -- Utilidades de asociacion Gema <-> Cortador -----------------------------------
 
 def find_cutter_for_gem(gem_obj: bpy.types.Object):
-    """Busca el cortador asociado exclusivamente a una gema."""
+    """Find the cutter associated with a specific gem."""
     if not gem_obj:
         return None
     for ch in gem_obj.children:
@@ -205,7 +206,7 @@ def find_cutter_for_gem(gem_obj: bpy.types.Object):
 
 
 def find_prongs_for_gem(gem_obj: bpy.types.Object):
-    """Busca el objeto de garras (PRONGS) asociado a una gema."""
+    """Find the prongs object associated with a gem."""
     if not gem_obj:
         return None
     for ch in gem_obj.children:
@@ -218,7 +219,7 @@ def find_prongs_for_gem(gem_obj: bpy.types.Object):
 
 
 def apply_seat_cutter_boolean_to_prongs(prongs_obj: bpy.types.Object, cutter_obj: bpy.types.Object) -> None:
-    """Añade modificador Boolean en prongs para asiento de corte (MANIFOLD con fallback EXACT)."""
+    """Add a Boolean modifier to prongs for the cut seat (MANIFOLD with EXACT fallback)."""
     if not prongs_obj or not cutter_obj:
         return
     if not any(m.type == 'BOOLEAN' and m.object == cutter_obj for m in prongs_obj.modifiers):
@@ -232,7 +233,7 @@ def apply_seat_cutter_boolean_to_prongs(prongs_obj: bpy.types.Object, cutter_obj
 
 
 def rebuild_cutter_for_gem(cutter_obj: bpy.types.Object, cut_key: str, size_mm: float, context=None):
-    """Regenera el mesh de un cortador al cambiar gema, preservando segmentos y crease."""
+    """Rebuild a cutter mesh when its gem changes, preserving segments and crease."""
     segs = int(getattr(cutter_obj, "j3d_cutter_segments", 8))
     crease = float(getattr(cutter_obj, "j3d_cutter_crease", 0.8))
     init_cutter_object_props(cutter_obj, cut_key, size_mm, segments=segs, crease=crease)

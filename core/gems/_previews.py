@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Gems: Preview Collections Management
+Jeweler 3D Community - Gems: Preview Collections Management
 
 Thumbnail preview collection loader for 17 luxury cuts and dynamic EnumProperty callbacks.
 """
@@ -8,15 +8,15 @@ import os
 from pathlib import Path
 import bpy
 import bpy.utils.previews
-from ._constants import CUT_DEFS, CUTS_RELEASED, _is_lab_tier
+from ._constants import CUT_DEFS, AVAILABLE_CUTS
 
 _preview_collections = {}
 
 
 def get_cut_preview_collection():
-    """Carga y cachea los iconos PNG de los 17 cortes.
-    Busca primero en assets/gems/png (generados por el script),
-    con fallback a assets/gems/dark (iconos legacy).
+    """Load and cache gem cut preview icons.
+
+    Look first in assets/gems/png, then fall back to assets/gems/dark.
     """
     global _preview_collections
     if "cuts" in _preview_collections:
@@ -43,7 +43,7 @@ def get_cut_preview_collection():
 
 
 def clear_previews():
-    """Libera la memoria de previews al desregistrar."""
+    """Release preview memory when unregistering the add-on."""
     global _preview_collections
     for pcoll in _preview_collections.values():
         try:
@@ -54,22 +54,19 @@ def clear_previews():
 
 
 def get_cut_enum_items(self, context):
-    """Callback dinámico para EnumProperty con iconos de previsualización.
-    En tiers de producción solo muestra los cortes de CUTS_RELEASED (Round y Oval).
-    El tier Lab siempre expone los 17 cortes.
-    """
+    """Return dynamic EnumProperty items with preview icons for available cuts."""
     try:
         pcoll = get_cut_preview_collection()
     except Exception:
         pcoll = None
 
-    lab = _is_lab_tier()
     items = []
     for key, label, icon_file in CUT_DEFS:
-        if not lab and key not in CUTS_RELEASED:
+        if key not in AVAILABLE_CUTS:
             continue
         icon_id = 0
         if pcoll is not None and key in pcoll:
             icon_id = pcoll[key].icon_id
-        items.append((key, label, f"Corte {label}", icon_id, len(items)))
+        description = f"{bpy.app.translations.pgettext_iface('Cut')} {label}"
+        items.append((key, label, description, icon_id, len(items)))
     return items

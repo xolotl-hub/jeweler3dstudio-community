@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Ring: Cross-Section Profiles
+Jeweler 3D Community - Ring: Cross-Section Profiles
 
 8 parametric ring profile cross-sections and sharp corner detection for edge creasing.
 """
@@ -24,7 +24,7 @@ RING_PROFILE_ITEMS: List[Tuple[str, str, str, int]] = [
 
 
 def _make_profile_media_cana(n: int = 8) -> List[Tuple[float, float]]:
-    """Media Cana: flat inner edge, domed outer. Classic half-round."""
+    """Return a half-round profile with a flat inner edge and domed outer edge."""
     pts = [(0.0, -0.5), (0.0, 0.5)]
     seg = max(2, n)
     for i in range(1, seg):
@@ -34,12 +34,12 @@ def _make_profile_media_cana(n: int = 8) -> List[Tuple[float, float]]:
 
 
 def _make_profile_plano(n: int = 1) -> List[Tuple[float, float]]:
-    """Plano: pure rectangle."""
+    """Return a rectangular profile."""
     return [(0.0, -0.5), (0.0, 0.5), (1.0, 0.5), (1.0, -0.5)]
 
 
 def _make_profile_confort(n: int = 8) -> List[Tuple[float, float]]:
-    """Confort: flat outer, inner has gentle comfort dome (no sharp inner edges)."""
+    """Return a comfort-fit profile with a flat outer edge and gently domed inner edge."""
     pts = [(1.0, -0.5), (1.0, 0.5)]
     pts.append((0.10, 0.5))
     seg = max(2, n)
@@ -52,7 +52,7 @@ def _make_profile_confort(n: int = 8) -> List[Tuple[float, float]]:
 
 
 def _make_profile_oval(n: int = 16) -> List[Tuple[float, float]]:
-    """Oval: full ellipse cross-section. Center at (0.5, 0)."""
+    """Return an elliptical cross-section centered at (0.5, 0)."""
     pts = []
     seg = max(4, n)
     for i in range(seg):
@@ -64,12 +64,12 @@ def _make_profile_oval(n: int = 16) -> List[Tuple[float, float]]:
 
 
 def _make_profile_knife_edge(n: int = 1) -> List[Tuple[float, float]]:
-    """Filo (Knife Edge): triangular - flat inner, sharp outer ridge at center."""
+    """Return a knife-edge profile with a flat inner edge and a sharp outer ridge."""
     return [(0.0, -0.5), (0.0, 0.5), (1.0, 0.0)]
 
 
 def _make_profile_euro_shank(n: int = 1) -> List[Tuple[float, float]]:
-    """Aro Europeo: square with small chamfers on outer corners."""
+    """Return a square European shank profile with small outer chamfers."""
     c = 0.10
     return [
         (0.0,       -0.5),
@@ -82,7 +82,7 @@ def _make_profile_euro_shank(n: int = 1) -> List[Tuple[float, float]]:
 
 
 def _make_profile_beveled(n: int = 1) -> List[Tuple[float, float]]:
-    """Biseado: rectangle with outer corner bevels."""
+    """Return a rectangular profile with beveled outer corners."""
     b = 0.18
     return [
         (0.0,      -0.5),
@@ -95,7 +95,7 @@ def _make_profile_beveled(n: int = 1) -> List[Tuple[float, float]]:
 
 
 def _make_profile_concave(n: int = 8) -> List[Tuple[float, float]]:
-    """Concavo: concave outer surface (grooved channel)."""
+    """Return a profile with a concave outer surface forming a groove."""
     pts = [(0.0, -0.5), (0.0, 0.5)]
     pts.append((1.0, 0.5))
     seg = max(2, n)
@@ -120,8 +120,9 @@ _PROFILE_FNS = {
 
 
 def _find_sharp_corner_indices(pts: List[Tuple[float, float]], threshold_cos: float = 0.866) -> List[int]:
-    """Identifica los indices de vertices en el perfil que representan esquinas vivas
-    (cambio de direccion > ~30 grados entre segmentos adyacentes).
+    """Identify profile vertex indices that represent sharp corners.
+
+    A sharp corner has a direction change greater than about 30 degrees between adjacent segments.
     """
     M = len(pts)
     if M <= 4:

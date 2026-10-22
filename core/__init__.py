@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Core Package Initialization
+Jeweler 3D Community - Core Package Initialization
 Registers core property groups, geometry operators, and calculation modules.
 """
 
@@ -13,7 +13,6 @@ from . import (
     gems,
     cutters,
     prongs,
-    v_cutters,
 )
 
 if _needs_reload:
@@ -24,7 +23,6 @@ if _needs_reload:
     gems = importlib.reload(gems)
     cutters = importlib.reload(cutters)
     prongs = importlib.reload(prongs)
-    v_cutters = importlib.reload(v_cutters)
 
 modules = (
     units,
@@ -32,7 +30,6 @@ modules = (
     gems,
     cutters,
     prongs,
-    v_cutters,
 )
 
 

@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Prongs Oval & Cushion Arrangement
+Jeweler 3D Community - Prongs Oval & Cushion Arrangement
 Calculates quadrant-symmetric positions for Oval and Cushion cuts.
 """
 

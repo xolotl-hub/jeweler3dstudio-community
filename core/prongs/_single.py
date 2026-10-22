@@ -1,5 +1,5 @@
 r"""
-Jeweler 3D Studio - Single Gem Prongs Engine
+Jeweler 3D Community - Single Gem Prongs Engine
 Builds single prongs and parametric radial/symmetry prong arrays around a gemstone.
 """
 

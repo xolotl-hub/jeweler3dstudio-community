@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - UI Cutters Panels Module (Community Edition)
+Jeweler 3D Community - UI Cutters Panels Module 
 Only the Seat & Hole Cutter subpanel is available.
 """
 

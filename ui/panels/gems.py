@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - UI Gems Panels Module
+Jeweler 3D Community - UI Gems Panels Module
 Panel for Gemstone creation and cut previews.
 """
 

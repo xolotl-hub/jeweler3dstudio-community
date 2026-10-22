@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - UI Ring Panels Module
+Jeweler 3D Community - UI Ring Panels Module
 Panels for Ring Size references and parametric Metal Shank / Profiles.
 """
 

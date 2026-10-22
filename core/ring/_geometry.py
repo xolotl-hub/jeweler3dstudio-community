@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Ring: Geometry Builders
+Jeweler 3D Community - Ring: Geometry Builders
 
 BMesh procedural mesh and curve generators: 3D circular Bezier sizing curve,
 sizing reference cylinder, and 3D swept shank mesh with automatic edge creasing.
@@ -13,7 +13,7 @@ from ._profiles import _PROFILE_FNS, _make_profile_media_cana, _find_sharp_corne
 
 
 def create_ring_bezier_curve(name: str, radius: float) -> bpy.types.Curve:
-    """Crea curva Bezier circular 3D (referencia de talla)."""
+    """Create a circular 3D Bezier curve as a ring-size reference."""
     curve_data = bpy.data.curves.new(name=name, type='CURVE')
     curve_data.dimensions = '3D'
     spline = curve_data.splines.new('BEZIER')
@@ -35,7 +35,7 @@ def create_ring_bezier_curve(name: str, radius: float) -> bpy.types.Curve:
 
 
 def create_ring_cylinder_mesh(name: str, radius: float, depth: float) -> bpy.types.Mesh:
-    """Crea cilindro de referencia de talla con BMesh."""
+    """Create a ring-size reference cylinder with BMesh."""
     mesh_data = bpy.data.meshes.new(name=name)
     bm = bmesh.new()
     bmesh.ops.create_cone(bm, cap_ends=True, cap_tris=False,
@@ -55,15 +55,15 @@ def create_ring_profile_mesh(
     profile_segments: int = 2,
     crease_value: float = 0.8,
 ) -> bpy.types.Mesh:
-    """Genera malla 3D completa sweepando la seccion transversal
-    alrededor del circulo interior (radio = Talla US diametro / 2).
+    """Generate the complete 3D mesh by sweeping the cross-section
+    around the inner circle (radius = US ring size diameter / 2).
 
-    inner_radius_mm : radio INTERIOR - define la talla US (superficie del dedo).
-    width_mm        : ancho del aro en eje del dedo.
-    height_mm       : grosor radial del metal (crece hacia afuera).
-    n_ring          : numero de divisiones radiales alrededor del aro.
-    profile_segments: resolucion de subdivision en secciones curvas del perfil.
-    crease_value    : pliegue (Shift+E) asignado a las aristas longitudinales de esquinas vivas.
+    inner_radius_mm : inner radius defining the US ring size at the finger surface.
+    width_mm        : band width along the finger axis.
+    height_mm       : radial metal thickness extending outward.
+    n_ring          : number of radial divisions around the ring.
+    profile_segments: subdivision resolution for curved profile sections.
+    crease_value    : crease (Shift+E) assigned to longitudinal edges at sharp corners.
     """
     profile_fn = _PROFILE_FNS.get(profile_key, _make_profile_media_cana)
     try:

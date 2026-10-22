@@ -1,22 +1,18 @@
 """
-Jeweler 3D Studio - Core Units Module
+Jeweler 3D Community - Core Units Module
 Standardized unit conversion and Blender Scene Units synchronization for jewelry design.
-Supports both Direct 1 BU = 1 mm (Jewelry standard) and Scene Physical scaling.
+Supports both Direct 1 BU = 1 mm (jewelry unit) and Scene Physical scaling.
 """
 
-from typing import Optional, List, Tuple
+from typing import Optional
 import bpy
 from bpy.props import EnumProperty
 from bpy.types import Operator
 
-SCALE_MODE_ITEMS: List[Tuple[str, str, str]] = [
-    ("DIRECT_MM", "1 BU = 1 mm (Directo)", "Modo modelado directo: 5 mm = 5.0 unidades en Blender"),
-    ("SCENE_PHYSICAL", "Físico Real (Escena)", "Modo físico: 5 mm = 0.005 m adaptado a la escala de la escena"),
-]
 
 
 def get_unit_scale(context: Optional[bpy.types.Context] = None) -> float:
-    """Retorna la escala de longitud actual de la escena (unit_settings.scale_length)."""
+    """Return the current scene length scale (unit_settings.scale_length)."""
     try:
         ctx = context or bpy.context
         scale = ctx.scene.unit_settings.scale_length
@@ -26,7 +22,7 @@ def get_unit_scale(context: Optional[bpy.types.Context] = None) -> float:
 
 
 def mm_to_bu(value_mm: float, context: Optional[bpy.types.Context] = None) -> float:
-    """Convierte una longitud en milímetros a Blender Units (BU) según el modo de escala activo.
+    """Convert a length in millimeters to Blender Units (BU) using the active scale mode.
 
     - DIRECT_MM: 1 BU = 1 mm (5.0 mm -> 5.0 BU)
     - SCENE_PHYSICAL: (value_mm / 1000.0) / unit_scale (5.0 mm -> 0.005 BU en escala 1.0)
@@ -45,7 +41,7 @@ def mm_to_bu(value_mm: float, context: Optional[bpy.types.Context] = None) -> fl
 
 
 def bu_to_mm(value_bu: float, context: Optional[bpy.types.Context] = None) -> float:
-    """Convierte una longitud en Blender Units (BU) a milímetros."""
+    """Convert a length in Blender Units (BU) to millimeters."""
     try:
         ctx = context or bpy.context
         scale_mode = getattr(ctx.scene, "j3d_scale_mode", "DIRECT_MM")
@@ -60,17 +56,17 @@ def bu_to_mm(value_bu: float, context: Optional[bpy.types.Context] = None) -> fl
 
 
 class J3DComm_OT_set_scene_units(Operator):
-    """Configura las unidades de la escena de Blender para diseño de joyería (Milímetros)."""
+    """Sets Blender scene units for jewelry design (millimeters)."""
     bl_idname = "j3d_community.set_scene_units"
-    bl_label = "Configurar Unidades de Escena"
-    bl_description = "Ajusta la escena a Sistema Métrico, escala 0.001 (1 BU = 1 mm) y unidades en milímetros"
+    bl_label = "Set Scene Units"
+    bl_description = "Sets metric units and 0.001 scale (1 BU = 1 mm) with millimeter display"
     bl_options = {'REGISTER', 'UNDO'}
 
     preset: EnumProperty(
-        name="Preajuste de Unidades",
+        name="Unit Preset",
         items=[
-            ("MILLIMETERS", "Milímetros Joyería (0.001)", "Escala 0.001, longitud en milímetros, masa en gramos"),
-            ("METERS", "Metros Estándar (1.0)", "Escala 1.0, longitud en metros, masa en kilogramos"),
+            ("MILLIMETERS", "Jewelry Millimeters (0.001)", "Scale 0.001, millimeters for length, grams for mass"),
+            ("METERS", "Meters (1.0)", "Scale 1.0, meters for length, kilograms for mass"),
         ],
         default="MILLIMETERS"
     )
@@ -100,7 +96,7 @@ class J3DComm_OT_set_scene_units(Operator):
                                 if hasattr(space, "overlay") and hasattr(space.overlay, "grid_scale"):
                                     space.overlay.grid_scale = 0.001
 
-            self.report({'INFO'}, "Escena configurada a Milímetros (Escala 0.001, mm, g).")
+            self.report({'INFO'}, "Scene configured to Millimeters (Scale 0.001, mm, g).")
         else:
             units.system = 'METRIC'
             units.scale_length = 1.0
@@ -117,7 +113,7 @@ class J3DComm_OT_set_scene_units(Operator):
                                 if hasattr(space, "overlay") and hasattr(space.overlay, "grid_scale"):
                                     space.overlay.grid_scale = 1.0
 
-            self.report({'INFO'}, "Escena configurada a Metros (Escala 1.0, m, kg).")
+            self.report({'INFO'}, "Scene configured to Meters (Scale 1.0, m, kg).")
 
         return {'FINISHED'}
 

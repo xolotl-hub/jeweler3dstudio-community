@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Gems: Scene Gem Inventory & Map Analyzer
+Jeweler 3D Community - Gems: Scene Gem Inventory & Map Analyzer
 
 Live gemstone size detector and grouped inventory scanner for scene gemstone analysis.
 """

@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Core Ring Package
+Jeweler 3D Community - Core Ring Package
 
 Parametric ring shank modeling: international ring sizing standards (US, UK, EU, JP),
 Bezier curve references, cylinder references, 8 cross-section profiles, and UI operators.

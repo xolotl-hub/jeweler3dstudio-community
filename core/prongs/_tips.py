@@ -1,5 +1,5 @@
 r"""
-Jeweler 3D Studio - Prongs Tip & Loop Geometry Helpers
+Jeweler 3D Community - Prongs Tip & Loop Geometry Helpers
 Pure BMesh helper functions for circular loops, creases, caps and tip styles.
 """
 

@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Cutters 2D Outlines & Standard Ratios
+Jeweler 3D Community - Cutters 2D Outlines & Calibrated Ratios
 Generadores matematicos de siluetas 2D adaptativas para cortes estandar de joyeria
 y proporciones normalizadas de cortadores de 5 zonas.
 """
@@ -35,20 +35,21 @@ _TRIANGLE_CUTS = {"TRILLION", "TRILLIANT", "TRIANGLE"}
 # -- Generadores de outline 2D (coordenadas normalizadas, radio aprox 1.0) ---------
 
 def _circle(n: int):
-    """Circulo perfecto: N puntos equidistantes."""
+    """Return a circle with N equally spaced points."""
     return [(math.cos(2 * math.pi * i / n), math.sin(2 * math.pi * i / n))
             for i in range(n)]
 
 
 def _ellipse(n: int, a: float = 0.625, b: float = 1.0):
-    """Elipse para corte Oval calibrado (ancho relativo a largo = 0.625)."""
+    """Return a calibrated oval outline (width-to-length ratio = 0.625)."""
     return [(a * math.cos(2 * math.pi * i / n), b * math.sin(2 * math.pi * i / n))
             for i in range(n)]
 
 
 def _superellipse(n: int, a: float = 1.0, b: float = 1.0, p: float = 4.5):
-    """Rectangulo con esquinas suavizadas (superelipse).
-    p=4.5 da bordes levemente redondeados; p=2 da circulo; p=2.8 da cojin (cushion).
+    """Return a rectangle with rounded corners (superellipse).
+
+    p=4.5 gives slightly rounded edges; p=2 gives a circle; p=2.8 gives a cushion.
     """
     pts = []
     for i in range(n):
@@ -62,7 +63,7 @@ def _superellipse(n: int, a: float = 1.0, b: float = 1.0, p: float = 4.5):
 
 
 def _triangle_rounded(n: int, r_factor: float = 0.1585):
-    """Triangulo curvado (Trillion) con 3 vertices redondeados y vertice inferior hacia -Y."""
+    """Return a rounded trillion triangle with its bottom vertex toward -Y."""
     pts = []
     for i in range(n):
         ang = 2 * math.pi * i / n
@@ -72,7 +73,7 @@ def _triangle_rounded(n: int, r_factor: float = 0.1585):
 
 
 def _pear(n: int):
-    """Forma de pera: punta aguda hacia +Y, base redondeada hacia -Y."""
+    """Return a pear outline with a sharp tip toward +Y and a rounded base toward -Y."""
     pts = []
     for i in range(n):
         t = 2 * math.pi * i / n
@@ -85,7 +86,7 @@ def _pear(n: int):
 
 
 def _marquise(n: int):
-    """Marquesa / lente: puntiaguda en los extremos polares (+Y, -Y)."""
+    """Return a marquise or lens outline pointed at both poles (+Y and -Y)."""
     pts = []
     a, b = 0.48, 1.0
     for i in range(n):
@@ -100,7 +101,7 @@ def _marquise(n: int):
 
 
 def _heart(n: int):
-    """Corazon parametrico clasico normalizado con punta aguda hacia -Y."""
+    """Return a normalized classic parametric heart with its tip toward -Y."""
     pts = []
     for i in range(n):
         t = 2 * math.pi * i / n - math.pi / 2
@@ -112,7 +113,7 @@ def _heart(n: int):
 
 
 def get_cut_outline(cut_key: str, n: int):
-    """Devuelve N puntos 2D normalizados del outline del corte dado."""
+    """Return N normalized 2D points for the requested cut outline."""
     k = cut_key.upper()
     n = max(4, n)
 

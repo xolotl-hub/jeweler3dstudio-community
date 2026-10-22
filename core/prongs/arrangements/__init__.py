@@ -1,10 +1,30 @@
 """
-Jeweler 3D Studio - Prongs Arrangements Subpackage
+Jeweler 3D Community - Prongs Arrangements Subpackage
 Dispatches adaptive prong placement calculations tailored to each of the 17 gem cut silhouettes.
 Pure Python reference implementation.
 """
 
+_needs_reload = "_round" in locals()
+
 from typing import List
+from . import _round
+from . import _oval
+from . import _rect
+from . import _trillion
+from . import _heart
+from . import _pear
+from . import _marquise
+
+if _needs_reload:
+    import importlib
+    _round = importlib.reload(_round)
+    _oval = importlib.reload(_oval)
+    _rect = importlib.reload(_rect)
+    _trillion = importlib.reload(_trillion)
+    _heart = importlib.reload(_heart)
+    _pear = importlib.reload(_pear)
+    _marquise = importlib.reload(_marquise)
+
 from ._round import ProngPosition, get_round_positions
 from ._oval import get_oval_positions
 from ._rect import get_rect_positions

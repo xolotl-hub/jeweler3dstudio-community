@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Prongs Presets & Enums
+Jeweler 3D Community - Prongs Presets & Enums
 Tip-type enum items, placement mode items, and adaptive default presets per gem cut/size.
 """
 
@@ -11,13 +11,6 @@ except ImportError:
 
 TIP_TYPE_ITEMS = (
     ("DOME", "Round / Dome", "Classic rounded hemispherical dome tip"),
-)
-
-PLACEMENT_MODE_ITEMS = (
-    ("SHARED",      "Shared / Common (Halo & Pavé)",
-     "Garras compartidas en los valles entre piedras adyacentes para evitar colisiones"),
-    ("INDEPENDENT", "Independent (Per-Gem)",
-     "Garras independientes en cada gema según su preset individual"),
 )
 
 

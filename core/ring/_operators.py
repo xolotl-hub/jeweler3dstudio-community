@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Ring: Operators Facade
+Jeweler 3D Community - Ring: Operators Facade
 
 Re-exports all ring operators and defines the registration classes tuple.
 """

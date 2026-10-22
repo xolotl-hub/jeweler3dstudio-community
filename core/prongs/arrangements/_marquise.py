@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Prongs Marquise Arrangement
+Jeweler 3D Community - Prongs Marquise Arrangement
 Calculates prong positions for Marquise cut gemstones (polar sharp tips and side belly).
 """
 

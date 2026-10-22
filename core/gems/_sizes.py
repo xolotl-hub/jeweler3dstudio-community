@@ -1,18 +1,19 @@
 """
-Jeweler 3D Studio - Gems: Commercial Size Charts & Presets
+Jeweler 3D Community - Gems: Commercial Size Charts & Presets
 
 Standard commercial size tables by cut according to international jewelry trade standards,
 dynamic callbacks for EnumProperty presets, and effective millimeter size calculation.
 """
 
 from typing import Dict, List, Tuple
+import bpy
 from ._sizes_data import CUT_COMMERCIAL_SIZES
 
 GLOBAL_COMMERCIAL_SIZES = CUT_COMMERCIAL_SIZES["ROUND"]
 
 
 def get_gem_size_preset_items(self, context) -> List[Tuple[str, str, str, int, int]]:
-    """Callback dinámico para EnumProperty que entrega los calibres comerciales según el corte activo."""
+    """Return commercial size presets for the active cut as EnumProperty items."""
     cut_key = "ROUND"
     if hasattr(self, "gem_cut") and self.gem_cut:
         cut_key = self.gem_cut
@@ -27,13 +28,16 @@ def get_gem_size_preset_items(self, context) -> List[Tuple[str, str, str, int, i
 
     items = []
     for i, (key, label, _) in enumerate(sizes_list):
-        items.append((key, label, f"Calibre comercial {label}", 0, i))
-    items.append(("CUSTOM", "Personalizado (mm libre)...", "Ajuste milimétrico manual libre", 0, len(items)))
+        description = f"{bpy.app.translations.pgettext_iface('Commercial size')} {label}"
+        items.append((key, label, description, 0, i))
+    custom_label = bpy.app.translations.pgettext_iface("Custom (free mm)...")
+    custom_description = bpy.app.translations.pgettext_iface("Free manual millimeter size")
+    items.append(("CUSTOM", custom_label, custom_description, 0, len(items)))
     return items
 
 
 def get_effective_gem_size(scene) -> float:
-    """Calcula el tamaño milimétrico efectivo según el corte y preset comercial activo."""
+    """Calculate the effective millimeter size from the active cut and size preset."""
     if not scene:
         return 1.0
     j3d = getattr(scene, "j3d", None)

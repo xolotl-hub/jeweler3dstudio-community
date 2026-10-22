@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Prongs Heart Arrangement
+Jeweler 3D Community - Prongs Heart Arrangement
 Calculates anatomical prong positions for Heart cut gemstones (lobes, flanks, and bottom V-tip).
 """
 

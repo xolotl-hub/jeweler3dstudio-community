@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Ring: Size Standards & Orientation
+Jeweler 3D Community - Ring: Size Standards & Orientation
 
 International ring sizing tables (US, UK, EU/ISO, JP), diameter/circumference calculations,
 and orientation plane transformations.

@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - UI Prongs Panel Module
+Jeweler 3D Community - UI Prongs Panel Module
 Interactive N-Panel controls for parametric BMesh prongs.
 """
 
@@ -8,7 +8,7 @@ from bpy.types import Context, Panel
 
 
 class VIEW3D_PT_j3d_community_sub_prongs(Panel):
-    bl_label = "Prongs (Garras)"
+    bl_label = "Prongs"
     bl_idname = "VIEW3D_PT_j3d_community_sub_prongs"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
@@ -26,20 +26,20 @@ class VIEW3D_PT_j3d_community_sub_prongs(Panel):
         if is_prongs:
             box = layout.box()
             slot = int(obj.get("j3d_prong_slot", 0)) + 1
-            box.label(text=f"Garras: {obj.name} (Set {slot})", icon='MOD_SOLIDIFY')
+            box.label(text=f"Prongs: {obj.name} (Set {slot})", icon='MOD_SOLIDIFY')
             target = obj.get("j3d_gem_target", "")
             if target:
-                box.label(text=f"Vinculada a: {target}", icon='LINKED')
-            box.operator("j3d_community.readjust_prongs", text="Reajustar Garras", icon='FILE_REFRESH')
+                box.label(text=f"Linked to: {target}", icon='LINKED')
+            box.operator("j3d_community.readjust_prongs", text="Readjust Prongs", icon='FILE_REFRESH')
         elif is_gem or selected_gems:
             col = layout.column(align=True)
-            col.operator("j3d_community.add_prongs", text="Añadir Garras (Nuevo Set)", icon='ADD')
+            col.operator("j3d_community.add_prongs", text="Add Prongs (New Set)", icon='ADD')
             if is_gem:
                 prong_children = [ch for ch in obj.children if ch.get("j3d_type") == "PRONGS"]
                 if prong_children:
                     prong_children.sort(key=lambda o: int(o.get("j3d_prong_slot", 0)))
                     box = layout.box()
-                    box.label(text=f"Sets activos ({len(prong_children)}/2):", icon='MESH_UVSPHERE')
+                    box.label(text=f"Active sets ({len(prong_children)}/2):", icon='MESH_UVSPHERE')
                     for s in prong_children:
                         slot = int(s.get("j3d_prong_slot", 0)) + 1
                         tip = s.get("j3d_p_tip_type", "DOME")
@@ -48,9 +48,9 @@ class VIEW3D_PT_j3d_community_sub_prongs(Panel):
         else:
             col = layout.column(align=True)
             col.enabled = False
-            col.operator("j3d_community.add_prongs", text="Añadir Garras", icon='ADD')
+            col.operator("j3d_community.add_prongs", text="Add Prongs", icon='ADD')
             box = layout.box()
-            box.label(text="Selecciona una gema para activar", icon='INFO')
+            box.label(text="Select a gem to enable", icon='INFO')
 
 classes = (
     VIEW3D_PT_j3d_community_sub_prongs,

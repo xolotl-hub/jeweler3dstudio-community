@@ -1,7 +1,7 @@
 """
-Jeweler 3D Studio - Gems: Constants & Physical Definitions
+Jeweler 3D Community - Gems: Constants & Physical Definitions
 
-17 gem cut definitions, tier release flags, gemstone physical properties,
+17 gem cut definitions and gemstone physical properties,
 and volumetric calibration factors.
 """
 
@@ -28,24 +28,7 @@ CUT_DEFS: List[Tuple[str, str, str]] = [
     ("TRIANGLE",  "Triangle",        "triangle.png"),
 ]
 
-# Cortes visibles en tiers de producción (Community / Essential / Standard / Pro).
-# Lab siempre muestra todos los cortes definidos en CUT_DEFS.
-CUTS_RELEASED = {"ROUND", "OVAL"}
-
-
-def _is_lab_tier() -> bool:
-    """Detecta en runtime si el addon activo es el tier Lab (jeweler3dstudio_lab).
-    En Blender 4.2+, __package__ es '<addon_id>.core.gems' o '<addon_id>.core',
-    por lo que se extrae el primer componente delimitado por punto.
-    """
-    try:
-        pkg = __package__ or ""
-        root = pkg.split(".")[0]
-        return root.endswith("_lab")
-    except Exception:
-        pass
-    return False
-
+AVAILABLE_CUTS = ("ROUND", "OVAL")
 
 # ── Gem Stones & Physical Properties ─────────────────────────────────────────
 GEM_STONES: Dict[str, Dict] = {

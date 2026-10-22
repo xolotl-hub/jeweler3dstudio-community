@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Prongs Rectangular & Stepped Arrangement
+Jeweler 3D Community - Prongs Rectangular & Stepped Arrangement
 Calculates corner, chamfer, and side prong positions for Princess, Emerald, Baguette, Radiant, Asscher.
 """
 

@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Cutters Object Properties & Class Registration
+Jeweler 3D Community - Cutters Object Properties & Class Registration
 Definiciones de propiedades de objeto de cortadores booleanos (5 zonas)
 y ciclo de vida de registro de clases y operadores.
 """
@@ -35,7 +35,7 @@ _FLOAT_PROP_SPECS = [
 
 
 def register_cutter_properties(update_callback, classes):
-    """Registra propiedades de cortadores en bpy.types.Object y registra clases de operadores."""
+    """Register cutter properties on bpy.types.Object and register operator classes."""
     bpy.types.Object.j3d_cutter_segments = IntProperty(
         name="Segmentos", description="Subdivisiones radiales", default=16, min=4, max=64,
         update=update_callback,
@@ -61,7 +61,7 @@ def register_cutter_properties(update_callback, classes):
 
 
 def unregister_cutter_properties(classes):
-    """Desregistra clases y elimina atributos de propiedades en bpy.types.Object."""
+    """Unregister classes and remove property attributes from bpy.types.Object."""
     for cls in reversed(classes):
         if hasattr(bpy.types, cls.__name__):
             try:

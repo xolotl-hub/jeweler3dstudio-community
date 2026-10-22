@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Gem Topology Data Subpackage
+Jeweler 3D Community - Gem Topology Data Subpackage
 Exports GEM_MESH_DATA (17 luxury cuts) assembled from per-family modules.
 """
 

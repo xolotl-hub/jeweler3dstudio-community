@@ -1,9 +1,9 @@
 """
-Jeweler 3D Studio - Core Prongs Package (Community Edition)
+Jeweler 3D Community - Core Prongs Package 
 """
 
 _needs_reload = "bpy" in locals()
-
+import bpy
 from ._presets import TIP_TYPE_ITEMS, get_default_prong_presets
 from ._single import (
     create_single_prong,

@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Ring: Ring Size Operator
+Jeweler 3D Community - Ring: Ring Size Operator
 
 Operator for generating 3D circular Bezier curve or cylinder ring sizing reference.
 """
@@ -41,7 +41,7 @@ class J3DComm_OT_create_ring_size(Operator, AddObjectHelper):
 
     us_size: EnumProperty(
         name="US Size",
-        description="Standard US ring size selection (legacy / direct access)",
+        description="US ring size selection (legacy / direct access)",
         items=US_SIZE_ITEMS,
         default="7.0"
     )  # type: ignore

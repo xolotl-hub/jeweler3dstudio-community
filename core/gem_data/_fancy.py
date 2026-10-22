@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Gem Topology Data — Fancy cuts
+Jeweler 3D Community - Gem Topology Data — Fancy cuts
 Part of core/gem_data/ subpackage.
 """
 from typing import Dict, Any

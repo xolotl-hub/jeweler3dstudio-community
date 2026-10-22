@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Ring: Ring Profile Shank Operator
+Jeweler 3D Community - Ring: Ring Profile Shank Operator
 
 Operator for creating full 3D ring shanks with parametric cross-sections and subdivision crease.
 """

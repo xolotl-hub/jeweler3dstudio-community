@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Central Addon Entrypoint
+Jeweler 3D Community - Central Addon Entrypoint
 Blender 4.2+ compatible extension registration and unregistration lifecycle management.
 """
 

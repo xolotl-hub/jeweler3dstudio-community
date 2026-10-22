@@ -1,14 +1,14 @@
 """
-Jeweler 3D Studio - UI Panels Subpackage (Community Edition)
+Jeweler 3D Community - UI Panels Subpackage 
 """
 
 _needs_reload = "bpy" in locals()
 
 import bpy
+from bpy.types import Panel, Context
 from . import scene_props
 from . import ring
 from . import gems
-from . import stubs
 from . import prongs
 from . import cutters
 
@@ -17,14 +17,25 @@ if _needs_reload:
     scene_props = importlib.reload(scene_props)
     ring = importlib.reload(ring)
     gems = importlib.reload(gems)
-    stubs = importlib.reload(stubs)
     prongs = importlib.reload(prongs)
     cutters = importlib.reload(cutters)
+
+
+class VIEW3D_PT_j3d_community_settings(Panel):
+    bl_label = "Settings (Prongs)"
+    bl_idname = "VIEW3D_PT_j3d_community_settings"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_category = 'Jeweler 3D Community'
+
+    def draw(self, context: Context) -> None:
+        pass
+
 
 classes = (
     *ring.classes,
     *gems.classes,
-    stubs.VIEW3D_PT_j3d_community_settings,
+    VIEW3D_PT_j3d_community_settings,
     *prongs.classes,
     *cutters.classes,
 )

@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Cutters Operators
+Jeweler 3D Community - Cutters Operators
 Operadores interactivos para anadir, reajustar y gestionar cortadores booleanos
 en gemas individuales o selecciones multiples.
 """
@@ -17,7 +17,7 @@ from .cutters_outlines import (
 
 
 def _sync_cutter_props_from_op(ctr_obj: bpy.types.Object, op) -> None:
-    """Sincroniza propiedades de objeto del cortador desde las propiedades del operador."""
+    """Sync cutter object properties from the operator properties."""
     ctr_obj.j3d_cutter_segments = op.segments
     ctr_obj.j3d_cutter_crease = op.crease
     ctr_obj.j3d_cutter_r_top = op.r_top
@@ -35,7 +35,7 @@ def _sync_cutter_props_from_op(ctr_obj: bpy.types.Object, op) -> None:
 
 
 def _process_gem_cutter(gem_obj: bpy.types.Object, op, base_levels: list, ref_size: float, context) -> None:
-    """Genera o actualiza el cortador booleano parametrico para una gema individual."""
+    """Generate or update the parametric boolean cutter for one gem."""
     from .cutters import (
         build_cutter_bmesh_from_levels,
         create_cutter_mesh,
@@ -191,58 +191,5 @@ class J3DComm_OT_add_cutter_to_gem(Operator):
         return {'FINISHED'}
 
 
-class J3DComm_OT_reset_cutter_defaults(Operator):
-    """Reset cutter rings of active cutter to standard proportions"""
-    bl_idname = "j3d_community.reset_cutter_defaults"
-    bl_label = "Reset Cutter Defaults"
-    bl_description = "Restores cutter dimensions to standard gemstone proportions"
-    bl_options = {'REGISTER', 'UNDO'}
-
-    @classmethod
-    def poll(cls, context: bpy.types.Context) -> bool:
-        from .cutters import find_cutter_for_gem
-        obj = context.active_object
-        return bool(obj and (obj.get("j3d_type") == "CUTTER" or find_cutter_for_gem(obj)))
-
-    def execute(self, context: bpy.types.Context) -> set:
-        from .cutters import find_cutter_for_gem, init_cutter_object_props, rebuild_cutter_from_object_props
-        obj = context.active_object
-        ctr_obj = obj if obj.get("j3d_type") == "CUTTER" else find_cutter_for_gem(obj)
-        if not ctr_obj:
-            self.report({'WARNING'}, "No active cutter found.")
-            return {'CANCELLED'}
-        cut_key = ctr_obj.get("j3d_gem_cut", "ROUND")
-        size_mm = float(ctr_obj.get("j3d_gem_size", 1.0))
-        segs = int(getattr(ctr_obj, "j3d_cutter_segments", 8))
-        crease = float(getattr(ctr_obj, "j3d_cutter_crease", 0.8))
-        init_cutter_object_props(ctr_obj, cut_key, size_mm, segments=segs, crease=crease)
-        rebuild_cutter_from_object_props(ctr_obj, context)
-        self.report({'INFO'}, f"Cutter {ctr_obj.name} reset to defaults.")
-        return {'FINISHED'}
 
 
-class J3DComm_OT_add_cutters(Operator):
-    """Add Base Cutter"""
-    bl_idname = "j3d_community.add_cutters"
-    bl_label = "Add Cutter"
-    bl_description = "Adds a boolean cutter; uses selected gems as reference if present"
-    bl_options = {'REGISTER', 'UNDO'}
-
-    @classmethod
-    def poll(cls, context: bpy.types.Context) -> bool:
-        return context.mode == 'OBJECT'
-
-    def execute(self, context: bpy.types.Context) -> set:
-        from .cutters import init_cutter_object_props
-        if any(o.get("j3d_type") == "GEM" for o in context.selected_objects):
-            return bpy.ops.j3d_community.add_cutter_to_gem()
-        size_bu = mm_to_bu(3.0, context)
-        bpy.ops.mesh.primitive_cylinder_add(
-            radius=size_bu * 0.5, depth=size_bu * 0.7, location=context.scene.cursor.location,
-        )
-        obj = context.active_object
-        obj.name = "CTR_Base"
-        obj.display_type = 'WIRE'
-        init_cutter_object_props(obj, "ROUND", 3.0, 8, 0.8)
-        self.report({'INFO'}, "Base cutter added.")
-        return {'FINISHED'}

@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Prongs Round & Radial Arrangement
+Jeweler 3D Community - Prongs Round & Radial Arrangement
 Calculates uniform radial positions for round and circular gemstones.
 """
 

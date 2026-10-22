@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Prongs Pear Arrangement
+Jeweler 3D Community - Prongs Pear Arrangement
 Calculates prong positions for Pear cut gemstones (top sharp apex + bottom rounded lobe).
 """
 

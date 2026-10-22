@@ -1,5 +1,5 @@
 """
-Jeweler 3D Studio - Prongs Trillion & Triangular Arrangement
+Jeweler 3D Community - Prongs Trillion & Triangular Arrangement
 Calculates triangular vertex and side prong positions for Trillion, Trilliant, Triangle cuts.
 """
 

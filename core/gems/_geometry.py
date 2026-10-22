@@ -1,7 +1,7 @@
 """
-Jeweler 3D Studio - Gems: Geometry & Material Engine
+Jeweler 3D Community - Gems: Geometry & Material Engine
 
-Procedural 3D faceted mesh generation for 17 standard cuts,
+Procedural 3D faceted mesh generation for 17 gemstone cuts,
 carat weight estimation, and realistic Principled BSDF shader builder.
 """
 
@@ -13,7 +13,7 @@ from ._constants import GEM_STONES, CUT_VOLUME_FACTORS
 
 
 def calculate_carats(stone_key: str, cut_key: str, size_mm: float) -> float:
-    """Calcula el peso estimado en quilates basado en densidad física, corte y volumen."""
+    """Estimate carat weight from physical density, cut, and volume."""
     density = GEM_STONES.get(stone_key, GEM_STONES["DIAMOND"])["density"]
     vol_factor = CUT_VOLUME_FACTORS.get(cut_key, 1.00)
     # Calibración: Diamante Redondo 5.0mm = ~0.50 ct
@@ -22,7 +22,7 @@ def calculate_carats(stone_key: str, cut_key: str, size_mm: float) -> float:
 
 
 def get_or_create_gem_material(stone_key: str):
-    """Crea o reutiliza un material BSDF realista para la gema seleccionada."""
+    """Create or reuse a realistic BSDF material for the selected gem."""
     mat_name = "J3D_Material_" + stone_key
     mat = bpy.data.materials.get(mat_name)
     if mat is not None:
@@ -56,8 +56,9 @@ def create_gem_mesh(
     size_mm: float = 1.0,
     context: object = None,
 ) -> bpy.types.Mesh:
-    """Genera una malla 3D procedural paramétrica para cualquiera de los 17 cortes estándar.
-    Escala los vértices normalizados multiplicando por mm_to_bu(size_mm, context).
+    """Generate a parametric 3D mesh for any of the 17 gemstone cuts.
+
+    Scale normalized vertices by mm_to_bu(size_mm, context).
     """
     scale_bu = mm_to_bu(size_mm, context)
     key_upper = cut_key.upper() if cut_key else "ROUND"
@@ -91,5 +92,5 @@ def create_gem_mesh(
 
 
 def create_round_brilliant_mesh(name: str = "Round_Diamond_Mesh", size_mm: float = 1.0, context: object = None) -> bpy.types.Mesh:
-    """Genera una malla 3D de Talla Brillante Redonda."""
+    """Generate a 3D round brilliant cut mesh."""
     return create_gem_mesh(cut_key="ROUND", name=name, size_mm=size_mm, context=context)
